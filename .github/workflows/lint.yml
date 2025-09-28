@@ -19,8 +19,10 @@ jobs:
           java-version: '24'
       - name: Download ktlint
         run: |
-          curl -sSLO https://github.com/pinterest/ktlint/releases/download/1.2.1/ktlint_1.2.1_linux_x64.zip
-          unzip -q ktlint_1.2.1_linux_x64.zip -d ktlintbin
+          KTLINT_VERSION=1.7.1
+          curl -sSfL -o ktlint.zip https://github.com/pinterest/ktlint/releases/download/${KTLINT_VERSION}/ktlint-${KTLINT_VERSION}.zip
+          unzip -q ktlint.zip -d ktlintbin
+          chmod +x ktlintbin/ktlint || true
           echo "${GITHUB_WORKSPACE}/ktlintbin" >> $GITHUB_PATH
       - name: Run ktlint
         run: |
