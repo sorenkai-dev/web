@@ -24,7 +24,12 @@ jobs:
           unzip -q ktlint.zip -d ktlintbin
           chmod +x ktlintbin/ktlint-${KTLINT_VERSION}/bin/ktlint
           echo "${GITHUB_WORKSPACE}/ktlintbin/ktlint-${KTLINT_VERSION}/bin" >> $GITHUB_PATH
-      - name: Run ktlint
+      - name: Auto-format with ktlint
         run: |
-          ktlint --version 
-          ktlint "**/*.kt" 
+          ktlint --version
+          # Format Kotlin files in place (autocorrect)
+          ktlint --format "**/*.kt"
+      - name: Verify formatting (ktlint check)
+        run: |
+          # Run ktlint again to ensure no violations remain
+          ktlint "**/*.kt"
