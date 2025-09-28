@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main", "dev" ]
+  pull_request:
+    branches: [ "main", "dev" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 24
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '24'
+          cache: 'gradle'
+
+      - name: Cache Kotlin/JS store
+        uses: actions/cache@v4
+        with:
+          path: |
+            kotlin-js-store
+            ~/.konan
+          key: ${{ runner.os }}-kotlinjs-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-kotlinjs-
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Build
+        run: ./gradlew --stacktrace build
+
+      - name: Test
+        run: ./gradlew --stacktrace test
+
+  deploy:
+    name: Deploy to Render (placeholder)
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Deploy placeholder
+        run: |
+          echo "Deployment placeholder. Set RENDER_DEPLOY_HOOK secret to enable auto-deploy."
+      - name: Trigger Render deploy (optional)
+        if: ${{ secrets.RENDER_DEPLOY_HOOK != '' }}
+        run: |
+          curl -f -X POST "$RENDER_DEPLOY_HOOK"
+        env:
+          RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}

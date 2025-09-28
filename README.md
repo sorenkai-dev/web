@@ -1,4 +1,28 @@
+[![CI](https://github.com/SorenKai/website/actions/workflows/ci.yml/badge.svg)](https://github.com/SorenKai/website/actions/workflows/ci.yml)
+[![Deploy](https://github.com/SorenKai/website/actions/workflows/deploy.yml/badge.svg)](https://github.com/SorenKai/website/actions/workflows/deploy.yml)
+
 This is a [Kobweb](https://github.com/varabyte/kobweb) project bootstrapped with the `app` template.
+
+## What is Kobweb?
+
+Kobweb is a Kotlin-first framework for building modern websites and web apps using Jetpack Compose for Web (Compose Multiplatform). It lets you write your UI in idiomatic Kotlin with composables, provides a built-in design system (Silk), and includes a development server with hot reload. Projects can be exported as static sites for simple hosting or as fullstack servers when you need dynamic features.
+
+Key ideas and features:
+- Compose-based UI: Build components and pages with composable functions in Kotlin.
+- Discovery via annotations: `@App` for the top-level entry point and `@Page` for routable pages.
+- Theming with Silk: Extendable theme system for colors, typography, and widgets.
+- Fast dev loop: `kobweb run` serves your site locally with automatic rebuild and live reload.
+- Flexible deployment: `kobweb export` supports static hosting or a fullstack server layout.
+- Simple tooling: A CLI and Gradle integration to generate, run, and export projects.
+
+How this repo uses Kobweb:
+- This project was generated from the Kobweb "app" template.
+- The `site` module contains your frontend code and resources (including markdown that becomes pages).
+- See `AppEntry.kt` and pages under `pages/` for examples of `@App` and `@Page` usage.
+
+Learn more:
+- GitHub: https://github.com/varabyte/kobweb
+- Docs and articles on deployment: https://bitspittle.dev/blog/2022/staticdeploy and https://bitspittle.dev/blog/2023/clouddeploy
 
 ## Getting Started
 
@@ -75,3 +99,20 @@ hosting costs, it is not demonstrated in this project.
 You can read more about static layouts here: https://bitspittle.dev/blog/2022/staticdeploy
 
 You can read more about fullstack layouts here: https://bitspittle.dev/blog/2023/clouddeploy
+
+
+---
+
+## CI/CD, Dependabot, and Branch Protection
+
+- CI runs on push and PR to `main` and `dev` using JDK 24. See `.github/workflows/ci.yml`.
+- Deploy placeholder runs on push to `main`. Provide a `RENDER_DEPLOY_HOOK` repository secret to trigger a Render deploy. See `.github/workflows/deploy.yml`.
+- Dependabot is enabled for Gradle and GitHub Actions (daily). See `.github/dependabot.yml`.
+- Auto-merge: Minor and patch Dependabot PRs will be auto-merged after checks pass; major updates require manual review. See `.github/workflows/dependabot-auto-merge.yml`.
+- Lint: ktlint runs on push/PR but is non-blocking to avoid disrupting current development. See `.github/workflows/lint.yml`.
+
+Branch protection (configure in GitHub Settings → Branches):
+- Protect `main` and require the "CI" workflow to pass before merging.
+- Require at least one approving review on PRs to `main`.
+- Optionally enable auto-merge in repository settings to allow the Dependabot auto-merge workflow to take effect.
+- Keep `dev` as the active development branch; regularly sync `main` into `dev` via PR or merge.

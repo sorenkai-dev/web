@@ -1,54 +1,74 @@
 package com.sorenkai.web.components.sections
 
 import androidx.compose.runtime.Composable
-import com.varabyte.kobweb.compose.css.TextAlign
-import com.varabyte.kobweb.compose.css.WhiteSpace
+import com.sorenkai.web.CopyrightStyle
+import com.sorenkai.web.FooterStyle
+import com.sorenkai.web.components.widgets.socialBar
+import com.varabyte.kobweb.compose.css.FontSize
+import com.varabyte.kobweb.compose.foundation.layout.Arrangement
 import com.varabyte.kobweb.compose.foundation.layout.Box
+import com.varabyte.kobweb.compose.foundation.layout.Column
+import com.varabyte.kobweb.compose.foundation.layout.Row
 import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
-import com.varabyte.kobweb.compose.ui.modifiers.*
+import com.varabyte.kobweb.compose.ui.modifiers.classNames
+import com.varabyte.kobweb.compose.ui.modifiers.fillMaxSize
+import com.varabyte.kobweb.compose.ui.modifiers.fontSize
+import com.varabyte.kobweb.compose.ui.modifiers.padding
 import com.varabyte.kobweb.compose.ui.toAttrs
-import com.varabyte.kobweb.silk.components.navigation.Link
-import com.varabyte.kobweb.silk.components.navigation.UncoloredLinkVariant
-import com.varabyte.kobweb.silk.components.text.SpanText
-import com.varabyte.kobweb.silk.style.CssStyle
-import com.varabyte.kobweb.silk.style.base
+import com.varabyte.kobweb.silk.components.icons.fa.FaCopyright
+import com.varabyte.kobweb.silk.style.breakpoint.Breakpoint
 import com.varabyte.kobweb.silk.style.toModifier
-import com.varabyte.kobweb.silk.style.vars.color.ColorVar
-import com.varabyte.kobweb.silk.theme.colors.ColorMode
 import org.jetbrains.compose.web.css.cssRem
-import org.jetbrains.compose.web.css.percent
-import org.jetbrains.compose.web.dom.Span
-import com.sorenkai.web.toSitePalette
+import org.jetbrains.compose.web.css.px
+import org.jetbrains.compose.web.dom.P
+import org.jetbrains.compose.web.dom.Text
+import kotlin.js.Date
 
-val FooterStyle = CssStyle.base {
-    Modifier
-        .backgroundColor(colorMode.toSitePalette().nearBackground)
-        .padding(topBottom = 1.5.cssRem, leftRight = 10.percent)
+
+@Composable
+fun Footer(modifier: Modifier = Modifier, breakpoint: Breakpoint) {
+    Row(FooterStyle.toModifier().then(modifier)) {
+        Box(
+            modifier = Modifier
+                .classNames("footer")
+                .fillMaxSize()
+        ) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Row(
+                    modifier = Modifier.padding(top = 10.px),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically,
+
+                ) {
+                    socialBar()
+                }
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    copyright(breakpoint)
+                }
+            }
+        }
+    }
 }
 
 @Composable
-fun Footer(modifier: Modifier = Modifier) {
-    Box(FooterStyle.toModifier().then(modifier), contentAlignment = Alignment.Center) {
-        Span(Modifier.textAlign(TextAlign.Center).toAttrs()) {
-            val sitePalette = ColorMode.current.toSitePalette()
-            SpanText("Built with ")
-            Link(
-                "https://github.com/varabyte/kobweb",
-                "Kobweb",
-                Modifier.setVariable(ColorVar, sitePalette.brand.primary),
-                variant = UncoloredLinkVariant
-            )
-            SpanText(", template designed by ")
-
-            // Huge thanks to UI Rocket (https://ui-rocket.com) for putting this great template design together for us!
-            // If you like what you see here and want help building your own site, consider checking out their services.
-            Link(
-                "https://ui-rocket.com",
-                "UI Rocket",
-                Modifier.setVariable(ColorVar, sitePalette.brand.accent).whiteSpace(WhiteSpace.NoWrap),
-                variant = UncoloredLinkVariant
-            )
-        }
+private fun copyright(breakpoint: Breakpoint) {
+    val size = if (breakpoint <= Breakpoint.SM) FontSize.XSmall
+        else  FontSize.Medium
+    P(
+        attrs = CopyrightStyle.toModifier()
+            .fontSize(size)
+            .toAttrs()
+    ) {
+        FaCopyright(
+            modifier = Modifier.padding(right = 0.625.cssRem)
+        )
+        Text("${Date().getFullYear()} SorenKai. All rights reserved. ")
     }
 }

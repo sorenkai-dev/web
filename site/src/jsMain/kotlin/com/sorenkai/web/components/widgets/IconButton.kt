@@ -1,13 +1,13 @@
 package com.sorenkai.web.components.widgets
 
 import androidx.compose.runtime.Composable
+import com.sorenkai.web.CircleButtonVariant
+import com.sorenkai.web.UncoloredButtonVariant
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.setVariable
 import com.varabyte.kobweb.silk.components.forms.Button
 import com.varabyte.kobweb.silk.components.forms.ButtonVars
 import org.jetbrains.compose.web.css.em
-import com.sorenkai.web.CircleButtonVariant
-import com.sorenkai.web.UncoloredButtonVariant
 
 @Composable
 fun IconButton(onClick: () -> Unit, content: @Composable () -> Unit) {

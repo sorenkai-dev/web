@@ -1,5 +1,7 @@
 package com.sorenkai.web
 
+import com.varabyte.kobweb.compose.css.functions.LinearGradient
+import com.varabyte.kobweb.compose.css.functions.linearGradient
 import com.varabyte.kobweb.compose.ui.graphics.Color
 import com.varabyte.kobweb.compose.ui.graphics.Colors
 import com.varabyte.kobweb.silk.init.InitSilk
@@ -18,26 +20,46 @@ class SitePalette(
     val brand: Brand,
 ) {
     class Brand(
-        val primary: Color = Color.rgb(0x3C83EF),
-        val accent: Color = Color.rgb(0xF3DB5B),
+        val primary: Color = Color.rgb(0x006D77), // Deep Teal
+        val accent: Color = Color.rgb(0x66A9AD),  // Lighter Teal
+        val gradient: LinearGradient = linearGradient(
+            dir = LinearGradient.Direction.ToBottomRight,
+            from = primary, to = accent
+        ),
+        val visited: Color = Color.rgb(0xC99700),
+        val shadow: Color = Color.argb(0x26000000)
     )
 }
 
 object SitePalettes {
     val light = SitePalette(
-        nearBackground = Color.rgb(0xF4F6FA),
+        nearBackground = Color.rgb(0xF5F3EB), // cream off-white
         cobweb = Colors.LightGray,
         brand = SitePalette.Brand(
-            primary = Color.rgb(0x3C83EF),
-            accent = Color.rgb(0xFCBA03),
+            primary = Color.rgb(0x006D77), // Deep Teal
+            accent = Color.rgb(0x66A9AD),  // Lighter Teal
+            gradient = linearGradient(
+                dir = LinearGradient.Direction.ToBottomRight,
+                from = Color.rgb(0x006D77),
+                to = Color.rgb(0x66A9AD)
+            ),
+            visited = Color.rgb(0xC99700),
+            shadow = Color.argb(0x26000000)
         )
     )
     val dark = SitePalette(
-        nearBackground = Color.rgb(0x13171F),
+        nearBackground = Color.rgb(0x1A1A1A), // deep near-black
         cobweb = Colors.LightGray.inverted(),
         brand = SitePalette.Brand(
-            primary = Color.rgb(0x3C83EF),
-            accent = Color.rgb(0xF3DB5B),
+            primary = Color.rgb(0x66A9AD), // lighter teal pops better in dark mode
+            accent = Color.rgb(0x006D77), // deep teal as secondary in dark mode
+            gradient = linearGradient(
+                dir = LinearGradient.Direction.ToBottomRight,
+                from = Color.rgb(0x66A9AD),
+                to = Color.rgb(0x006D77)
+            ),
+            visited = Color.rgb(0xFFD369),
+            shadow = Color.argb(0x19FFFFFF)
         )
     )
 }
@@ -51,8 +73,11 @@ fun ColorMode.toSitePalette(): SitePalette {
 
 @InitSilk
 fun initTheme(ctx: InitSilkContext) {
-    ctx.theme.palettes.light.background = Color.rgb(0xFAFAFA)
-    ctx.theme.palettes.light.color = Colors.Black
-    ctx.theme.palettes.dark.background = Color.rgb(0x06080B)
-    ctx.theme.palettes.dark.color = Colors.White
+    // Light Mode
+    ctx.theme.palettes.light.background = Color.rgb(0xFAF9F6) // cream background
+    ctx.theme.palettes.light.color = Color.rgb(0x333333) // charcoal text
+
+    // Dark Mode
+    ctx.theme.palettes.dark.background = Color.rgb(0x06080B) // very dark blue-black
+    ctx.theme.palettes.dark.color = Colors.White // clean white text
 }

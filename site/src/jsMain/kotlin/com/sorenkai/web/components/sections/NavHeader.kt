@@ -1,8 +1,16 @@
 package com.sorenkai.web.components.sections
 
 import androidx.compose.runtime.*
-import com.varabyte.kobweb.browser.dom.ElementTarget
-import com.varabyte.kobweb.compose.css.functions.clamp
+import com.sorenkai.web.LinkStyle
+import com.sorenkai.web.NavHeaderStyle
+import com.sorenkai.web.SideMenuStyle
+import com.sorenkai.web.components.data.ui.SideMenuState
+import com.sorenkai.web.components.util.Res
+import com.sorenkai.web.components.widgets.CloseButton
+import com.sorenkai.web.components.widgets.ColorModeButton
+import com.sorenkai.web.components.widgets.HamburgerButton
+import com.sorenkai.web.toSitePalette
+import com.varabyte.kobweb.compose.foundation.layout.Box
 import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.compose.foundation.layout.Row
 import com.varabyte.kobweb.compose.foundation.layout.Spacer
@@ -10,67 +18,70 @@ import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.graphics.Colors
 import com.varabyte.kobweb.compose.ui.modifiers.*
+import com.varabyte.kobweb.compose.ui.toAttrs
+import com.varabyte.kobweb.framework.annotations.DelicateApi
 import com.varabyte.kobweb.silk.components.graphics.Image
-import com.varabyte.kobweb.silk.components.icons.CloseIcon
-import com.varabyte.kobweb.silk.components.icons.HamburgerIcon
-import com.varabyte.kobweb.silk.components.icons.MoonIcon
-import com.varabyte.kobweb.silk.components.icons.SunIcon
 import com.varabyte.kobweb.silk.components.navigation.Link
-import com.varabyte.kobweb.silk.components.navigation.UncoloredLinkVariant
-import com.varabyte.kobweb.silk.components.navigation.UndecoratedLinkVariant
 import com.varabyte.kobweb.silk.components.overlay.Overlay
 import com.varabyte.kobweb.silk.components.overlay.OverlayVars
-import com.varabyte.kobweb.silk.components.overlay.PopupPlacement
-import com.varabyte.kobweb.silk.components.overlay.Tooltip
-import com.varabyte.kobweb.silk.style.CssStyle
 import com.varabyte.kobweb.silk.style.animation.Keyframes
 import com.varabyte.kobweb.silk.style.animation.toAnimation
-import com.varabyte.kobweb.silk.style.base
 import com.varabyte.kobweb.silk.style.breakpoint.Breakpoint
 import com.varabyte.kobweb.silk.style.breakpoint.displayIfAtLeast
 import com.varabyte.kobweb.silk.style.breakpoint.displayUntil
 import com.varabyte.kobweb.silk.style.toModifier
+import com.varabyte.kobweb.silk.theme.breakpoint.rememberBreakpoint
 import com.varabyte.kobweb.silk.theme.colors.ColorMode
 import org.jetbrains.compose.web.css.*
-import com.sorenkai.web.components.widgets.IconButton
-import com.sorenkai.web.toSitePalette
+import org.jetbrains.compose.web.dom.Span
+import org.jetbrains.compose.web.dom.Text
 
-val NavHeaderStyle = CssStyle.base {
-    Modifier.fillMaxWidth().padding(1.cssRem)
+@Composable
+private fun NavLink(
+    path: String,
+    text: String,
+    isTrigger: Boolean = false,
+    modifier: Modifier = LinkStyle.toModifier(),
+    onClick: (() -> Unit)? = null,
+    expanded: Boolean? = null,
+) {
+    if (isTrigger) {
+        val triggerModifier = modifier
+            .attr("role", "button")
+            .attr("tabindex", "0")
+            .attr("aria-haspopup", "true")
+            .let { if (expanded != null) it.attr("aria-expanded", expanded.toString()) else it }
+            .onClick { onClick?.invoke() }
+            .onKeyDown {
+                when (it.key) {
+                    "Enter", " " -> { it.preventDefault(); onClick?.invoke() }
+                    "Escape" -> { it.preventDefault(); onClick?.invoke() }
+                }
+            }
+        Span(attrs = triggerModifier.toAttrs()) {
+            Text(text)
+        }
+    } else {
+        Link(path, text, modifier = LinkStyle.toModifier())
+    }
 }
 
 @Composable
-private fun NavLink(path: String, text: String) {
-    Link(path, text, variant = UndecoratedLinkVariant.then(UncoloredLinkVariant))
-}
-
-@Composable
-private fun MenuItems() {
+private fun MenuItems(isMobile: Boolean = false) {
     NavLink("/", "Home")
+    NavLink("/writings", "Writings")
+    NavLink("/projects", "Projects")
+    NavLink("/community", "Community")
+
+    if (isMobile) {
+        NavLink("/policies/privacy", "Privacy Policy")
+        NavLink("/policies/terms", "Terms of Service")
+        NavLink("/policies/community", "Community Guidelines")
+    } else {
+        PoliciesDropdown()
+    }
     NavLink("/about", "About")
-}
-
-@Composable
-private fun ColorModeButton() {
-    var colorMode by ColorMode.currentState
-    IconButton(onClick = { colorMode = colorMode.opposite },) {
-        if (colorMode.isLight) MoonIcon() else SunIcon()
-    }
-    Tooltip(ElementTarget.PreviousSibling, "Toggle color mode", placement = PopupPlacement.BottomRight)
-}
-
-@Composable
-private fun HamburgerButton(onClick: () -> Unit) {
-    IconButton(onClick) {
-        HamburgerIcon()
-    }
-}
-
-@Composable
-private fun CloseButton(onClick: () -> Unit) {
-    IconButton(onClick) {
-        CloseIcon()
-    }
+    NavLink("/contact", "Contact")
 }
 
 val SideMenuSlideInAnim = Keyframes {
@@ -83,26 +94,19 @@ val SideMenuSlideInAnim = Keyframes {
     }
 }
 
-// Note: When the user closes the side menu, we don't immediately stop rendering it (at which point it would disappear
-// abruptly). Instead, we start animating it out and only stop rendering it when the animation is complete.
-enum class SideMenuState {
-    CLOSED,
-    OPEN,
-    CLOSING;
-
-    fun close() = when (this) {
-        CLOSED -> CLOSED
-        OPEN -> CLOSING
-        CLOSING -> CLOSING
-    }
-}
 
 @Composable
 fun NavHeader() {
-    Row(NavHeaderStyle.toModifier(), verticalAlignment = Alignment.CenterVertically) {
-        Link("https://kobweb.varabyte.com") {
+    Row(
+        NavHeaderStyle.toModifier()
+            .position(Position.Sticky)
+            .top(0.px)
+            .zIndex(5),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Link("/") {
             // Block display overrides inline display of the <img> tag, so it calculates centering better
-            Image("/kobweb-logo.png", "Kobweb Logo", Modifier.height(2.cssRem).display(DisplayStyle.Block))
+            Image(Res.Img.LOGO, "SorenKai Logo", Modifier.height(2.cssRem).display(DisplayStyle.Block))
         }
 
         Spacer()
@@ -135,24 +139,22 @@ fun NavHeader() {
     }
 }
 
+
+@OptIn(DelicateApi::class)
 @Composable
 private fun SideMenu(menuState: SideMenuState, close: () -> Unit, onAnimationEnd: () -> Unit) {
+    val breakpoint = rememberBreakpoint()
     Overlay(
         Modifier
-            .setVariable(OverlayVars.BackgroundColor, Colors.Transparent)
+            .setVariable(OverlayVars.BackgroundColor, Colors.Black.copyf(alpha = 0.5f))
+            // Ensure overlay stacks above all page content and sticky header
+            .zIndex(1000)
             .onClick { close() }
     ) {
         key(menuState) { // Force recompute animation parameters when close button is clicked
             Column(
-                Modifier
-                    .fillMaxHeight()
-                    .width(clamp(8.cssRem, 33.percent, 10.cssRem))
+                SideMenuStyle.toModifier()
                     .align(Alignment.CenterEnd)
-                    // Close button will appear roughly over the hamburger button, so the user can close
-                    // things without moving their finger / cursor much.
-                    .padding(top = 1.cssRem, leftRight = 1.cssRem)
-                    .gap(1.5.cssRem)
-                    .backgroundColor(ColorMode.current.toSitePalette().nearBackground)
                     .animation(
                         SideMenuSlideInAnim.toAnimation(
                             duration = 200.ms,
@@ -161,15 +163,55 @@ private fun SideMenu(menuState: SideMenuState, close: () -> Unit, onAnimationEnd
                             fillMode = AnimationFillMode.Forwards
                         )
                     )
-                    .borderRadius(topLeft = 2.cssRem)
                     .onClick { it.stopPropagation() }
                     .onAnimationEnd { onAnimationEnd() },
                 horizontalAlignment = Alignment.End
             ) {
                 CloseButton(onClick = { close() })
-                Column(Modifier.padding(right = 0.75.cssRem).gap(1.5.cssRem).fontSize(1.4.cssRem), horizontalAlignment = Alignment.End) {
-                    MenuItems()
+                Column(Modifier.padding(right = 0.75.cssRem).gap(1.5.cssRem).fontSize(1.4.cssRem),
+                    horizontalAlignment = Alignment.Start) {
+                    MenuItems(isMobile = breakpoint < Breakpoint.MD)
                 }
+            }
+        }
+    }
+}
+
+
+@Composable
+private fun PoliciesDropdown() {
+    var expanded by remember { mutableStateOf(false) }
+
+    Box(
+        modifier = Modifier
+            .position(Position.Relative)
+    ) {
+        // The trigger link
+        NavLink(
+            text = "Policies", isTrigger = true, path = "", modifier = Modifier, expanded = expanded,
+            onClick = { expanded = !expanded }
+        )
+
+        if (expanded) {
+            Column(
+                modifier = Modifier
+                    .position(Position.Absolute)
+                    .top(100.percent) // right below the "Policies" link
+                    .backgroundColor(ColorMode.current.toSitePalette().nearBackground)
+                    .boxShadow(
+                        offsetX = 0.px,
+                        offsetY = 2.px,
+                        blurRadius = 6.px,
+                        color = Colors.Black.copyf(alpha = 0.15f)
+                    )
+                    .borderRadius(0.5.cssRem)
+                    .padding(0.5.cssRem)
+                    .gap(0.5.cssRem)
+                    .zIndex(10)
+            ) {
+                NavLink("/policies/privacy", "Privacy Policy")
+                NavLink("/policies/terms", "Terms of Service")
+                NavLink("/policies/community", "Community Guidelines")
             }
         }
     }

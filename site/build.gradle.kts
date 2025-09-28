@@ -1,4 +1,6 @@
 import com.varabyte.kobweb.gradle.application.util.configAsKobwebApplication
+import kotlinx.html.link
+import kotlinx.html.script
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
@@ -13,7 +15,34 @@ version = "1.0-SNAPSHOT"
 kobweb {
     app {
         index {
-            description.set("Powered by Kobweb")
+            head.add {
+                link {
+                    href =
+                        "https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css"
+                    rel = "stylesheet"
+                }
+                script {
+                    src = "https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"
+                }
+                link {
+                    rel = "stylesheet"
+                    href = "https://fonts.googleapis.com/icon?family=Material+Icons"
+                }
+                link {
+                    rel = "stylesheet"
+                    href = "https://fonts.googleapis.com/icon?family=Playfair+Display"
+                }
+                link {
+                    rel = "stylesheet"
+                    href = "https://fonts.googleapis.com/icon?family=Nunito"
+                }
+                link {
+                    rel = "stylesheet"
+                    href = "https://fonts.googleapis.com/css2?family=JetBrains+Mono"
+                }
+            }
+            description.set("Soren Kai — writer and technologist exploring culture, AI, and belonging.")
+            interceptUrls { enableSelfHosting() }
         }
     }
 }
@@ -37,6 +66,7 @@ kotlin {
             // Uncomment the following if you want access to a large set of font-awesome icons:
             // implementation(libs.silk.icons.fa)
             implementation(libs.kobwebx.markdown)
+            implementation(libs.silk.icons.fa)
         }
 
         // Uncomment the following if you pass `includeServer = true` into the `configAsKobwebApplication` call.

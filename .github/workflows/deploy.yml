@@ -1,0 +1,34 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy to Render (placeholder)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up JDK 24
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '24'
+      - name: Build export (optional)
+        run: |
+          chmod +x ./gradlew
+          ./gradlew :site:build -x test
+      - name: Deploy placeholder
+        run: |
+          echo "Deployment placeholder. Set RENDER_DEPLOY_HOOK secret to enable auto-deploy."
+      - name: Trigger Render deploy (optional)
+        if: ${{ secrets.RENDER_DEPLOY_HOOK != '' }}
+        run: |
+          curl -f -X POST "$RENDER_DEPLOY_HOOK"
+        env:
+          RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
