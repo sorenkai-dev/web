@@ -23,7 +23,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Auto-merge minor and patch updates
         if: contains(steps.metadata.outputs.update-type, 'semver:minor') || contains(steps.metadata.outputs.update-type, 'semver:patch')
-        uses: pascalgn/automerge-action@v0.16.3
+        uses: pascalgn/automerge-action@v0.16.4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MERGE_LABELS: ""
