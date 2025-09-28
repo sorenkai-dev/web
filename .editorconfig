@@ -1,0 +1,18 @@
+root = true
+
+[*.{kt,kts}]
+# Use ktlint official code style as a base
+ktlint_code_style = ktlint_official
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+
+# Allow long lines for Compose HTML strings, etc.
+max_line_length = off
+
+# Disable rules that conflict with Compose/Kobweb conventions or are too noisy for this codebase right now.
+# You can re-enable rules gradually as the codebase stabilizes.
+ktlint_disabled_rules = function-naming,no-wildcard-imports,trailing-comma-on-call-site,trailing-comma-on-declaration-site,argument-list-wrapping,multiline-expression-wrapping,function-signature,chain-method-continuation,if-else-wrapping,wrapping,function-literal,class-signature,paren-spacing,statement-wrapping,binary-expression-wrapping,import-ordering,max-line-length,final-newline,no-blank-line-before-rbrace,no-blank-line-in-list,no-consecutive-blank-lines,comment-spacing,parameter-list-spacing,no-multi-spaces,value-parameter-comment
+
+[*.md]
+insert_final_newline = true
