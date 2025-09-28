@@ -22,8 +22,8 @@ jobs:
           KTLINT_VERSION=1.7.1
           curl -sSfL -o ktlint.zip https://github.com/pinterest/ktlint/releases/download/${KTLINT_VERSION}/ktlint-${KTLINT_VERSION}.zip
           unzip -q ktlint.zip -d ktlintbin
-          chmod +x ktlintbin/ktlint-1.7.1/bin/ktlint
-          echo "${GITHUB_WORKSPACE}/ktlintbin" >> $GITHUB_PATH
+          chmod +x ktlintbin/ktlint-${KTLINT_VERSION}/bin/ktlint
+          echo "${GITHUB_WORKSPACE}/ktlintbin/ktlint-${KTLINT_VERSION}/bin" >> $GITHUB_PATH
       - name: Run ktlint
         run: |
           ktlint --version 
