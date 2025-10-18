@@ -48,3 +48,4 @@ fun AppEntry(content: @Composable () -> Unit) {
         }
     }
 }
+

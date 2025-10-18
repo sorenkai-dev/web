@@ -5,6 +5,7 @@ import com.sorenkai.web.CopyrightStyle
 import com.sorenkai.web.FooterStyle
 import com.sorenkai.web.components.widgets.socialBar
 import com.varabyte.kobweb.compose.css.FontSize
+import com.varabyte.kobweb.compose.dom.ref
 import com.varabyte.kobweb.compose.foundation.layout.Arrangement
 import com.varabyte.kobweb.compose.foundation.layout.Box
 import com.varabyte.kobweb.compose.foundation.layout.Column
@@ -19,10 +20,12 @@ import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.silk.components.icons.fa.FaCopyright
 import com.varabyte.kobweb.silk.style.breakpoint.Breakpoint
 import com.varabyte.kobweb.silk.style.toModifier
+import kotlinx.browser.document
 import org.jetbrains.compose.web.css.cssRem
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.dom.P
 import org.jetbrains.compose.web.dom.Text
+import org.w3c.dom.HTMLScriptElement
 import kotlin.js.Date
 
 
@@ -55,6 +58,17 @@ fun Footer(modifier: Modifier = Modifier, breakpoint: Breakpoint) {
             }
         }
     }
+    Box (
+        ref = ref {
+            val FIREBASE_SCRIPT_ID = "firebase-init-script"
+            if (document.getElementById(FIREBASE_SCRIPT_ID) == null) {
+                val script = document.createElement("script") as HTMLScriptElement
+                script.type = "module"
+                script.asDynamic().src = "/firebase-init.js"
+                it.appendChild(script)
+            }
+        }
+    )
 }
 
 @Composable

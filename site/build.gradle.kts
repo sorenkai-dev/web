@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kobweb.application)
     alias(libs.plugins.kobwebx.markdown)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 group = "com.sorenkai.web"
@@ -67,6 +68,14 @@ kotlin {
             // implementation(libs.silk.icons.fa)
             implementation(libs.kobwebx.markdown)
             implementation(libs.silk.icons.fa)
+            implementation(libs.firebase.app)
+            implementation(libs.firebase.analytics)
+            implementation(libs.firebase.auth)
+            implementation(libs.firebase.msg)
+            implementation(libs.kotlin.js)
+            implementation(libs.firebase.installations)
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.jetbrains.markdown)
         }
 
         // Uncomment the following if you pass `includeServer = true` into the `configAsKobwebApplication` call.
