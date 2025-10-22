@@ -1,0 +1,56 @@
+{
+  "title": "Acerca de",
+  "description": "Soren Kai es un autor y tecnólogo que explora la inteligencia artificial, la ética y el sentido de pertenencia a través de la escritura y la innovación centrada en el ser humano.",
+  "section_hero": {
+    "quote": "\"Entre el código y la conciencia existe una pregunta; no sobre lo que podemos construir, sino sobre quiénes nos convertimos cuando lo hacemos.\"",
+    "paragraph": "Escribo y desarrollo desde el mismo impulso: entender qué significa ser humano en una era definida por los algoritmos. Cada línea de código, cada frase, es un intento de alinear lo abstracto con lo emocional; de reconciliar la lógica con la empatía, la estructura con el alma."
+  },
+  "section_1": {
+    "header": "Por qué escribo, por qué construyo",
+    "paragraph": [
+      "He pasado mi vida en la intersección de dos mundos: las arquitecturas precisas de la tecnología y la ambigua infinitud del lenguaje. Ambos, a su manera, son sistemas para crear significado. Ambos son actos de creación.",
+      "La escritura se convirtió en mi forma de sentir el pulso de las ideas. La ingeniería, en mi forma de darles forma. Juntas, constituyen una sola búsqueda: construir sistemas que honren las historias humanas que contienen.",
+      "Fue esta búsqueda la que dio origen a Kindred, un ecosistema de plataformas e ideas arraigadas en la empatía, la autenticidad y el sentido de pertenencia; una respuesta a la toxicidad que con demasiada frecuencia define nuestras vidas digitales."
+    ]
+  },
+  "section_2": {
+    "header": "Lenguaje y lógica",
+    "columns": [
+      {
+        "header": "La escritura como reflexión",
+        "paragraph": "A través de ensayos como 'Canary in the Data Mine' y 'The Mirror and the Machine', exploro cómo la tecnología redefine la identidad; cómo el reconocimiento, el poder y la pertenencia son reescritos por el código. Escribir me permite tomar distancia y preguntarme no cómo piensan las máquinas, sino por qué deseamos que lo hagan."
+      },
+      {
+        "header": "La tecnología como expresión",
+        "paragraph": "Como ingeniero, construyo plataformas y sistemas que reflejan estas preguntas en la práctica: KindredCircl para la conexión auténtica. Kindred Labs para la investigación ética de la IA. Cada proyecto es un experimento en alinear la arquitectura con la empatía. Una prueba de que la tecnología puede ser tanto rigurosa como humana."
+      }
+    ]
+  },
+  "section_3": {
+    "header": "Misión — La humanidad al centro",
+    "quote": "Diseñar sistemas —lingüísticos, sociales y técnicos— que fortalezcan la conexión auténtica y cultiven el sentido de pertenencia.",
+    "paragraph": "La tecnología no debería erosionar nuestra humanidad; debería amplificarla. Mi misión es construir herramientas que sirvan al espíritu humano, que nos recuerden que pertenecemos no por los algoritmos, sino por las historias que compartimos."
+  },
+  "section_4": {
+    "header": "La filosofía Kindred",
+    "paragraph": [
+      "Kindred es más que una red de plataformas; es una filosofía. Es la creencia de que la empatía es infraestructura, y que el código puede escribirse con conciencia.",
+      "Desde el tejido social impulsado por lazos de KindredCircl hasta el marco ético de aprendizaje de KindredAI, cada proyecto es un acto de resistencia: contra el aislamiento, el cinismo y la indiferencia digital. Juntos forman un experimento vivo sobre lo que significa construir tecnología para y con la humanidad."
+    ]
+  },
+  "section_5": {
+    "header": "Un llamado a pertenecer",
+    "quote": "Si la historia de la humanidad y la máquina aún se está escribiendo, que la escribamos con empatía. Que recordemos que cada algoritmo comienza con una intención; y que esa intención comienza con nosotros.",
+    "links": [
+      {
+        "key": "writings",
+        "text": "Explorar escritos"
+      },
+      {
+        "key": "projects",
+        "text": "Ver proyectos"
+      }
+    ]
+
+  }
+}

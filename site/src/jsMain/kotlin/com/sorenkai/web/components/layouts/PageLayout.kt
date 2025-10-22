@@ -2,9 +2,9 @@ package com.sorenkai.web.components.layouts
 
 import androidx.compose.runtime.*
 import com.sorenkai.web.PageContentStyle
-import com.sorenkai.web.components.sections.Footer
-import com.sorenkai.web.components.sections.NavHeader
 import com.sorenkai.web.components.widgets.backToTopButton
+import com.sorenkai.web.sections.Footer
+import com.sorenkai.web.sections.NavHeader
 import com.varabyte.kobweb.compose.css.dvh
 import com.varabyte.kobweb.compose.foundation.layout.Box
 import com.varabyte.kobweb.compose.foundation.layout.Column
@@ -30,7 +30,7 @@ import org.jetbrains.compose.web.dom.Div
 import org.w3c.dom.Document
 import org.w3c.dom.events.EventListener
 
-private fun Document.setPageMetadata(title: String, description: String) {
+private fun Document.setPageMetadata(title: String, description: String, robotsContent: String? = null) {
     this.title = "SorenKai – $title"
 
     val head = this.head!!
@@ -63,11 +63,25 @@ private fun Document.setPageMetadata(title: String, description: String) {
             head.appendChild(this)
         }
     ).setAttribute("content", "website")
+
+    robotsContent?.let {
+        (head.querySelector("meta[name='robots']")
+            ?: this.createElement("meta").apply {
+                setAttribute("name", "robots")
+                head.appendChild(this)
+            }
+        ).setAttribute("content", it)
+    }
 }
 
 val LocalBreakpoint = compositionLocalOf { Breakpoint.ZERO }
 
-class PageLayoutData(val title: String, val description: String = title)
+class PageLayoutData(
+    val title: String,
+    val description: String = title,
+    val robotsContent: String? = null,
+    val lang: String = "en"
+)
 
 @OptIn(DelicateApi::class)
 @Composable
@@ -76,10 +90,12 @@ fun PageLayout(ctx: PageContext, content: @Composable ColumnScope.() -> Unit) {
     // Be resilient to missing PageLayoutData so the page still renders (header, footer, content)
     val pageTitle = runCatching { ctx.data.getValue<PageLayoutData>().title }.getOrElse { "Home" }
     val description = runCatching { ctx.data.getValue<PageLayoutData>().description }.getOrElse { "Soren Kai — writer and technologist exploring culture, AI, and belonging." }
+    val robotsContent = runCatching { ctx.data.getValue<PageLayoutData>().robotsContent }.getOrNull()
+    val lang = runCatching { ctx.data.getValue<PageLayoutData>().lang }.getOrElse { "en" }
 
     val breakpoint = rememberBreakpoint()
     LaunchedEffect(pageTitle, description) {
-        document.setPageMetadata("SorenKai - $pageTitle", description)
+        document.setPageMetadata("SorenKai - $pageTitle", description, robotsContent)
     }
 
     // 🔹 Track scroll position robustly (some browsers / setups report scroll on different elements)
@@ -144,8 +160,7 @@ fun PageLayout(ctx: PageContext, content: @Composable ColumnScope.() -> Unit) {
             .gridTemplateRows {
                 size(1.fr)
                 size(minContent)
-            },
-        contentAlignment = Alignment.Center
+            }
     ) {
         CompositionLocalProvider(LocalBreakpoint provides breakpoint) {
             Column(
@@ -153,14 +168,14 @@ fun PageLayout(ctx: PageContext, content: @Composable ColumnScope.() -> Unit) {
             Modifier.fillMaxWidth().gridRow(1).padding(bottom = 1.cssRem),
             horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                NavHeader()
+                NavHeader(lang)
                 Div(PageContentStyle.toAttrs()) {
                     content()
                 }
             }
         }
         // Associate the footer with the row that will get pushed off the bottom of the page if it can't fit.
-        Footer(Modifier.fillMaxWidth().gridRow(2), breakpoint)
+        Footer(Modifier.fillMaxWidth().gridRow(2), breakpoint, lang)
         backToTopButton(anchorId = "top", visible = showBackToTop)
     }
 }

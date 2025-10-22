@@ -1,6 +1,6 @@
 package com.sorenkai.web.api
 
-import com.sorenkai.web.components.util.Constants.BASE_URL
+import com.sorenkai.web.en.Constants.BASE_URL
 import kotlinx.browser.window
 import kotlinx.coroutines.await
 import kotlinx.coroutines.delay

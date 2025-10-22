@@ -28,6 +28,16 @@ import org.jetbrains.compose.web.css.*
 
 @InitSilk
 fun initSiteStyles(ctx: InitSilkContext) {
+
+    ctx.stylesheet.registerKeyframes("indeterminateAnimation") {
+        from {
+            Modifier.translateX((-100).percent)
+        }
+        to {
+            Modifier.translateX(100.percent)
+        }
+    }
+
     // Smooth scrolling unless user prefers reduced motion
     ctx.stylesheet.registerStyle("html") {
         cssRule(CSSMediaQuery.MediaFeature("prefers-reduced-motion", StylePropertyValue("no-preference"))) {
@@ -364,4 +374,23 @@ val CoverImageStyle = CssStyle.base {
     Modifier
         .width(100.percent)
         .borderRadius(12.px)
+}
+
+val DropdownStyle = CssStyle.base {
+    Modifier
+        .position(Position.Absolute)
+        .top(100.percent)
+        .backgroundColor(colorMode.toSitePalette().nearBackground)
+        .boxShadow(
+            offsetX = 0.px,
+            offsetY = 2.px,
+            blurRadius = 6.px,
+            color = colorMode.toSitePalette().brand.shadow,
+        )
+        .borderRadius(0.5.cssRem)
+        .padding(0.5.cssRem)
+        .gap(0.5.cssRem)
+        .zIndex(10)
+        .whiteSpace(WhiteSpace.NoWrap)
+        .width(Width.MaxContent)
 }
