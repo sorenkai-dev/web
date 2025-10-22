@@ -1,0 +1,17 @@
+{
+  "name": "jsmain",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://www.github.com/sorenkai-dev/website.git"
+  },
+  "private": true,
+  "dependencies": {
+    "firebase": "^12.4.0"
+  }
+}

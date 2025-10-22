@@ -1,10 +1,21 @@
 package com.sorenkai.web.components.data.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class WritingEntry(
     val title: String,
-    val publication: String,
-    val date: String,
+    val slug: String,
     val synopsis: String,
-    val link: String? = null,      // optional, some may not be live yet
-    val purchase: Boolean = false  // differentiate purchase vs read links
+    val status: Status,
+    val type: Type,
+    val salesLink: String? = null,
+    val createdAt: String,
+    val updatedAt: String
 )
+
+@Serializable
+enum class Status { DRAFT, PUBLISHED, ARCHIVED, SUBMITTED }
+
+@Serializable
+enum class Type { ARTICLE, BOOK }

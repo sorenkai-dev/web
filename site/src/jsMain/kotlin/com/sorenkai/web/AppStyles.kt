@@ -323,3 +323,45 @@ val WritingItemStyle = CssStyle {
             .backgroundColor(colorMode.toSitePalette().nearBackground)
     }
 }
+
+val ModalExternalCardStyle = CssStyle {
+    base {
+        Modifier
+            .fillMaxSize()
+            .position(Position.Fixed)
+            .top(0.px)
+            .left(0.px)
+            .backgroundColor(colorMode.toSitePalette().brand.shadow)
+            .zIndex(100)
+    }
+}
+
+val ModalInternalCardStyle = CssStyle {
+    base {
+        Modifier
+            .maxWidth(90.percent)
+            .maxHeight(85.percent)
+            .backgroundColor(colorMode.toSitePalette().nearBackground)
+            .borderRadius(24.px)
+            .boxShadow(0.px, 8.px, 24.px, 0.px, colorMode.toSitePalette().brand.shadow)
+            .padding(24.px)
+    }
+}
+
+val WritingCardStyle = CssStyle {
+    base {
+        Modifier
+            .fillMaxWidth()
+            .padding { 16.px }
+            .margin { 8.px }
+            .backgroundColor(colorMode.toSitePalette().nearBackground)
+            .borderRadius(16.px)
+            .boxShadow(0.px, 4.px, 16.px, 0.px, colorMode.toSitePalette().brand.shadow)
+    }
+}
+
+val CoverImageStyle = CssStyle.base {
+    Modifier
+        .width(100.percent)
+        .borderRadius(12.px)
+}

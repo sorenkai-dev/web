@@ -25,21 +25,27 @@ fun WritingItem(entry: WritingEntry, breakpoint: Breakpoint) {
         H3 {
             Text(entry.title)
         }
+        // Show type and status information
         P {
-            Text("${entry.publication} (${entry.date})")
+            val typeText = entry.type.name
+            val statusText = entry.status.name
+            val meta = "$typeText • $statusText"
+            Text(meta)
         }
-        P {
-            Text(entry.synopsis)
+        // Synopsis if provided
+        entry.synopsis?.let { syn ->
+            if (syn.isNotBlank()) {
+                P { Text(syn) }
+            }
         }
-        entry.link?.let { url ->
+        // Sales link if available
+        entry.salesLink?.let { url ->
             Link(
                 path = url,
                 openExternalLinksStrategy = OpenLinkStrategy.IN_NEW_TAB,
                 modifier = LinkStyle.toModifier()
             ) {
-                Text(
-                    if (entry.purchase) "Purchase" else "Read Article"
-                )
+                Text("Purchase / Learn more")
             }
         }
     }
