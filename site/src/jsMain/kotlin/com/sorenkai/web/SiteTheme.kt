@@ -22,12 +22,15 @@ class SitePalette(
     class Brand(
         val primary: Color = Color.rgb(0x006D77), // Deep Teal
         val accent: Color = Color.rgb(0x66A9AD),  // Lighter Teal
+        val accentText: Color = Color.rgb(0xFFFFFF),
         val gradient: LinearGradient = linearGradient(
             dir = LinearGradient.Direction.ToBottomRight,
             from = primary, to = accent
         ),
         val visited: Color = Color.rgb(0xC99700),
-        val shadow: Color = Color.argb(0x26000000)
+        val shadow: Color = Color.argb(0x26000000),
+        val codeback: Color = Color.rgb(0xFAFAFA),
+        val codetext: Color = Color.rgb(0x333333),
     )
 }
 
@@ -38,13 +41,16 @@ object SitePalettes {
         brand = SitePalette.Brand(
             primary = Color.rgb(0x006D77), // Deep Teal
             accent = Color.rgb(0x66A9AD),  // Lighter Teal
+            accentText = Color.rgb(0x000000),
             gradient = linearGradient(
                 dir = LinearGradient.Direction.ToBottomRight,
                 from = Color.rgb(0x006D77),
                 to = Color.rgb(0x66A9AD)
             ),
             visited = Color.rgb(0xC99700),
-            shadow = Color.argb(0x26000000)
+            shadow = Color.argb(0x26000000),
+            codeback = Color.rgb(0xFAFAFA),
+            codetext = Color.rgb(0x333333)
         )
     )
     val dark = SitePalette(
@@ -53,13 +59,16 @@ object SitePalettes {
         brand = SitePalette.Brand(
             primary = Color.rgb(0x66A9AD), // lighter teal pops better in dark mode
             accent = Color.rgb(0x006D77), // deep teal as secondary in dark mode
+            accentText = Color.rgb(0xFFFFFF),
             gradient = linearGradient(
                 dir = LinearGradient.Direction.ToBottomRight,
                 from = Color.rgb(0x66A9AD),
                 to = Color.rgb(0x006D77)
             ),
             visited = Color.rgb(0xFFD369),
-            shadow = Color.argb(0x19FFFFFF)
+            shadow = Color.argb(0x19FFFFFF),
+            codeback = Color.rgb(0x2D2D2D),
+            codetext = Color.rgb(0xE0E0E0)
         )
     )
 }

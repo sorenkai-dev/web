@@ -15,24 +15,38 @@ import com.varabyte.kobweb.silk.components.overlay.Tooltip
 import com.varabyte.kobweb.silk.theme.colors.ColorMode
 
 @Composable
-fun HamburgerButton(onClick: () -> Unit) {
+fun HamburgerButton(onClick: () -> Unit, lang: String) {
     IconButton(onClick) {
-        HamburgerIcon(modifier = Modifier.ariaLabel("Open menu"))
+        HamburgerIcon(modifier = Modifier.ariaLabel(uiText[lang]?.get("openMenu")!!))
     }
 }
 
 @Composable
-fun CloseButton(onClick: () -> Unit) {
+fun CloseButton(onClick: () -> Unit, lang: String) {
     IconButton(onClick) {
-        CloseIcon(modifier = Modifier.ariaLabel("Close menu"))
+        CloseIcon(modifier = Modifier.ariaLabel(uiText[lang]?.get("closeMenu")!!))
     }
 }
 
 @Composable
-fun ColorModeButton() {
+fun ColorModeButton(lang: String) {
     var colorMode by ColorMode.currentState
     IconButton(onClick = { colorMode = colorMode.opposite },) {
         if (colorMode.isLight) MoonIcon() else SunIcon()
     }
-    Tooltip(ElementTarget.PreviousSibling, "Toggle color mode", placement = PopupPlacement.BottomRight)
+    Tooltip(ElementTarget.PreviousSibling, uiText[lang]?.get("toggleColor")!!, placement = PopupPlacement.BottomRight)
 }
+
+
+private val uiText = mapOf(
+    "en" to mapOf(
+        "openMenu" to "Open menu",
+        "closeMenu" to "Close menu",
+        "toggleColor" to "Toggle color mode"
+    ),
+    "es" to mapOf(
+        "openMenu" to "Abrir menú",
+        "closeMenu" to "Cerrar menú",
+        "toggleColor" to "Cambiar modo de color"
+    )
+)

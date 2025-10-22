@@ -20,47 +20,47 @@ fun renderMarkdown(content: String) {
     val colorMode = ColorMode.current
     val palette = colorMode.toSitePalette() // Assuming this function exists in your project
     val styleAttr = """style="max-width: 100%; height: auto; display: block; margin: 16px auto;" """
-    // Define colors dynamically based on the current theme
-    val backgroundColor = palette.brand.primary
-
-    val textColor = palette.brand.accent
-
+    val backgroundColor = palette.brand.codeback
+    val textColor = palette.brand.codetext
     val flavour = GFMFlavourDescriptor()
     val parsedTree = MarkdownParser(flavour).buildMarkdownTreeFromString(content)
     var html = HtmlGenerator(content, parsedTree, flavour).generateHtml()
-    html = html.replace("<a href=", "<a target=\"_blank\" href=")
+    var container by remember { mutableStateOf<HTMLElement?>(null) }
     val preStyles = "style=\"" +
-        // Word wrap and formatting rules
-        "overflow-wrap: break-word; " +
-        "word-wrap: break-word; " +
-        "white-space: pre-wrap; " +      // Critical for <pre> wrap
-        "font-family: monospace; " +
-        "padding: 15px; " +
-        "border-radius: 5px; " +
-        // Dynamic colors
+    // Word wrap and formatting rules
+    "overflow-wrap: break-word; " +
+    "word-wrap: break-word; " +
+    "white-space: pre-wrap; " +      // Critical for <pre> wrap
+    "font-family: monospace; " +
+    "padding: 15px; " +
+    "border-radius: 5px; " +
+    // Dynamic colors
+    "background-color: $backgroundColor; " +
+    "color: $textColor;" +
+    "width: 90%;" +
+    "margin: 0 auto" +
+    "\""
+
+    val inlineCodeStyles = "style=\"" +
         "background-color: $backgroundColor; " +
-        "color: $textColor;" +
-        "width: 90%;" +
-//        "display: block" +
-        "margin: 0 auto" +
+        "color: $textColor; " +
+        "padding: 2px 4px; " +
+        "border-radius: 3px; " +
+        "font-family: monospace;" +
         "\""
 
-    // Replace <pre> with the complete, consolidated style attribute
-    html = html.replace("<pre>", "<pre $preStyles>")
+    val blockquotestyles = "style=\"background-color: ${palette.brand.accent}; color: ${palette.brand.accentText}; padding: 15px; border-radius: 5px;\""
 
-//    val imageRegex = Regex("<img\\s[^>]*?>") // Use ">" instead of "/>" for broader compatibility
-//
-//    html = imageRegex.replace(html) { matchResult ->
-//        val originalTag = matchResult.value
-//        // Wrap the entire image tag with a centered div
-//        """<div $styleAttr>$originalTag</div>"""
-//    }
+    html = html.replace("<a href=", "<a target=\"_blank\" href=")
+
+    html = html.replace("<pre>", "<pre $preStyles>")
 
     html = html.replace("<img", "<img $styleAttr")
 
-    html = html.replace("<code>", "<code style=\"font-family: monospace;\">")
+    html = html.replace("<code>", "<code ${inlineCodeStyles}>")
 
-    var container by remember { mutableStateOf<HTMLElement?>(null) }
+    html = html.replace("<blockquote>", "<blockquote $blockquotestyles>")
+
     Div({
         ref {
             container = it

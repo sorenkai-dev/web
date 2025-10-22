@@ -27,7 +27,5 @@ fun SectionHeader(
             .toAttrs()
     ) {
         Text(text)
-        console.log("Breakpoint: $breakpoint")
-        console.log("Size: $size")
     }
 }

@@ -16,7 +16,9 @@ import org.jetbrains.compose.web.dom.P
 import org.jetbrains.compose.web.dom.Text
 
 @Composable
-fun WritingItem(entry: WritingEntry, breakpoint: Breakpoint) {
+fun WritingItem(entry: WritingEntry, breakpoint: Breakpoint, lang: String) {
+
+    val text = purchaseText[lang]
     Div(
         attrs = WritingItemStyle.toModifier()
             .fillMaxWidth()
@@ -33,11 +35,8 @@ fun WritingItem(entry: WritingEntry, breakpoint: Breakpoint) {
             Text(meta)
         }
         // Synopsis if provided
-        entry.synopsis?.let { syn ->
-            if (syn.isNotBlank()) {
-                P { Text(syn) }
-            }
-        }
+        P { Text(entry.synopsis) }
+
         // Sales link if available
         entry.salesLink?.let { url ->
             Link(
@@ -45,8 +44,13 @@ fun WritingItem(entry: WritingEntry, breakpoint: Breakpoint) {
                 openExternalLinksStrategy = OpenLinkStrategy.IN_NEW_TAB,
                 modifier = LinkStyle.toModifier()
             ) {
-                Text("Purchase / Learn more")
+                Text(text!!)
             }
         }
     }
 }
+
+private val purchaseText = mapOf(
+    "en" to "Purchase / Learn more",
+    "es" to "Comprar / Saber más"
+)

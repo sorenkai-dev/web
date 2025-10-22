@@ -41,6 +41,17 @@ kobweb {
                     rel = "stylesheet"
                     href = "https://fonts.googleapis.com/css2?family=JetBrains+Mono"
                 }
+                // --- new hreflang links ---
+                link {
+                    rel = "alternate"
+                    href = "/en/"
+                    attributes["hreflang"] = "en"
+                }
+                link {
+                    rel = "alternate"
+                    href = "/es/"
+                    attributes["hreflang"] = "es"
+                }
             }
             description.set("Soren Kai — writer and technologist exploring culture, AI, and belonging.")
             interceptUrls { enableSelfHosting() }
@@ -52,6 +63,17 @@ kotlin {
     // This example is frontend only. However, for a fullstack app, you can uncomment the includeServer parameter
     // and the `jvmMain` source set below.
     configAsKobwebApplication("web" /*, includeServer = true*/)
+
+    sourceSets["jsMain"].kotlin.srcDirs(
+        listOfNotNull(
+            "src/main/kotlin/com/sorenkai/web", // shared core (models, components, layouts)
+            when (System.getenv("SITE_LANG")) {
+                "en" -> "src/main/kotlin/com/sorenkai/web/en"
+                "es" -> "src/main/kotlin/com/sorenkai/web/es"
+                else -> "src/main/kotlin/com/sorenkai/web/pages" // root redirect site
+            }
+        )
+    )
 
     sourceSets {
 //        commonMain.dependencies {
@@ -76,11 +98,22 @@ kotlin {
             implementation(libs.firebase.installations)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.jetbrains.markdown)
+            implementation(libs.kotlinx.datetime)
         }
 
         // Uncomment the following if you pass `includeServer = true` into the `configAsKobwebApplication` call.
 //        jvmMain.dependencies {
 //            compileOnly(libs.kobweb.api) // Provided by Kobweb backend at runtime
 //        }
+    }
+
+    tasks.register<Exec>("exportEn") {
+        commandLine("kobweb", "export", "--env=prod")
+        environment("SITE_LANG", "en")
+    }
+
+    tasks.register<Exec>("exportEs") {
+        commandLine("kobweb", "export", "--env=prod")
+        environment("SITE_LANG", "es")
     }
 }

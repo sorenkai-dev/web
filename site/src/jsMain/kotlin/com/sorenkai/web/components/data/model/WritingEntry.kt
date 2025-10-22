@@ -5,6 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class WritingEntry(
     val title: String,
+    val language: String,
     val slug: String,
     val synopsis: String,
     val status: Status,

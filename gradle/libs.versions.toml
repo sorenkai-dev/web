@@ -3,6 +3,7 @@ jetbrains-compose = "1.9.0"
 kobweb = "0.23.3"
 kotlin = "2.2.20"
 firebase = "2.3.0"
+kotlinx-datetime = "0.7.1"
 kotlinx-serialization = "1.9.0"
 jetbrains-markdown = "0.7.3"
 
@@ -26,6 +27,7 @@ firebase-msg = { module = "dev.gitlive:firebase-messaging",  version.ref = "fire
 kotlin-js = { module = "org.jetbrains.kotlin:kotlin-stdlib-js", version.ref = "kotlin" }
 kotlinx-serialization-json     = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 jetbrains-markdown = { module = "org.jetbrains:markdown", version.ref = "jetbrains-markdown"}
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 
 
 [plugins]
