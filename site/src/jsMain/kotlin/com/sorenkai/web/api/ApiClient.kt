@@ -85,7 +85,7 @@ object ApiClient {
             val text = try { response.text().await() } catch (e: dynamic) { "" }
             throw RuntimeException("HTTP $status for $url. Body: $text")
         }
-        // Try parse as JSON, fallback to text
+
         return try {
             response.json().await()
         } catch (e: dynamic) {
