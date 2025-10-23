@@ -2,8 +2,10 @@ package com.sorenkai.web.api
 
 import com.sorenkai.web.components.util.Constants.BASE_URL
 import kotlinx.browser.window
+import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.await
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.withTimeout
 import org.w3c.fetch.Headers
 import org.w3c.fetch.RequestInit
 import org.w3c.fetch.Response
@@ -17,11 +19,18 @@ object ApiClient {
         val headers = Headers()
         headers.append("Accept", "application/json")
         headers.append("Content-Type", "application/json")
+
         if (includeAppCheck) {
-            val token = getAppCheckToken()
+            val token = try {
+                withTimeout(1500) { getAppCheckToken() }
+            } catch (e: TimeoutCancellationException) {
+                console.warn("[ApiClient] App Check token timeout, continuing without it: $e")
+                null
+            }
+
             if (token != null) headers.append("X-Firebase-AppCheck", token)
-            else console.warn("[ApiClient] Proceeding without App Check token; request may be rejected by server")
         }
+
         return headers
     }
 
