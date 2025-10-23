@@ -9,11 +9,13 @@ import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.fillMaxWidth
+import com.varabyte.kobweb.compose.ui.modifiers.padding
 import com.varabyte.kobweb.core.Page
 import com.varabyte.kobweb.core.data.add
 import com.varabyte.kobweb.core.init.InitRoute
 import com.varabyte.kobweb.core.init.InitRouteContext
 import com.varabyte.kobweb.core.layout.Layout
+import org.jetbrains.compose.web.css.cssRem
 
 @InitRoute
 fun initWritingsEsPage(ctx: InitRouteContext) {
@@ -34,7 +36,7 @@ fun WritingsPage() {
     val breakpoint = LocalBreakpoint.current
 
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().padding(bottom = 4.cssRem),
         horizontalAlignment = Alignment.Start
     ) {
         WritingsHeroEsQuote()

@@ -2,11 +2,16 @@ package com.sorenkai.web.en.content
 
 import androidx.compose.runtime.*
 import com.sorenkai.web.BlockquoteCardStyle
+import com.sorenkai.web.SpinnerStyle
 import com.sorenkai.web.api.ApiClient
 import com.sorenkai.web.api.ApiResponse
 import com.sorenkai.web.api.dto.WritingListResponse
 import com.sorenkai.web.components.data.model.WritingEntry
-import com.sorenkai.web.components.widgets.*
+import com.sorenkai.web.components.util.Res
+import com.sorenkai.web.components.widgets.BlockQuote
+import com.sorenkai.web.components.widgets.LeadParagraph
+import com.sorenkai.web.components.widgets.ModalOverlay
+import com.sorenkai.web.components.widgets.WritingCard
 import com.sorenkai.web.en.widgets.ArticleModal
 import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.compose.ui.Alignment
@@ -16,9 +21,11 @@ import com.varabyte.kobweb.compose.ui.modifiers.fontFamily
 import com.varabyte.kobweb.compose.ui.modifiers.gap
 import com.varabyte.kobweb.compose.ui.modifiers.padding
 import com.varabyte.kobweb.compose.ui.toAttrs
+import com.varabyte.kobweb.silk.components.graphics.Image
 import com.varabyte.kobweb.silk.style.breakpoint.Breakpoint
 import com.varabyte.kobweb.silk.style.toModifier
 import kotlinx.serialization.json.Json
+import org.jetbrains.compose.web.css.cssRem
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.dom.P
@@ -90,12 +97,15 @@ fun WritingContentEn(breakpoint: Breakpoint, lang: String) {
                 }
 
                 // 2. Linear Progress Bar
-                HorizontalProgressBar()
+                Image(
+                    src = Res.Img.LOGO,
+                    modifier = SpinnerStyle.toModifier()
+                )
             }
         }
         else -> when (val res = result) {
             is ApiResponse.Success -> Column(
-                Modifier.fillMaxWidth().gap(24.px)
+                Modifier.fillMaxWidth().gap(4.cssRem)
             ){
                 val sortedWritings = res.data.filter { it.language == "en" }.sortedByDescending { it.updatedAt }
                 sortedWritings.forEach { writing ->

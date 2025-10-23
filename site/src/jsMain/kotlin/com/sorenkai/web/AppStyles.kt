@@ -8,6 +8,7 @@ import com.varabyte.kobweb.compose.css.functions.linearGradient
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.graphics.Colors
 import com.varabyte.kobweb.compose.ui.modifiers.*
+import com.varabyte.kobweb.compose.ui.styleModifier
 import com.varabyte.kobweb.silk.components.forms.ButtonStyle
 import com.varabyte.kobweb.silk.components.forms.ButtonVars
 import com.varabyte.kobweb.silk.components.layout.HorizontalDividerStyle
@@ -16,6 +17,7 @@ import com.varabyte.kobweb.silk.init.InitSilkContext
 import com.varabyte.kobweb.silk.init.registerStyleBase
 import com.varabyte.kobweb.silk.style.CssStyle
 import com.varabyte.kobweb.silk.style.addVariantBase
+import com.varabyte.kobweb.silk.style.animation.Keyframes
 import com.varabyte.kobweb.silk.style.base
 import com.varabyte.kobweb.silk.style.breakpoint.Breakpoint
 import com.varabyte.kobweb.silk.style.selectors.active
@@ -29,20 +31,18 @@ import org.jetbrains.compose.web.css.*
 @InitSilk
 fun initSiteStyles(ctx: InitSilkContext) {
 
-    ctx.stylesheet.registerKeyframes("indeterminateAnimation") {
-        from {
-            Modifier.translateX((-100).percent)
-        }
-        to {
-            Modifier.translateX(100.percent)
-        }
-    }
-
     // Smooth scrolling unless user prefers reduced motion
     ctx.stylesheet.registerStyle("html") {
         cssRule(CSSMediaQuery.MediaFeature("prefers-reduced-motion", StylePropertyValue("no-preference"))) {
             Modifier.scrollBehavior(ScrollBehavior.Smooth)
         }
+        cssRule("") {
+        Modifier
+            .styleModifier {
+                property("color-scheme", "light dark")
+                property("forced-color-adjust", "none")
+            }
+    }
     }
 
     // Base body styles
@@ -323,16 +323,6 @@ val SideMenuStyle = CssStyle.base {
         .borderRadius(topLeft = 2.cssRem)
 }
 
-val WritingItemStyle = CssStyle {
-    base {
-        Modifier
-            .margin(bottom = 2.cssRem)
-            .padding(all = 1.cssRem)
-            .borderRadius(0.5.cssRem)
-            .boxShadow(2.px, 2.px, 6.px, 0.px, colorMode.toSitePalette().brand.shadow) // reuse your existing shadows
-            .backgroundColor(colorMode.toSitePalette().nearBackground)
-    }
-}
 
 val ModalExternalCardStyle = CssStyle {
     base {
@@ -363,7 +353,7 @@ val WritingCardStyle = CssStyle {
         Modifier
             .fillMaxWidth()
             .padding { 16.px }
-            .margin { 8.px }
+            .margin { 16.px }
             .backgroundColor(colorMode.toSitePalette().nearBackground)
             .borderRadius(16.px)
             .boxShadow(0.px, 4.px, 16.px, 0.px, colorMode.toSitePalette().brand.shadow)
@@ -393,4 +383,27 @@ val DropdownStyle = CssStyle.base {
         .zIndex(10)
         .whiteSpace(WhiteSpace.NoWrap)
         .width(Width.MaxContent)
+}
+
+// Define the keyframes for a continuous rotation
+val SpinKeyframes = Keyframes {
+    from {
+        Modifier.rotate(0.deg)
+    }
+    to {
+        Modifier.rotate(360.deg)
+    }
+}
+
+// Define a style that applies the animation to any component
+val SpinnerStyle = CssStyle.base {
+    Modifier
+        .size(50.px)
+        .position(Position.Relative)
+        .animation(SpinKeyframes.toAnimation(
+            duration = 1.5.s,
+            iterationCount = AnimationIterationCount.Infinite,
+            )
+        )
+        .zIndex(10)
 }

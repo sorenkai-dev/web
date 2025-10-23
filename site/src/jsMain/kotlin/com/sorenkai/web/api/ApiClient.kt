@@ -1,6 +1,6 @@
 package com.sorenkai.web.api
 
-import com.sorenkai.web.en.Constants.BASE_URL
+import com.sorenkai.web.components.util.Constants.BASE_URL
 import kotlinx.browser.window
 import kotlinx.coroutines.await
 import kotlinx.coroutines.delay
@@ -10,6 +10,20 @@ import org.w3c.fetch.Response
 import kotlin.js.Promise
 
 object ApiClient {
+
+    private fun buildUrl(path: String): String = if (path.startsWith("http")) path else BASE_URL + path
+
+    private suspend fun buildHeaders(includeAppCheck: Boolean = true): Headers {
+        val headers = Headers()
+        headers.append("Accept", "application/json")
+        headers.append("Content-Type", "application/json")
+        if (includeAppCheck) {
+            val token = getAppCheckToken()
+            if (token != null) headers.append("X-Firebase-AppCheck", token)
+            else console.warn("[ApiClient] Proceeding without App Check token; request may be rejected by server")
+        }
+        return headers
+    }
 
     private suspend fun waitForAppCheck(tries: Int = 3, delayMs: Long = 300): dynamic {
         var attempt = 0
@@ -47,19 +61,8 @@ object ApiClient {
     }
 
     private suspend fun apiRequest(path: String, method: String = "GET", body: dynamic = undefined): dynamic {
-        val url = if (path.startsWith("http")) path else BASE_URL + path
-
-        // Prepare headers, including App Check token if available
-        val headers = Headers()
-        headers.append("Accept", "application/json")
-        headers.append("Content-Type", "application/json")
-
-        val token = getAppCheckToken()
-        if (token != null) {
-            headers.append("X-Firebase-AppCheck", token)
-        } else {
-            console.warn("[ApiClient] Proceeding without App Check token; request may be rejected by server: $url")
-        }
+        val url = buildUrl(path)
+        val headers = buildHeaders()
 
         val init = RequestInit(
             method = method,
@@ -85,11 +88,8 @@ object ApiClient {
 
     suspend fun <T> safeApiGet(path: String, parse: (String) -> T): ApiResponse<T> {
         return try {
-            val url = if (path.startsWith("http")) path else BASE_URL + path
-
-            val headers = Headers()
-            headers.append("Accept", "application/json")
-            headers.append("Content-Type", "application/json")
+            val url = buildUrl(path)
+            val headers = buildHeaders() // include App Check when available
 
             val init = RequestInit(
                 method = "GET",
