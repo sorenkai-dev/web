@@ -2,10 +2,11 @@ package com.sorenkai.web.en.widgets
 
 
 import androidx.compose.runtime.*
+import com.sorenkai.web.SpinnerStyle
 import com.sorenkai.web.api.ApiClient
 import com.sorenkai.web.api.ApiResponse
 import com.sorenkai.web.api.dto.WritingDetail
-import com.sorenkai.web.components.widgets.HorizontalProgressBar
+import com.sorenkai.web.components.util.Res
 import com.sorenkai.web.util.renderMarkdown
 import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.compose.ui.Alignment
@@ -14,6 +15,8 @@ import com.varabyte.kobweb.compose.ui.modifiers.fillMaxWidth
 import com.varabyte.kobweb.compose.ui.modifiers.onClick
 import com.varabyte.kobweb.compose.ui.modifiers.padding
 import com.varabyte.kobweb.compose.ui.toAttrs
+import com.varabyte.kobweb.silk.components.graphics.Image
+import com.varabyte.kobweb.silk.style.toModifier
 import kotlinx.serialization.json.Json
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.dom.Div
@@ -71,7 +74,11 @@ fun ArticleModal(
                 }
 
                 // 2. Linear Progress Bar
-                HorizontalProgressBar()
+                Image(
+                    src = Res.Img.LOGO,
+                    modifier = SpinnerStyle.toModifier()
+                )
+
             }
     } else {
         val content = article ?: ""

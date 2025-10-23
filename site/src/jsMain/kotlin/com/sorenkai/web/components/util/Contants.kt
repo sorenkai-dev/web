@@ -1,4 +1,4 @@
-package com.sorenkai.web.en
+package com.sorenkai.web.components.util
 
 object Constants {
     // Site Metadata
@@ -12,4 +12,13 @@ object Constants {
     const val BLUESKY_URL = "https://bsky.app/profile/sorenkai.com"
     const val BASE_URL = "https://sorenkai-api-staging-432438073502.us-central1.run.app"
 //    const val BASE_URL = "http://localhost:8080"
+}
+
+object Res {
+    object Icon {
+        const val SUBSTACK = "/images/substack.svg"
+    }
+    object Img {
+        const val LOGO = "/images/SorenKaiMasterLogo.png"
+    }
 }

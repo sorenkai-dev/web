@@ -2,10 +2,10 @@ package com.sorenkai.web.components.widgets
 
 import androidx.compose.runtime.Composable
 import com.sorenkai.web.SocialLinkStyle
-import com.sorenkai.web.en.Constants.BLUESKY_URL
-import com.sorenkai.web.en.Constants.GITHUB_URL
-import com.sorenkai.web.en.Constants.LINKEDIN_URL
-import com.sorenkai.web.en.Constants.SUBSTACK_URL
+import com.sorenkai.web.components.util.Constants.BLUESKY_URL
+import com.sorenkai.web.components.util.Constants.GITHUB_URL
+import com.sorenkai.web.components.util.Constants.LINKEDIN_URL
+import com.sorenkai.web.components.util.Constants.SUBSTACK_URL
 import com.varabyte.kobweb.compose.foundation.layout.Row
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.graphics.Colors

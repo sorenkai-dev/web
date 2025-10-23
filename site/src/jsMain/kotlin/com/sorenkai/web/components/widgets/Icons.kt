@@ -32,7 +32,6 @@ fun SubstackIcon(
                 property("mask-position", "center")
                 property("-webkit-mask-size", "contain")
                 property("mask-size", "contain")
-                property("display", "inline-block")
             }
         }
     )
