@@ -5,7 +5,7 @@ import androidx.compose.runtime.*
 import com.sorenkai.web.SpinnerStyle
 import com.sorenkai.web.api.ApiClient
 import com.sorenkai.web.api.ApiResponse
-import com.sorenkai.web.api.dto.WritingDetail
+import com.sorenkai.web.api.dto.WritingDetailResponse
 import com.sorenkai.web.components.util.Res
 import com.sorenkai.web.util.renderMarkdown
 import com.varabyte.kobweb.compose.foundation.layout.Column
@@ -37,7 +37,7 @@ fun ArticleModal(
             isLoading = true
             val json = Json { ignoreUnknownKeys = true }
             val result = ApiClient.safeApiGet("/v1/writings/$slug"){
-                json.decodeFromString<WritingDetail>(it)
+                json.decodeFromString<WritingDetailResponse>(it)
             }
 
             article = when (result) {is ApiResponse.Success -> {

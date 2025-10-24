@@ -60,8 +60,8 @@ fun Footer(modifier: Modifier = Modifier, breakpoint: Breakpoint, lang: String) 
     }
     Box (
         ref = ref {
-            val FIREBASE_SCRIPT_ID = "firebase-init-script"
-            if (document.getElementById(FIREBASE_SCRIPT_ID) == null) {
+            val firebaseScriptId = "firebase-init-script"
+            if (document.getElementById(firebaseScriptId) == null) {
                 val script = document.createElement("script") as HTMLScriptElement
                 script.type = "module"
                 script.asDynamic().src = "/firebase-init.js"

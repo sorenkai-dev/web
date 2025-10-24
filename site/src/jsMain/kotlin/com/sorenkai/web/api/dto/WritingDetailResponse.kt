@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 import kotlin.time.ExperimentalTime
 
 @Serializable
-data class WritingDetail @OptIn(ExperimentalTime::class) constructor(
+data class WritingDetailResponse @OptIn(ExperimentalTime::class) constructor(
     val title: String,
     val slug: String,
     val synopsis: String? = null,
