@@ -18,23 +18,29 @@ import org.w3c.dom.HTMLElement
 fun renderMarkdown(content: String) {
 
     val colorMode = ColorMode.current
-    val palette = colorMode.toSitePalette() // Assuming this function exists in your project
-    val styleAttr = """style="max-width: 100%; height: auto; display: block; margin: 16px auto;" """
+    val palette = colorMode.toSitePalette()
     val backgroundColor = palette.brand.codeback
     val textColor = palette.brand.codetext
     val flavour = GFMFlavourDescriptor()
     val parsedTree = MarkdownParser(flavour).buildMarkdownTreeFromString(content)
     var html = HtmlGenerator(content, parsedTree, flavour).generateHtml()
     var container by remember { mutableStateOf<HTMLElement?>(null) }
+
+    val styleAttr = "style=\"" +
+        "max-width: 100%; " +
+        "height: auto; " +
+        "width: auto; " +
+        "display: block; " +
+        "margin: 16px auto;" +
+        "\""
+
     val preStyles = "style=\"" +
-    // Word wrap and formatting rules
     "overflow-wrap: break-word; " +
     "word-wrap: break-word; " +
-    "white-space: pre-wrap; " +      // Critical for <pre> wrap
+    "white-space: pre-wrap; " +
     "font-family: monospace; " +
     "padding: 15px; " +
     "border-radius: 5px; " +
-    // Dynamic colors
     "background-color: $backgroundColor; " +
     "color: $textColor;" +
     "width: 90%;" +
