@@ -25,6 +25,17 @@ fun renderMarkdown(content: String) {
     val parsedTree = MarkdownParser(flavour).buildMarkdownTreeFromString(content)
     var html = HtmlGenerator(content, parsedTree, flavour).generateHtml()
     var container by remember { mutableStateOf<HTMLElement?>(null) }
+    val iframeRegex = Regex("""<iframe\s+.*?</iframe\s*>""",
+    setOf(RegexOption.IGNORE_CASE, RegexOption.MULTILINE))
+
+    val iframeStyle = "style=\"" +
+        "position: relative;" +
+        "width: 100%; " +
+        "height: 0; " +
+        "max-width: 640px;" +
+        "margin: 16px auto;" +
+        "padding-bottom: 56.25%; " +
+        "\""
 
     val styleAttr = "style=\"" +
         "max-width: 100%; " +
@@ -55,7 +66,11 @@ fun renderMarkdown(content: String) {
         "font-family: monospace;" +
         "\""
 
-    val blockquotestyles = "style=\"background-color: ${palette.brand.accent}; color: ${palette.brand.accentText}; padding: 15px; border-radius: 5px;\""
+    val blockquotestyles = "style=\"" +
+        "background-color: ${palette.brand.accent}; " +
+        "color: ${palette.brand.accentText}; " +
+        "padding: 15px; " +
+        "border-radius: 5px;\""
 
     html = html.replace("<a href=", "<a target=\"_blank\" href=")
 
@@ -66,6 +81,14 @@ fun renderMarkdown(content: String) {
     html = html.replace("<code>", "<code ${inlineCodeStyles}>")
 
     html = html.replace("<blockquote>", "<blockquote $blockquotestyles>")
+
+    html = iframeRegex.replace(html) { matchResult ->
+        // Grab the full <iframe> content
+        val fullIframeTag = matchResult.value
+        console.log("Full iframe tag: $fullIframeTag")
+        // Wrap the full tag with your styled <div>
+        """<div $iframeStyle>$fullIframeTag</div>"""
+    }
 
     Div({
         ref {
