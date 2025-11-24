@@ -11,8 +11,8 @@ object Constants {
     const val SUBSTACK_URL = "https://substack.com/@sorenkai"
     const val BLUESKY_URL = "https://bsky.app/profile/sorenkai.com"
 
-//    const val BASE_URL = "https://sorenkai-api-prod-432438073502.us-central1.run.app"
-    const val BASE_URL = "https://sorenkai-api-staging-432438073502.us-central1.run.app"
+    const val BASE_URL = "https://sorenkai-api-prod-432438073502.us-central1.run.app"
+//    const val BASE_URL = "https://sorenkai-api-staging-432438073502.us-central1.run.app"
 //    const val BASE_URL = "http://localhost:8080"
 }
 
