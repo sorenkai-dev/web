@@ -45,7 +45,7 @@ fun TermsEnContent(breakpoint: Breakpoint) {
                 .fontStyle(FontStyle.Italic)
                 .fontWeight(FontWeight.SemiBold)
                 .color(Colors.Red),
-            content = { Text("If you do not agree, please do not use the Site.")}
+            content = { Text("If you do not agree, please do not use the Site.") }
         )
 
         SectionHeader("1. Purpose and Scope", breakpoint)
@@ -185,8 +185,7 @@ fun TermsEnContent(breakpoint: Breakpoint) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(topBottom = 4.cssRem)
-            ,
+                .padding(topBottom = 4.cssRem),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             SectionParagraph(breakpoint) { Text("Last updated: $update") }

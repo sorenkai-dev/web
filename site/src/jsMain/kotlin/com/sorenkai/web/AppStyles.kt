@@ -30,19 +30,18 @@ import org.jetbrains.compose.web.css.*
 
 @InitSilk
 fun initSiteStyles(ctx: InitSilkContext) {
-
     // Smooth scrolling unless user prefers reduced motion
     ctx.stylesheet.registerStyle("html") {
         cssRule(CSSMediaQuery.MediaFeature("prefers-reduced-motion", StylePropertyValue("no-preference"))) {
             Modifier.scrollBehavior(ScrollBehavior.Smooth)
         }
         cssRule("") {
-        Modifier
-            .styleModifier {
-                property("color-scheme", "light dark")
-                property("forced-color-adjust", "none")
-            }
-    }
+            Modifier
+                .styleModifier {
+                    property("color-scheme", "light dark")
+                    property("forced-color-adjust", "none")
+                }
+        }
     }
 
     // Base body styles
@@ -222,9 +221,9 @@ val LinkStyle = CssStyle {
             .color(colorMode.toSitePalette().brand.primary)
             .transition(
                 Transition.of(
-                "color",
-                150.ms,
-                TransitionTimingFunction.EaseInOut
+                    "color",
+                    150.ms,
+                    TransitionTimingFunction.EaseInOut
                 )
             )
     }
@@ -403,7 +402,34 @@ val SpinnerStyle = CssStyle.base {
         .animation(SpinKeyframes.toAnimation(
             duration = 1.5.s,
             iterationCount = AnimationIterationCount.Infinite,
-            )
+        )
         )
         .zIndex(10)
+}
+
+val ChipStyle = CssStyle {
+    base {
+        Modifier
+            .fontSize(0.75.cssRem)
+            .minWidth(5.cssRem)
+            .textAlign(TextAlign.Center)
+            .padding(0.25.cssRem)
+            .borderRadius(1.cssRem)
+            .padding(leftRight = 0.75.cssRem, topBottom = 0.4.cssRem)
+            .cursor(Cursor.Pointer)
+            .color(colorMode.toSitePalette().brand.accentText)
+            .whiteSpace(WhiteSpace.NoWrap)
+    }
+}
+
+val FeaturedStyle = CssStyle {
+    base {
+        Modifier
+            .fillMaxWidth()
+            .borderRadius(r = 1.cssRem)
+            .fontStyle(FontStyle.Italic)
+            .fontWeight(FontWeight.SemiBold)
+            .backgroundColor(colorMode.toSitePalette().brand.accent)
+            .color(colorMode.toSitePalette().brand.accentText)
+    }
 }

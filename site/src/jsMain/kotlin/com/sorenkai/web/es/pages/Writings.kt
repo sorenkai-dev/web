@@ -1,10 +1,10 @@
 package com.sorenkai.web.es.pages
 
 import androidx.compose.runtime.Composable
+import com.sorenkai.web.api.content.WritingContent
+import com.sorenkai.web.api.state.OpenArticleState
 import com.sorenkai.web.components.layouts.LocalBreakpoint
 import com.sorenkai.web.components.layouts.PageLayoutData
-import com.sorenkai.web.es.content.WritingContentEs
-import com.sorenkai.web.es.content.WritingsHeroEsQuote
 import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
@@ -22,7 +22,7 @@ fun initWritingsEsPage(ctx: InitRouteContext) {
     ctx.data.add(
         PageLayoutData(
             title = "Escritos",
-            description = "Portafolio de ensayos, reflexiones y contribuciones técnicas que exploran la tecnología, la "+
+            description = "Portafolio de ensayos, reflexiones y contribuciones técnicas que exploran la tecnología, la " +
                 "cultura y el sentido de pertenencia.",
             lang = "es"
         )
@@ -34,12 +34,17 @@ fun initWritingsEsPage(ctx: InitRouteContext) {
 @Composable
 fun WritingsPage() {
     val breakpoint = LocalBreakpoint.current
+    val pendingSlug = OpenArticleState.slug
 
     Column(
         modifier = Modifier.fillMaxWidth().padding(bottom = 4.cssRem),
         horizontalAlignment = Alignment.Start
     ) {
-        WritingsHeroEsQuote()
-        WritingContentEs(breakpoint, lang = "es")
+        if (pendingSlug != null) {
+            WritingContent(breakpoint, "es", pendingSlug)
+            OpenArticleState.slug = null
+        } else {
+            WritingContent(breakpoint, "es")
+        }
     }
 }

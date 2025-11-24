@@ -10,6 +10,7 @@ import com.varabyte.kobweb.compose.ui.modifiers.fillMaxSize
 import com.varabyte.kobweb.compose.ui.modifiers.justifyContent
 import com.varabyte.kobweb.compose.ui.modifiers.padding
 import com.varabyte.kobweb.core.Page
+import com.varabyte.kobweb.core.PageContext
 import com.varabyte.kobweb.core.data.add
 import com.varabyte.kobweb.core.init.InitRoute
 import com.varabyte.kobweb.core.init.InitRouteContext
@@ -17,7 +18,11 @@ import kotlinx.browser.window
 import org.jetbrains.compose.web.css.AlignItems
 import org.jetbrains.compose.web.css.JustifyContent
 import org.jetbrains.compose.web.css.cssRem
-import org.jetbrains.compose.web.dom.*
+import org.jetbrains.compose.web.dom.A
+import org.jetbrains.compose.web.dom.H1
+import org.jetbrains.compose.web.dom.Li
+import org.jetbrains.compose.web.dom.Text
+import org.jetbrains.compose.web.dom.Ul
 
 @InitRoute
 fun initLanguageRouter(ctx: InitRouteContext) {
@@ -32,13 +37,13 @@ fun initLanguageRouter(ctx: InitRouteContext) {
 
 @Page(routeOverride = "/")
 @Composable
-fun LanguageRouterPage() {
+fun LanguageRouterPage(ctx: PageContext) {
     // Simple redirect logic
     LaunchedEffect(Unit) {
-        val preferredLang = getPreferredLanguage()
+        val preferredLang = window.navigator.language
         when {
-            preferredLang.startsWith("es") -> redirectTo("/es")
-            else -> redirectTo("/en")
+            preferredLang.startsWith("es") -> ctx.router.navigateTo("/es")
+            else -> ctx.router.navigateTo("/en")
         }
     }
 
@@ -56,13 +61,4 @@ fun LanguageRouterPage() {
             Li { A("/es") { Text("Español") } }
         }
     }
-}
-
-private fun getPreferredLanguage(): String {
-    // Will use JS interop to detect browser language
-    return window.navigator.language
-}
-
-private fun redirectTo(url: String) {
-    window.location.href = url
 }

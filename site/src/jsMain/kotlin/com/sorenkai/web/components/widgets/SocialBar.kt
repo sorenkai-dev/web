@@ -73,7 +73,7 @@ fun socialLinks(
             }
         )
     }
-    
+
     Link(
         path = GITHUB_URL,
         openExternalLinksStrategy = OpenLinkStrategy.IN_NEW_TAB
@@ -87,7 +87,7 @@ fun socialLinks(
             }
         )
     }
-    
+
     Link(
         path = BLUESKY_URL,
         openExternalLinksStrategy = OpenLinkStrategy.IN_NEW_TAB

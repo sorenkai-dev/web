@@ -17,9 +17,13 @@ fun SectionHeader(
     breakpoint: Breakpoint,
     modifier: Modifier = Modifier
 ) {
-    val size = if (breakpoint <= Breakpoint.SM) 1.6.cssRem
-                else if (breakpoint <= Breakpoint.MD) 1.75.cssRem
-                else 2.cssRem
+    val size = if (breakpoint <= Breakpoint.SM) {
+        1.6.cssRem
+    } else if (breakpoint <= Breakpoint.MD) {
+        1.75.cssRem
+    } else {
+        2.cssRem
+    }
     H2 (
         attrs = SectionHeadingStyle.toModifier()
             .then(modifier)

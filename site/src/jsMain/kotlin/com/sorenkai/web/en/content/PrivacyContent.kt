@@ -50,7 +50,7 @@ fun PrivacyEnContent(breakpoint: Breakpoint) {
                             .fontWeight(FontWeight.Bold)
                             .color(ColorMode.current.toSitePalette().brand.primary)
                             .toAttrs(),
-                        content = { Text("Authentication Data: ")}
+                        content = { Text("Authentication Data: ") }
                     )
                     Text("Email address or basic sign-in credentials from your chosen provider (Google, " +
                         "Microsoft, etc.) used solely through Firebase Authentication to prevent spam and automated " +
@@ -62,7 +62,7 @@ fun PrivacyEnContent(breakpoint: Breakpoint) {
                             .fontWeight(FontWeight.Bold)
                             .color(ColorMode.current.toSitePalette().brand.primary)
                             .toAttrs(),
-                        content = { Text("Content Data: ")}
+                        content = { Text("Content Data: ") }
                     )
                     Text("Comments or discussion posts you choose to submit.")
                 }
@@ -72,7 +72,7 @@ fun PrivacyEnContent(breakpoint: Breakpoint) {
                             .fontWeight(FontWeight.Bold)
                             .color(ColorMode.current.toSitePalette().brand.primary)
                             .toAttrs(),
-                        content = { Text("Operational Data: ")}
+                        content = { Text("Operational Data: ") }
                     )
                     Text("Timestamps, internal IDs, and minimal technical metadata (e.g., IP address, error " +
                         "logs) needed for security, rate-limiting, and diagnostics.")
@@ -83,7 +83,7 @@ fun PrivacyEnContent(breakpoint: Breakpoint) {
                             .fontWeight(FontWeight.Bold)
                             .color(ColorMode.current.toSitePalette().brand.primary)
                             .toAttrs(),
-                        content = { Text("Communications: ")}
+                        content = { Text("Communications: ") }
                     )
                     Text("Emails you send to us (support, moderation appeals, or privacy requests).")
                 }
@@ -93,7 +93,7 @@ fun PrivacyEnContent(breakpoint: Breakpoint) {
                             .fontWeight(FontWeight.Bold)
                             .color(ColorMode.current.toSitePalette().brand.primary)
                             .toAttrs(),
-                        content = { Text("Newsletter Data: ")}
+                        content = { Text("Newsletter Data: ") }
                     )
                     Text("If you subscribe to updates, we collect your email address and preferences.")
                 }
@@ -103,7 +103,7 @@ fun PrivacyEnContent(breakpoint: Breakpoint) {
                             .fontWeight(FontWeight.Bold)
                             .color(ColorMode.current.toSitePalette().brand.primary)
                             .toAttrs(),
-                        content = { Text("Cookies & Analytics: ")}
+                        content = { Text("Cookies & Analytics: ") }
                     )
                     Text("We may use basic analytics tools (e.g., Firebase Analytics, Google Analytics) to " +
                         "understand traffic patterns and improve the Site. This data is aggregated or anonymized and " +
@@ -140,7 +140,7 @@ fun PrivacyEnContent(breakpoint: Breakpoint) {
                             .fontWeight(FontWeight.Bold)
                             .color(ColorMode.current.toSitePalette().brand.primary)
                             .toAttrs(),
-                        content = { Text("Contract: : ")}
+                        content = { Text("Contract: : ") }
                     )
                     Text("To provide and maintain the Site and its functions.") }
                 Li {
@@ -149,7 +149,7 @@ fun PrivacyEnContent(breakpoint: Breakpoint) {
                             .fontWeight(FontWeight.Bold)
                             .color(ColorMode.current.toSitePalette().brand.primary)
                             .toAttrs(),
-                        content = { Text("Consent: ")}
+                        content = { Text("Consent: ") }
                     )
                     Text("For newsletters, optional communications, and non-essential cookies") }
                 Li {
@@ -158,7 +158,7 @@ fun PrivacyEnContent(breakpoint: Breakpoint) {
                             .fontWeight(FontWeight.Bold)
                             .color(ColorMode.current.toSitePalette().brand.primary)
                             .toAttrs(),
-                        content = { Text("Legitimate Interests: ")}
+                        content = { Text("Legitimate Interests: ") }
                     )
                     Text("For moderation, abuse prevention, and Site improvement, balanced against your rights.") }
                 Li {
@@ -167,7 +167,7 @@ fun PrivacyEnContent(breakpoint: Breakpoint) {
                             .fontWeight(FontWeight.Bold)
                             .color(ColorMode.current.toSitePalette().brand.primary)
                             .toAttrs(),
-                        content = { Text("Legal Obligation: ")}
+                        content = { Text("Legal Obligation: ") }
                     )
                     Text("When necessary to comply with applicable laws.")
                 }
@@ -208,7 +208,7 @@ fun PrivacyEnContent(breakpoint: Breakpoint) {
                 Li { Text("All such providers act under written agreements and may only process data on " +
                     "our behalf.") }
                 Li { Text("We may disclose data when legally required or necessary to protect rights, " +
-                    "safety, or system integrity.")}
+                    "safety, or system integrity.") }
             }
         }
 
@@ -222,7 +222,7 @@ fun PrivacyEnContent(breakpoint: Breakpoint) {
                             .fontWeight(FontWeight.Bold)
                             .color(ColorMode.current.toSitePalette().brand.primary)
                             .toAttrs(),
-                        content = { Text("Authentication Data: ")}
+                        content = { Text("Authentication Data: ") }
                     )
                     Text("Retained while you maintain an active login")
                 }
@@ -232,7 +232,7 @@ fun PrivacyEnContent(breakpoint: Breakpoint) {
                             .fontWeight(FontWeight.Bold)
                             .color(ColorMode.current.toSitePalette().brand.primary)
                             .toAttrs(),
-                        content = { Text("Content: ")}
+                        content = { Text("Content: ") }
                     )
                     Text("Retained until deleted or anonymized; removed content may persist briefly in backups.")
                 }
@@ -242,7 +242,7 @@ fun PrivacyEnContent(breakpoint: Breakpoint) {
                             .fontWeight(FontWeight.Bold)
                             .color(ColorMode.current.toSitePalette().brand.primary)
                             .toAttrs(),
-                        content = { Text("Newsletter Data: ")}
+                        content = { Text("Newsletter Data: ") }
                     )
                     Text("Retained until you unsubscribe")
                 }
@@ -252,7 +252,7 @@ fun PrivacyEnContent(breakpoint: Breakpoint) {
                             .fontWeight(FontWeight.Bold)
                             .color(ColorMode.current.toSitePalette().brand.primary)
                             .toAttrs(),
-                        content = { Text("Operational Logs: ")}
+                        content = { Text("Operational Logs: ") }
                     )
                     Text("Typically kept 90–180 days, unless needed longer for security or compliance.")
                 }
@@ -322,7 +322,7 @@ fun PrivacyEnContent(breakpoint: Breakpoint) {
             }
         }
 
-                Row(
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(topBottom = 4.cssRem),

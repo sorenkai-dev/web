@@ -16,9 +16,13 @@ fun SectionParagraph(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit = {}
 ) {
-    val size = if (breakpoint <= Breakpoint.SM) 0.95.cssRem
-            else if (breakpoint <= Breakpoint.MD) 1.0.cssRem
-            else 1.1.cssRem
+    val size = if (breakpoint <= Breakpoint.SM) {
+        0.95.cssRem
+    } else if (breakpoint <= Breakpoint.MD) {
+        1.0.cssRem
+    } else {
+        1.1.cssRem
+    }
     P(
         attrs = BodyTextStyle.toModifier()
             .then(modifier)

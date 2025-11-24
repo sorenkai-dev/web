@@ -64,7 +64,7 @@ fun ModalOverlay(
 
 @Composable
 fun LockBodyScroll() {
-    DisposableEffect(Unit) {val body = document.body as HTMLBodyElement?
+    DisposableEffect(Unit) { val body = document.body as HTMLBodyElement?
 
         // --- FIX HERE: Use the explicit scope for the DOM function ---
         (body?.style as? Any)?.asDynamic()?.overflow = "hidden"
