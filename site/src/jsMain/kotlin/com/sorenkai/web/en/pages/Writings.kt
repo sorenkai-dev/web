@@ -1,10 +1,10 @@
 package com.sorenkai.web.en.pages
 
 import androidx.compose.runtime.Composable
+import com.sorenkai.web.api.content.WritingContent
+import com.sorenkai.web.api.state.OpenArticleState
 import com.sorenkai.web.components.layouts.LocalBreakpoint
 import com.sorenkai.web.components.layouts.PageLayoutData
-import com.sorenkai.web.en.content.WritingContentEn
-import com.sorenkai.web.en.content.WritingsHeroEnQuote
 import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
@@ -33,12 +33,17 @@ fun initWritingsEnPage(ctx: InitRouteContext) {
 @Composable
 fun WritingsPage() {
     val breakpoint = LocalBreakpoint.current
+    val pendingSlug = OpenArticleState.slug
 
     Column(
         modifier = Modifier.fillMaxWidth().padding(bottom = 4.cssRem),
         horizontalAlignment = Alignment.Start
     ) {
-        WritingsHeroEnQuote()
-        WritingContentEn(breakpoint, lang = "en")
+        if (pendingSlug != null) {
+            WritingContent(breakpoint, "en", pendingSlug)
+            OpenArticleState.slug = null
+        } else {
+            WritingContent(breakpoint, "en")
+        }
     }
 }

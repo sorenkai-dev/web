@@ -73,8 +73,11 @@ fun Footer(modifier: Modifier = Modifier, breakpoint: Breakpoint, lang: String) 
 
 @Composable
 private fun copyright(breakpoint: Breakpoint, lang: String = "en") {
-    val size = if (breakpoint <= Breakpoint.SM) FontSize.XSmall
-        else  FontSize.Medium
+    val size = if (breakpoint <= Breakpoint.SM) {
+        FontSize.XSmall
+    } else {
+        FontSize.Medium
+    }
     P(
         attrs = CopyrightStyle.toModifier()
             .fontSize(size)

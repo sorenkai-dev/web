@@ -1,17 +1,32 @@
 package com.sorenkai.web.components.layouts
 
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import com.sorenkai.web.PageContentStyle
 import com.sorenkai.web.components.widgets.backToTopButton
 import com.sorenkai.web.sections.Footer
 import com.sorenkai.web.sections.NavHeader
 import com.varabyte.kobweb.compose.css.dvh
+import com.varabyte.kobweb.compose.dom.ref
 import com.varabyte.kobweb.compose.foundation.layout.Box
 import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.compose.foundation.layout.ColumnScope
 import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
-import com.varabyte.kobweb.compose.ui.modifiers.*
+import com.varabyte.kobweb.compose.ui.modifiers.backgroundColor
+import com.varabyte.kobweb.compose.ui.modifiers.fillMaxWidth
+import com.varabyte.kobweb.compose.ui.modifiers.gridRow
+import com.varabyte.kobweb.compose.ui.modifiers.gridTemplateRows
+import com.varabyte.kobweb.compose.ui.modifiers.id
+import com.varabyte.kobweb.compose.ui.modifiers.minHeight
+import com.varabyte.kobweb.compose.ui.modifiers.padding
 import com.varabyte.kobweb.core.PageContext
 import com.varabyte.kobweb.core.data.getValue
 import com.varabyte.kobweb.core.layout.Layout
@@ -28,6 +43,7 @@ import org.jetbrains.compose.web.css.cssRem
 import org.jetbrains.compose.web.css.fr
 import org.jetbrains.compose.web.dom.Div
 import org.w3c.dom.Document
+import org.w3c.dom.HTMLElement
 import org.w3c.dom.events.EventListener
 
 private fun Document.setPageMetadata(title: String, description: String, robotsContent: String? = null) {
@@ -164,9 +180,9 @@ fun PageLayout(ctx: PageContext, content: @Composable ColumnScope.() -> Unit) {
     ) {
         CompositionLocalProvider(LocalBreakpoint provides breakpoint) {
             Column(
-            // Ensure main content is above the decorative SVG
-            Modifier.fillMaxWidth().gridRow(1).padding(bottom = 1.cssRem),
-            horizontalAlignment = Alignment.CenterHorizontally,
+                // Ensure main content is above the decorative SVG
+                Modifier.fillMaxWidth().gridRow(1).padding(bottom = 1.cssRem),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 NavHeader(lang)
                 Div(PageContentStyle.toAttrs()) {
@@ -178,4 +194,20 @@ fun PageLayout(ctx: PageContext, content: @Composable ColumnScope.() -> Unit) {
         Footer(Modifier.fillMaxWidth().gridRow(2), breakpoint, lang)
         backToTopButton(anchorId = "top", visible = showBackToTop)
     }
+    Box(
+        ref = ref<HTMLElement> { element ->
+            val script = document.createElement("script")
+            script.asDynamic().src = "https://plausible.io/js/pa-YfdNM71HTeSfoPy9iyEIN.js"
+            script.asDynamic().async = true
+            element.appendChild(script)
+
+            val initScript = document.createElement("script")
+            initScript.textContent =
+                """
+                window.plausible = window.plausible || function(){(plausible.q = plausible.q || []).push(arguments)};
+                plausible.init();
+                """.trimIndent()
+            element.appendChild(initScript)
+        }
+    )
 }

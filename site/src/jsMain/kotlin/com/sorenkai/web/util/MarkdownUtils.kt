@@ -16,7 +16,6 @@ import org.w3c.dom.HTMLElement
  */
 @Composable
 fun renderMarkdown(content: String) {
-
     val colorMode = ColorMode.current
     val palette = colorMode.toSitePalette()
     val backgroundColor = palette.brand.codeback
@@ -26,7 +25,7 @@ fun renderMarkdown(content: String) {
     var html = HtmlGenerator(content, parsedTree, flavour).generateHtml()
     var container by remember { mutableStateOf<HTMLElement?>(null) }
     val iframeRegex = Regex("""<iframe\s+.*?</iframe\s*>""",
-    setOf(RegexOption.IGNORE_CASE, RegexOption.MULTILINE))
+        setOf(RegexOption.IGNORE_CASE, RegexOption.MULTILINE))
 
     val iframeStyle = "style=\"" +
         "position: relative;" +
@@ -46,17 +45,17 @@ fun renderMarkdown(content: String) {
         "\""
 
     val preStyles = "style=\"" +
-    "overflow-wrap: break-word; " +
-    "word-wrap: break-word; " +
-    "white-space: pre-wrap; " +
-    "font-family: monospace; " +
-    "padding: 15px; " +
-    "border-radius: 5px; " +
-    "background-color: $backgroundColor; " +
-    "color: $textColor;" +
-    "width: 90%;" +
-    "margin: 0 auto" +
-    "\""
+        "overflow-wrap: break-word; " +
+        "word-wrap: break-word; " +
+        "white-space: pre-wrap; " +
+        "font-family: monospace; " +
+        "padding: 15px; " +
+        "border-radius: 5px; " +
+        "background-color: $backgroundColor; " +
+        "color: $textColor;" +
+        "width: 90%;" +
+        "margin: 0 auto" +
+        "\""
 
     val inlineCodeStyles = "style=\"" +
         "background-color: $backgroundColor; " +
@@ -78,7 +77,7 @@ fun renderMarkdown(content: String) {
 
     html = html.replace("<img", "<img $styleAttr")
 
-    html = html.replace("<code>", "<code ${inlineCodeStyles}>")
+    html = html.replace("<code>", "<code $inlineCodeStyles>")
 
     html = html.replace("<blockquote>", "<blockquote $blockquotestyles>")
 

@@ -11,8 +11,14 @@ data class WritingEntry(
     val status: Status,
     val type: Type,
     val salesLink: String? = null,
+    val tags: List<String> = emptyList(),
+    val featured: Boolean? = null,
+    val seoDescription: String? = null,
+    val stats: Stats = Stats(),
     val createdAt: String,
-    val updatedAt: String
+    // Make optional when backend omits the field entirely
+    val updatedAt: String? = null,
+    val publishedAt: String? = null
 )
 
 @Serializable

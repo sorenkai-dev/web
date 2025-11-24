@@ -36,14 +36,14 @@ fun ArticleModal(
         try {
             isLoading = true
             val json = Json { ignoreUnknownKeys = true }
-            val result = ApiClient.safeApiGet("/v1/writings/$slug"){
+            val result = ApiClient.safeApiGet("/v1/writings/$slug") {
                 json.decodeFromString<WritingDetailResponse>(it)
             }
 
-            article = when (result) {is ApiResponse.Success -> {
-                    // Success! Extract the content field from the deserialized DTO.
-                    result.data.content
-                }
+            article = when (result) { is ApiResponse.Success -> {
+                // Success! Extract the content field from the deserialized DTO.
+                result.data.content
+            }
                 is ApiResponse.HttpError ->
                     "${text["httpErrorPrefix"]} HTTP ${result.code}. ${result.message}"
                 is ApiResponse.NetworkError -> {
@@ -62,24 +62,24 @@ fun ArticleModal(
     }
 
     if (isLoading) {
-            Column(
-                // Fill width and add padding/margin as necessary
-                modifier = Modifier.fillMaxWidth().padding(top = 24.px),
-                // Optional: Align the text/bar to the center or start
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                // 1. Loading Text
-                P {
-                    Text(text["loading"]!!)
-                }
-
-                // 2. Linear Progress Bar
-                Image(
-                    src = Res.Img.LOGO,
-                    modifier = SpinnerStyle.toModifier()
-                )
-
+        Column(
+            // Fill width and add padding/margin as necessary
+            modifier = Modifier.fillMaxWidth().padding(top = 24.px),
+            // Optional: Align the text/bar to the center or start
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            // 1. Loading Text
+            P {
+                Text(text["loading"]!!)
             }
+
+            // 2. Linear Progress Bar
+            Image(
+                src = Res.Img.LOGO,
+                modifier = SpinnerStyle.toModifier()
+            )
+
+        }
     } else {
         val content = article ?: ""
         Div(

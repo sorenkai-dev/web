@@ -32,7 +32,7 @@ fun ToSPage() {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
+    ) {
         TermsEnContent(breakpoint)
     }
 }

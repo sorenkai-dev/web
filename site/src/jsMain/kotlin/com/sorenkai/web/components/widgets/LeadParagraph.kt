@@ -16,9 +16,13 @@ fun LeadParagraph(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit = {}
 ) {
-    val size = if (breakpoint <= Breakpoint.SM) 1.15.cssRem
-    else if (breakpoint <= Breakpoint.MD) 1.25.cssRem
-    else 1.4.cssRem
+    val size = if (breakpoint <= Breakpoint.SM) {
+        1.15.cssRem
+    } else if (breakpoint <= Breakpoint.MD) {
+        1.25.cssRem
+    } else {
+        1.4.cssRem
+    }
     P (
         attrs = LeadParagraphStyle.toModifier()
             .then(modifier)

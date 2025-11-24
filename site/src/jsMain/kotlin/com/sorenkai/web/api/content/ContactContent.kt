@@ -1,17 +1,16 @@
-package com.sorenkai.web.en.content
+package com.sorenkai.web.api.content
 
 import androidx.compose.runtime.Composable
 import com.sorenkai.web.LinkStyle
 import com.sorenkai.web.components.widgets.SectionHeader
 import com.sorenkai.web.components.widgets.SectionParagraph
 import com.sorenkai.web.components.widgets.socialLinks
-import com.varabyte.kobweb.compose.css.FontStyle
+import com.sorenkai.web.en.data.ContactContentEn
+import com.sorenkai.web.es.data.ContactContentEs
 import com.varabyte.kobweb.compose.foundation.layout.Arrangement
 import com.varabyte.kobweb.compose.foundation.layout.Row
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.fillMaxWidth
-import com.varabyte.kobweb.compose.ui.modifiers.fontStyle
-import com.varabyte.kobweb.compose.ui.modifiers.opacity
 import com.varabyte.kobweb.compose.ui.modifiers.padding
 import com.varabyte.kobweb.silk.components.navigation.Link
 import com.varabyte.kobweb.silk.style.breakpoint.Breakpoint
@@ -20,38 +19,33 @@ import org.jetbrains.compose.web.css.cssRem
 import org.jetbrains.compose.web.dom.Text
 
 @Composable
-fun ContactContent(breakpoint: Breakpoint) {
-    SectionHeader("Get In Touch", breakpoint)
+fun ContactContent(
+    breakpoint: Breakpoint,
+    lang: String,
+) {
+    val data =
+        when (lang) {
+            "es" -> ContactContentEs
+            else -> ContactContentEn
+        }
 
-    SectionParagraph(breakpoint) {
-        Text("Whether you’re a reader moved by an essay, a technologist exploring ethics in AI, " +
-            "or simply curious about the work, I’d love to hear from you.")
-    }
+    SectionHeader(data.section1Header, breakpoint)
+    SectionParagraph(breakpoint) { Text(data.section1Paragraph1) }
+    SectionParagraph(breakpoint) { Text(data.section1Paragraph2) }
 
-    SectionParagraph(breakpoint) {
-        Text("Let's build something thoughtful together.")
-    }
-
-    SectionHeader("Email", breakpoint)
-
+    SectionHeader(data.section2Header, breakpoint)
     Link(
         path = "mailto:soren@sorenkai.com",
-        text = "Email me",
+        text = data.section2email,
         LinkStyle.toModifier()
     )
 
-    SectionHeader("Connect", breakpoint, modifier = Modifier.padding(top = 2.cssRem))
-
+    SectionHeader(data.section3Header, breakpoint)
     Row(
         modifier = Modifier.fillMaxWidth().padding(top = 2.cssRem, bottom = 4.cssRem, leftRight = 10.cssRem),
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
-        socialLinks(
-
-        )
+        socialLinks()
     }
-
-    SectionParagraph(breakpoint, modifier = Modifier.fontStyle(FontStyle.Italic).opacity(0.85)) {
-        Text("The most meaningful ideas begin with a simple conversation.")
-    }
+    SectionParagraph(breakpoint) { Text(data.section3Paragraph) }
 }

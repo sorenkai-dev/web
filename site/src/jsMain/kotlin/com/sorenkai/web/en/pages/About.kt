@@ -1,10 +1,9 @@
 package com.sorenkai.web.en.pages
 
 import androidx.compose.runtime.Composable
+import com.sorenkai.web.api.content.AboutContent
 import com.sorenkai.web.components.layouts.LocalBreakpoint
 import com.sorenkai.web.components.layouts.PageLayoutData
-import com.sorenkai.web.en.content.AboutContentEn
-import com.sorenkai.web.en.content.AboutHeroEnQuote
 import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
@@ -36,10 +35,8 @@ fun AboutPage() {
     Column(
         modifier = Modifier.fillMaxSize().margin(bottom = 4.cssRem),
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
-       AboutHeroEnQuote(breakpoint)
-       AboutContentEn(breakpoint)
-
+    ) {
+        AboutContent("en", breakpoint)
     }
 }
 

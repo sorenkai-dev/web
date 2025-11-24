@@ -1,3 +1,4 @@
+
 import com.varabyte.kobweb.gradle.application.util.configAsKobwebApplication
 import kotlinx.html.link
 import kotlinx.html.script
@@ -8,10 +9,11 @@ plugins {
     alias(libs.plugins.kobweb.application)
     alias(libs.plugins.kobwebx.markdown)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ktlint)
 }
 
 group = "com.sorenkai.web"
-version = "1.0-SNAPSHOT"
+version = "1.1-SNAPSHOT"
 
 kobweb {
     app {
@@ -62,7 +64,7 @@ kobweb {
 kotlin {
     // This example is frontend only. However, for a fullstack app, you can uncomment the includeServer parameter
     // and the `jvmMain` source set below.
-    configAsKobwebApplication("web" /*, includeServer = true*/)
+    configAsKobwebApplication("web")
 
     sourceSets["jsMain"].kotlin.srcDirs(
         listOfNotNull(
@@ -71,9 +73,14 @@ kotlin {
                 "en" -> "src/main/kotlin/com/sorenkai/web/en"
                 "es" -> "src/main/kotlin/com/sorenkai/web/es"
                 else -> "src/main/kotlin/com/sorenkai/web/pages" // root redirect site
+            },
+            kotlin.sourceSets["jsMain"].kotlin.srcDirs.filterNot {
+                it.path.contains("build/generated")
             }
         )
     )
+    sourceSets["jsMain"].kotlin.exclude("**/build/generated/**")
+    sourceSets["jsMain"].kotlin.exclude("**/generated/**")
 
     sourceSets {
 //        commonMain.dependencies {
@@ -108,12 +115,26 @@ kotlin {
     }
 
     tasks.register<Exec>("exportEn") {
+        dependsOn("compileProductionExecutableKotlinJs")
         commandLine("kobweb", "export", "--env=prod")
         environment("SITE_LANG", "en")
     }
 
     tasks.register<Exec>("exportEs") {
+        dependsOn("compileProductionExecutableKotlinJs")
         commandLine("kobweb", "export", "--env=prod")
         environment("SITE_LANG", "es")
+    }
+
+    ktlint {
+        version.set("1.7.1")
+        verbose.set(true)
+        outputToConsole.set(true)
+        ignoreFailures.set(false)
+        filter {
+            exclude { entry ->
+                entry.file.path.contains("build/generated")
+            }
+        }
     }
 }

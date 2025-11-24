@@ -1,7 +1,11 @@
 package com.sorenkai.web.sections
 
-import androidx.compose.runtime.*
-import com.sorenkai.web.DropdownStyle
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import com.sorenkai.web.LinkStyle
 import com.sorenkai.web.NavHeaderStyle
 import com.sorenkai.web.SideMenuStyle
@@ -12,14 +16,31 @@ import com.sorenkai.web.components.widgets.ColorModeButton
 import com.sorenkai.web.components.widgets.HamburgerButton
 import com.varabyte.kobweb.compose.dom.svg.Path
 import com.varabyte.kobweb.compose.dom.svg.Svg
-import com.varabyte.kobweb.compose.foundation.layout.Box
 import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.compose.foundation.layout.Row
 import com.varabyte.kobweb.compose.foundation.layout.Spacer
 import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.graphics.Colors
-import com.varabyte.kobweb.compose.ui.modifiers.*
+import com.varabyte.kobweb.compose.ui.modifiers.alignItems
+import com.varabyte.kobweb.compose.ui.modifiers.animation
+import com.varabyte.kobweb.compose.ui.modifiers.attr
+import com.varabyte.kobweb.compose.ui.modifiers.display
+import com.varabyte.kobweb.compose.ui.modifiers.fontSize
+import com.varabyte.kobweb.compose.ui.modifiers.gap
+import com.varabyte.kobweb.compose.ui.modifiers.height
+import com.varabyte.kobweb.compose.ui.modifiers.onAnimationEnd
+import com.varabyte.kobweb.compose.ui.modifiers.onClick
+import com.varabyte.kobweb.compose.ui.modifiers.onKeyDown
+import com.varabyte.kobweb.compose.ui.modifiers.padding
+import com.varabyte.kobweb.compose.ui.modifiers.position
+import com.varabyte.kobweb.compose.ui.modifiers.setVariable
+import com.varabyte.kobweb.compose.ui.modifiers.size
+import com.varabyte.kobweb.compose.ui.modifiers.top
+import com.varabyte.kobweb.compose.ui.modifiers.transform
+import com.varabyte.kobweb.compose.ui.modifiers.transition
+import com.varabyte.kobweb.compose.ui.modifiers.translateX
+import com.varabyte.kobweb.compose.ui.modifiers.zIndex
 import com.varabyte.kobweb.compose.ui.styleModifier
 import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.framework.annotations.DelicateApi
@@ -35,8 +56,21 @@ import com.varabyte.kobweb.silk.style.breakpoint.displayUntil
 import com.varabyte.kobweb.silk.style.toModifier
 import com.varabyte.kobweb.silk.theme.breakpoint.rememberBreakpoint
 import org.jetbrains.compose.web.ExperimentalComposeWebApi
-import org.jetbrains.compose.web.css.*
+import org.jetbrains.compose.web.css.AlignItems
+import org.jetbrains.compose.web.css.AnimationDirection
+import org.jetbrains.compose.web.css.AnimationFillMode
+import org.jetbrains.compose.web.css.AnimationTimingFunction
 import org.jetbrains.compose.web.css.AnimationTimingFunction.Companion.EaseInOut
+import org.jetbrains.compose.web.css.DisplayStyle
+import org.jetbrains.compose.web.css.Position
+import org.jetbrains.compose.web.css.Transition
+import org.jetbrains.compose.web.css.cssRem
+import org.jetbrains.compose.web.css.deg
+import org.jetbrains.compose.web.css.em
+import org.jetbrains.compose.web.css.ms
+import org.jetbrains.compose.web.css.percent
+import org.jetbrains.compose.web.css.px
+import org.jetbrains.compose.web.css.s
 import org.jetbrains.compose.web.dom.Span
 import org.jetbrains.compose.web.dom.Text
 
@@ -106,14 +140,6 @@ private fun MenuItems(isMobile: Boolean = false, lang: String) {
     NavLink("/$lang/writings", text["writings"]!!)
     NavLink("/$lang/projects", text["projects"]!!)
     NavLink("/$lang/community", text["community"]!!)
-
-    if (isMobile) {
-        NavLink("/$lang/policies/privacy", text["privacy"]!!)
-        NavLink("/$lang/policies/terms", text["terms"]!!)
-        NavLink("/$lang/policies/community", text["guidelines"]!!)
-    } else {
-        PoliciesDropdown(lang)
-    }
     NavLink("/$lang/about", text["about"]!!)
     NavLink("/$lang/contact", text["contact"]!!)
 }
@@ -212,35 +238,6 @@ private fun SideMenu(menuState: SideMenuState, close: () -> Unit, onAnimationEnd
     }
 }
 
-
-@Composable
-private fun PoliciesDropdown(lang: String) {
-    var expanded by remember { mutableStateOf(false) }
-    val text = navTexts[lang]!!
-
-    Box(
-        modifier = Modifier
-            .position(Position.Relative)
-            .onMouseEnter { expanded = true }
-            .onMouseLeave { expanded = false }
-    ) {
-        // The trigger link
-        NavLink(
-            text = text["policies"]!!, isTrigger = true, path = "", modifier = Modifier, expanded = expanded,
-            onClick = { expanded = !expanded }
-        )
-
-        if (expanded) {
-            Column(
-                modifier = DropdownStyle.toModifier()
-            ) {
-                NavLink("/$lang/policies/privacy", text["privacy"]!!)
-                NavLink("/$lang/policies/terms", text["terms"]!!)
-                NavLink("/$lang/policies/community", text["guidelines"]!!)
-            }
-        }
-    }
-}
 
 private val navTexts = mapOf(
     "en" to mapOf(

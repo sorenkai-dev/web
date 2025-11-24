@@ -32,7 +32,7 @@ fun PrivacyPage() {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
+    ) {
         PrivacyEnContent(breakpoint)
     }
 }

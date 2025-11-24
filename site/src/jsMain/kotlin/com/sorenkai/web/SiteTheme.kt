@@ -31,6 +31,13 @@ class SitePalette(
         val shadow: Color = Color.argb(0x26000000),
         val codeback: Color = Color.rgb(0xFAFAFA),
         val codetext: Color = Color.rgb(0x333333),
+        val conceptColor: Color = Color.rgb(0x8E7CC3),
+        val projectColor: Color = Color.rgb(0xF5F3EB),
+        val themeColor: Color = Color.rgb(0x4682B4),
+        val topicColor: Color = Color.rgb(0x8A2BE2),
+        val seriesColor: Color = Color.rgb(0x228B22),
+        val allColor: Color = Color.rgb(0x89BBFE),
+        val bookColor: Color = Color.rgb(0xF19A3E),
     )
 }
 
@@ -50,7 +57,14 @@ object SitePalettes {
             visited = Color.rgb(0xC99700),
             shadow = Color.argb(0x26000000),
             codeback = Color.rgb(0xFAFAFA),
-            codetext = Color.rgb(0x333333)
+            codetext = Color.rgb(0x333333),
+            themeColor = Color.rgb(0x91F9E5),
+            topicColor = Color.rgb(0x5FDD9D),
+            seriesColor = Color.rgb(0xCFBAE1),
+            conceptColor = Color.rgb(0xEDAFB8),
+            projectColor = Color.rgb(0xDDBB3A),
+            allColor = Color.rgb(0x89BBFE),
+            bookColor = Color.rgb(0xF19A3E),
         )
     )
     val dark = SitePalette(
@@ -68,7 +82,14 @@ object SitePalettes {
             visited = Color.rgb(0xFFD369),
             shadow = Color.argb(0x19FFFFFF),
             codeback = Color.rgb(0x2D2D2D),
-            codetext = Color.rgb(0xE0E0E0)
+            codetext = Color.rgb(0xE0E0E0),
+            themeColor = Color.rgb(0x2EEAD0),
+            topicColor = Color.rgb(0x2ECC71),
+            seriesColor = Color.rgb(0xB084F5),
+            conceptColor = Color.rgb(0xFF6F91),
+            projectColor = Color.rgb(0xFFB84C),
+            allColor = Color.rgb(0x3E6AD6),
+            bookColor = Color.rgb(0xA46A1F),
         )
     )
 }
