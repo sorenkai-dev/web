@@ -89,7 +89,6 @@ fun WritingContent(
 
     var isLoading by remember { mutableStateOf(true) }
     var result by remember { mutableStateOf<ApiResponse<List<WritingEntry>>?>(null) }
-    var tags by remember { mutableStateOf<List<String>>(emptyList()) }
     var selectedTag by remember { mutableStateOf<String?>(null) }
     var selectedCategory by remember { mutableStateOf<String?>(null) }
 
@@ -115,17 +114,19 @@ fun WritingContent(
         }
     }
 
-    suspend fun registerShare(writing: WritingEntry) {
-        ApiClient.incrementShare(writing.slug)
-    }
-
     // Wrap suspend functions in coroutine scope
     val scope = rememberCoroutineScope()
 
+    fun handleViewsClick(writing: WritingEntry) {
+        scope.launch { ApiClient.incrementView(writing.slug) }
+    }
+
+    fun handleSalesClick(writing: WritingEntry) {
+        scope.launch{ ApiClient.incrementSalesClick(writing.slug) }
+    }
+
     fun handleLikeToggle(writing: WritingEntry, liked: Boolean) {
-        scope.launch {
-            toggleLike(writing, liked)
-        }
+        scope.launch { toggleLike(writing, liked) }
     }
 
     fun handleShare(writing: WritingEntry) {
@@ -170,8 +171,7 @@ fun WritingContent(
             }
 
             if (didShare) {
-                // Only register a share if we believe the user completed a share/copy
-                registerShare(writing)
+                ApiClient.incrementShare(writing.slug)
             }
         }
     }
@@ -193,15 +193,15 @@ fun WritingContent(
         }
     }
 
-    LaunchedEffect(Unit) {
-        val json = Json { ignoreUnknownKeys = true }
-        when (val tagRes = ApiClient.safeApiGet("/v1/tags") { responseText ->
-            json.decodeFromString<List<String>>(responseText)
-        }) {
-            is ApiResponse.Success -> tags = tagRes.data
-            else -> tags = emptyList()
-        }
-    }
+//    LaunchedEffect(Unit) {
+//        val json = Json { ignoreUnknownKeys = true }
+//        when (val tagRes = ApiClient.safeApiGet("/v1/tags") { responseText ->
+//            json.decodeFromString<List<String>>(responseText)
+//        }) {
+//            is ApiResponse.Success -> tags = tagRes.data
+//            else -> tags = emptyList()
+//        }
+//    }
 
     LaunchedEffect(selectedTag) {
         // Fetch writings whenever the selected tag changes
@@ -261,8 +261,8 @@ fun WritingContent(
                         .filter { matchesCategory(it, selectedCategory) }
                         .map { it to (getLatestDate(it) ?: "") }
                         .sortedWith(
-                            compareBy<Pair<WritingEntry, String>> { !(it.first.featured ?: false) } // 1. Featured items (false = lower priority)
-                                .thenByDescending { it.second }                     // 2. Then by the latest date (newest first)
+                            compareBy<Pair<WritingEntry, String>> { !(it.first.featured ?: false) }
+                                .thenByDescending { it.second }
                         )
                         .map { it.first }
                 val filteredTags =
@@ -286,6 +286,8 @@ fun WritingContent(
                         },
                         onLikeToggle = ::handleLikeToggle,
                         onShareClick = ::handleShare,
+                        onViewToggle = ::handleViewsClick,
+                        onSalesClick = ::handleSalesClick,
                         lang = lang
                     )
                 }

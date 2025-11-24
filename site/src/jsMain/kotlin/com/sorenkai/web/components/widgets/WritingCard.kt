@@ -1,9 +1,12 @@
 package com.sorenkai.web.components.widgets
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import com.sorenkai.web.ButtonStyle
 import com.sorenkai.web.FeaturedStyle
 import com.sorenkai.web.WritingCardStyle
 import com.sorenkai.web.api.ApiClient
@@ -50,25 +53,27 @@ fun WritingCard(
     onTagClick: (String) -> Unit,
     onLikeToggle: (WritingEntry, Boolean) -> Unit,
     onShareClick: (WritingEntry) -> Unit,
+    onViewToggle: (WritingEntry) -> Unit,
+    onSalesClick: (WritingEntry) -> Unit,
     lang: String
 ) {
     val enabled = when (writing.type) {
         Type.BOOK -> writing.salesLink != null
         Type.ARTICLE -> writing.status == Status.PUBLISHED
     }
-    val scope = rememberCoroutineScope()
     val text = writingText[lang] ?: error("Language not supported: $lang")
     val title = writing.title
     val synopsis = writing.synopsis
-    val likes = writing.stats.likeCount
-    val views = writing.stats.viewCount
+    var likes by remember { mutableStateOf(writing.stats.likeCount) }
+    var views by remember { mutableStateOf(writing.stats.viewCount) }
     val comments = writing.stats.commentCount
-    val shares = writing.stats.shareCount
+    var shares by remember { mutableStateOf(writing.stats.shareCount) }
     val createdAt = formatIsoDateToHumanReadable(writing.createdAt)
     val updatedAt = writing.updatedAt?.let { formatIsoDateToHumanReadable(it) }
     val publishedAt = writing.publishedAt?.let { formatIsoDateToHumanReadable(it) }
     val likeKey = "liked_${writing.slug}"
     val liked = remember {  mutableStateOf(localStorage.getItem(likeKey) == "true") }
+    val scope = rememberCoroutineScope()
 
     Box(
         WritingCardStyle.toModifier()
@@ -136,12 +141,18 @@ fun WritingCard(
                             .color(color = Colors.Red)
                             .cursor(Cursor.Pointer)
                             .onClick {
-                                // Optimistically update local like state & persist
                                 val newLiked = !liked.value
                                 liked.value = newLiked
                                 localStorage.setItem(likeKey, newLiked.toString())
-                                // Notify parent to sync with backend
-                                onLikeToggle(writing, newLiked)
+
+                                // Optimistic UI update
+                                if (newLiked) {
+                                    likes += 1
+                                    scope.launch { ApiClient.like(writing.slug) }
+                                } else {
+                                    likes = maxOf(0, likes - 1)
+                                    scope.launch { ApiClient.unlike(writing.slug) }
+                                }
                             },
                         style = if (liked.value) IconStyle.FILLED else IconStyle.OUTLINE
                     )
@@ -150,6 +161,7 @@ fun WritingCard(
                             .color(color = ColorMode.current.toSitePalette().brand.accent)
                             .cursor(Cursor.Pointer)
                             .onClick {
+                                shares++
                                 onShareClick(writing)
                             }
                     )
@@ -172,15 +184,21 @@ fun WritingCard(
                     }
                 }
                 Button(
+                    modifier =
+                        ButtonStyle.toModifier()
+                            .color(Colors.White),
                     enabled = enabled,
                     onClick = {
                         when (writing.type) {
                             Type.ARTICLE -> {
                                 onReadArticle(writing.title, writing.slug)
+                                onViewToggle(writing)
+                                views++
                             }
                             Type.BOOK -> {
                                 writing.salesLink?.let { url ->
-                                    window.open(url, "_blank")  // open book sales page
+                                    window.open(url, "_blank")
+                                    onSalesClick(writing)
                                 }
                             }
                         }
@@ -207,28 +225,6 @@ fun WritingCard(
         }
     }
 
-    suspend fun toggleLike(writing: WritingEntry) {
-        val nowLiked = !liked.value
-        liked.value = nowLiked
-
-        // Persist locally
-        localStorage.setItem("liked_${writing.slug}", nowLiked.toString())
-
-        // Update backend (fire & forget)
-        scope.launch {
-            try {
-                if (nowLiked) {
-                    // Like
-                    ApiClient.like(writing.slug)
-                } else {
-                    // Unlike
-                    ApiClient.unlike(writing.slug)
-                }
-            } catch (e: Exception) {
-                console.error("Failed to update like status", e)
-            }
-        }
-    }
 }
 
 private val writingText = mapOf(
