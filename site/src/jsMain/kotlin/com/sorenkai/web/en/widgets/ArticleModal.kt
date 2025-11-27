@@ -1,14 +1,18 @@
 package com.sorenkai.web.en.widgets
 
 
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import com.sorenkai.web.SpinnerStyle
-import com.sorenkai.web.api.ApiClient
-import com.sorenkai.web.api.ApiResponse
-import com.sorenkai.web.api.dto.WritingDetailResponse
 import com.sorenkai.web.components.util.Res
 import com.sorenkai.web.util.renderMarkdown
+import com.varabyte.kobweb.compose.foundation.layout.Arrangement
 import com.varabyte.kobweb.compose.foundation.layout.Column
+import com.varabyte.kobweb.compose.foundation.layout.Row
 import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.fillMaxWidth
@@ -18,9 +22,8 @@ import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.silk.components.graphics.Image
 import com.varabyte.kobweb.silk.style.toModifier
 import kotlinx.serialization.json.Json
-import org.jetbrains.compose.web.css.px
+import org.jetbrains.compose.web.css.cssRem
 import org.jetbrains.compose.web.dom.Div
-import org.jetbrains.compose.web.dom.P
 import org.jetbrains.compose.web.dom.Text
 
 @Composable
@@ -36,61 +39,54 @@ fun ArticleModal(
         try {
             isLoading = true
             val json = Json { ignoreUnknownKeys = true }
-            val result = ApiClient.safeApiGet("/v1/writings/$slug") {
-                json.decodeFromString<WritingDetailResponse>(it)
-            }
-
-            article = when (result) { is ApiResponse.Success -> {
-                // Success! Extract the content field from the deserialized DTO.
-                result.data.content
-            }
-                is ApiResponse.HttpError ->
-                    "${text["httpErrorPrefix"]} HTTP ${result.code}. ${result.message}"
-                is ApiResponse.NetworkError -> {
-                    text["networkError"]
-                }
-                is ApiResponse.UnknownError -> {
-                    "${text["unknownError"]} ${result.message}"
-                }
-            }
+//            val result = ApiClient.safeApiGet("/v1/writings/$slug") {
+//                json.decodeFromString<WritingDetailResponse>(it)
+//            }
+//
+//            article = when (result) { is ApiResponse.Success -> {
+//                // Success! Extract the content field from the deserialized DTO.
+//                result.data.content
+//            }
+//                is ApiResponse.HttpError ->
+//                    "${text["httpErrorPrefix"]} HTTP ${result.code}. ${result.message}"
+//                is ApiResponse.NetworkError -> {
+//                    text["networkError"]
+//                }
+//                is ApiResponse.UnknownError -> {
+//                    "${text["unknownError"]} ${result.message}"
+//                }
+//            }
         } catch (t: Throwable) {
             console.error("${text["httpError"]} $slug", t)
             article = text["fatalError"]
         } finally {
-            isLoading = false
+//            isLoading = false
         }
     }
 
     if (isLoading) {
         Column(
-            // Fill width and add padding/margin as necessary
-            modifier = Modifier.fillMaxWidth().padding(top = 24.px),
-            // Optional: Align the text/bar to the center or start
+            modifier = Modifier.fillMaxWidth().padding(top= 1.cssRem, bottom = 2.cssRem),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // 1. Loading Text
-            P {
-                Text(text["loading"]!!)
-            }
-
-            // 2. Linear Progress Bar
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+            ) { Text(text["loading"]!!) }
             Image(
                 src = Res.Img.LOGO,
                 modifier = SpinnerStyle.toModifier()
             )
-
         }
     } else {
         val content = article ?: ""
         Div(
             attrs = Modifier
                 .onClick { event ->
-                    // Stop the click event from bubbling up to the modal's backdrop/overlay.
                     event.stopPropagation()
                 }
                 .toAttrs()
         ) {
-            // Your existing content structure
             Column {
                 renderMarkdown(content)
             }

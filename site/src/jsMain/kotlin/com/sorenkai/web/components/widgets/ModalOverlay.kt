@@ -12,7 +12,14 @@ import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.compose.foundation.layout.Row
 import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
-import com.varabyte.kobweb.compose.ui.modifiers.*
+import com.varabyte.kobweb.compose.ui.modifiers.alignItems
+import com.varabyte.kobweb.compose.ui.modifiers.cursor
+import com.varabyte.kobweb.compose.ui.modifiers.fillMaxSize
+import com.varabyte.kobweb.compose.ui.modifiers.fillMaxWidth
+import com.varabyte.kobweb.compose.ui.modifiers.justifyContent
+import com.varabyte.kobweb.compose.ui.modifiers.margin
+import com.varabyte.kobweb.compose.ui.modifiers.onClick
+import com.varabyte.kobweb.compose.ui.modifiers.overflow
 import com.varabyte.kobweb.silk.components.icons.fa.FaXmark
 import com.varabyte.kobweb.silk.style.toModifier
 import kotlinx.browser.document
@@ -50,10 +57,12 @@ fun ModalOverlay(
                     FaXmark(Modifier.cursor(Cursor.Pointer).onClick { onClose() })
                 }
                 Column(
-                    Modifier.weight(1f).overflow(
-                        overflowX = Overflow.Clip,
-                        overflowY = Overflow.Auto
-                    )
+                    Modifier.weight(1f)
+                        .fillMaxWidth()
+                        .overflow(
+                            overflowX = Overflow.Clip,
+                            overflowY = Overflow.Auto
+                        )
                 ) {
                     content()
                 }

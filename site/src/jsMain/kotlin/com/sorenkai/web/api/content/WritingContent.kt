@@ -93,6 +93,7 @@ fun WritingContent(
     var selectedCategory by remember { mutableStateOf<String?>(null) }
 
     CategoryFilterBar(
+        breakpoint = breakpoint,
         activeCategory = selectedCategory,
         onSelect = { cat ->
             if (cat == null || cat == "all") {
@@ -242,7 +243,6 @@ fun WritingContent(
                 P {
                     Text(data.loadingText)
                 }
-
                 Image(
                     src = Res.Img.LOGO,
                     modifier = SpinnerStyle.toModifier()
@@ -274,6 +274,7 @@ fun WritingContent(
                 sortedWritings.forEach { writing ->
                     WritingCard(
                         writing = writing,
+                        breakpoint = breakpoint,
                         onReadArticle = { title, slug ->
                             modalTitle = title
                             modalSlug = slug
@@ -284,7 +285,6 @@ fun WritingContent(
                             selectedCategory = category
                             selectedTag = fullTag
                         },
-                        onLikeToggle = ::handleLikeToggle,
                         onShareClick = ::handleShare,
                         onViewToggle = ::handleViewsClick,
                         onSalesClick = ::handleSalesClick,

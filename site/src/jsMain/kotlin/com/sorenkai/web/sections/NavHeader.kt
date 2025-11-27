@@ -2,64 +2,46 @@ package com.sorenkai.web.sections
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.sorenkai.web.LinkStyle
 import com.sorenkai.web.NavHeaderStyle
-import com.sorenkai.web.SideMenuStyle
 import com.sorenkai.web.components.data.ui.SideMenuState
 import com.sorenkai.web.components.util.Res
-import com.sorenkai.web.components.widgets.CloseButton
-import com.sorenkai.web.components.widgets.ColorModeButton
 import com.sorenkai.web.components.widgets.HamburgerButton
+import com.sorenkai.web.components.widgets.SettingsButton
+import com.sorenkai.web.components.widgets.SideMenu
 import com.varabyte.kobweb.compose.dom.svg.Path
 import com.varabyte.kobweb.compose.dom.svg.Svg
-import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.compose.foundation.layout.Row
 import com.varabyte.kobweb.compose.foundation.layout.Spacer
 import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
-import com.varabyte.kobweb.compose.ui.graphics.Colors
 import com.varabyte.kobweb.compose.ui.modifiers.alignItems
-import com.varabyte.kobweb.compose.ui.modifiers.animation
 import com.varabyte.kobweb.compose.ui.modifiers.attr
 import com.varabyte.kobweb.compose.ui.modifiers.display
 import com.varabyte.kobweb.compose.ui.modifiers.fontSize
 import com.varabyte.kobweb.compose.ui.modifiers.gap
 import com.varabyte.kobweb.compose.ui.modifiers.height
-import com.varabyte.kobweb.compose.ui.modifiers.onAnimationEnd
 import com.varabyte.kobweb.compose.ui.modifiers.onClick
 import com.varabyte.kobweb.compose.ui.modifiers.onKeyDown
-import com.varabyte.kobweb.compose.ui.modifiers.padding
 import com.varabyte.kobweb.compose.ui.modifiers.position
-import com.varabyte.kobweb.compose.ui.modifiers.setVariable
 import com.varabyte.kobweb.compose.ui.modifiers.size
 import com.varabyte.kobweb.compose.ui.modifiers.top
 import com.varabyte.kobweb.compose.ui.modifiers.transform
 import com.varabyte.kobweb.compose.ui.modifiers.transition
-import com.varabyte.kobweb.compose.ui.modifiers.translateX
 import com.varabyte.kobweb.compose.ui.modifiers.zIndex
 import com.varabyte.kobweb.compose.ui.styleModifier
 import com.varabyte.kobweb.compose.ui.toAttrs
-import com.varabyte.kobweb.framework.annotations.DelicateApi
 import com.varabyte.kobweb.silk.components.graphics.Image
 import com.varabyte.kobweb.silk.components.navigation.Link
-import com.varabyte.kobweb.silk.components.overlay.Overlay
-import com.varabyte.kobweb.silk.components.overlay.OverlayVars
-import com.varabyte.kobweb.silk.style.animation.Keyframes
-import com.varabyte.kobweb.silk.style.animation.toAnimation
 import com.varabyte.kobweb.silk.style.breakpoint.Breakpoint
 import com.varabyte.kobweb.silk.style.breakpoint.displayIfAtLeast
 import com.varabyte.kobweb.silk.style.breakpoint.displayUntil
 import com.varabyte.kobweb.silk.style.toModifier
-import com.varabyte.kobweb.silk.theme.breakpoint.rememberBreakpoint
 import org.jetbrains.compose.web.ExperimentalComposeWebApi
 import org.jetbrains.compose.web.css.AlignItems
-import org.jetbrains.compose.web.css.AnimationDirection
-import org.jetbrains.compose.web.css.AnimationFillMode
-import org.jetbrains.compose.web.css.AnimationTimingFunction
 import org.jetbrains.compose.web.css.AnimationTimingFunction.Companion.EaseInOut
 import org.jetbrains.compose.web.css.DisplayStyle
 import org.jetbrains.compose.web.css.Position
@@ -67,8 +49,6 @@ import org.jetbrains.compose.web.css.Transition
 import org.jetbrains.compose.web.css.cssRem
 import org.jetbrains.compose.web.css.deg
 import org.jetbrains.compose.web.css.em
-import org.jetbrains.compose.web.css.ms
-import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.css.s
 import org.jetbrains.compose.web.dom.Span
@@ -144,19 +124,15 @@ private fun MenuItems(isMobile: Boolean = false, lang: String) {
     NavLink("/$lang/contact", text["contact"]!!)
 }
 
-val SideMenuSlideInAnim = Keyframes {
-    from {
-        Modifier.translateX(100.percent)
-    }
-
-    to {
-        Modifier
-    }
-}
 
 
 @Composable
-fun NavHeader(lang: String) {
+fun NavHeader(
+    breakpoint: Breakpoint,
+    lang: String
+) {
+    var settingsMenuState by remember { mutableStateOf(SideMenuState.CLOSED) }
+
     Row(
         NavHeaderStyle.toModifier()
             .position(Position.Sticky)
@@ -165,15 +141,41 @@ fun NavHeader(lang: String) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Link("/") {
-            // Block display overrides inline display of the <img> tag, so it calculates centering better
-            Image(Res.Img.LOGO, "SorenKai Logo", Modifier.height(2.cssRem).display(DisplayStyle.Block))
+            Image(
+                Res.Img.LOGO,
+                "SorenKai Logo",
+                Modifier
+                    .height(2.cssRem)
+                    .display(DisplayStyle.Block))
         }
 
         Spacer()
 
-        Row(Modifier.gap(1.5.cssRem).displayIfAtLeast(Breakpoint.MD), verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            Modifier
+                .gap(1.5.cssRem)
+                .displayIfAtLeast(Breakpoint.MD),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             MenuItems(lang = lang)
-            ColorModeButton(lang)
+            SettingsButton(
+                breakpoint = breakpoint,
+                lang = lang,
+            )
+            if (settingsMenuState != SideMenuState.CLOSED) {
+                SideMenu(
+                    breakpoint = breakpoint,
+                    menuState = settingsMenuState,
+                    settingsMenu = true,
+                    close = { settingsMenuState = SideMenuState.CLOSING },
+                    onAnimationEnd = { if (settingsMenuState == SideMenuState.CLOSING) settingsMenuState = SideMenuState.CLOSED },
+                    lang = lang,
+                    content = {
+                        MenuItems(isMobile = breakpoint < Breakpoint.MD, lang = lang)
+                    }
+                )
+
+            }
         }
 
         Row(
@@ -185,59 +187,23 @@ fun NavHeader(lang: String) {
         ) {
             var menuState by remember { mutableStateOf(SideMenuState.CLOSED) }
 
-            ColorModeButton(lang)
             HamburgerButton(onClick =  { menuState = SideMenuState.OPEN }, lang)
 
             if (menuState != SideMenuState.CLOSED) {
                 SideMenu(
-                    menuState,
+                    breakpoint = breakpoint,
+                    menuState = menuState,
                     close = { menuState = menuState.close() },
                     onAnimationEnd = { if (menuState == SideMenuState.CLOSING) menuState = SideMenuState.CLOSED },
-                    lang = lang
+                    lang = lang,
+                    content = {
+                        MenuItems(isMobile = breakpoint < Breakpoint.MD, lang = lang)
+                    }
                 )
             }
         }
     }
 }
-
-
-@OptIn(DelicateApi::class)
-@Composable
-private fun SideMenu(menuState: SideMenuState, close: () -> Unit, onAnimationEnd: () -> Unit, lang: String) {
-    val breakpoint = rememberBreakpoint()
-    Overlay(
-        Modifier
-            .setVariable(OverlayVars.BackgroundColor, Colors.Black.copyf(alpha = 0.5f))
-            // Ensure overlay stacks above all page content and sticky header
-            .zIndex(1000)
-            .onClick { close() }
-    ) {
-        key(menuState) { // Force recompute animation parameters when close button is clicked
-            Column(
-                SideMenuStyle.toModifier()
-                    .align(Alignment.CenterEnd)
-                    .animation(
-                        SideMenuSlideInAnim.toAnimation(
-                            duration = 200.ms,
-                            timingFunction = if (menuState == SideMenuState.OPEN) AnimationTimingFunction.EaseOut else AnimationTimingFunction.EaseIn,
-                            direction = if (menuState == SideMenuState.OPEN) AnimationDirection.Normal else AnimationDirection.Reverse,
-                            fillMode = AnimationFillMode.Forwards
-                        )
-                    )
-                    .onClick { it.stopPropagation() }
-                    .onAnimationEnd { onAnimationEnd() },
-                horizontalAlignment = Alignment.End
-            ) {
-                CloseButton(onClick = { close() }, lang)
-                Column(Modifier.padding(right = 0.75.cssRem).gap(1.5.cssRem).fontSize(1.4.cssRem),
-                    horizontalAlignment = Alignment.Start) {
-                    MenuItems(isMobile = breakpoint < Breakpoint.MD, lang = lang)
-                }
-            }
-        }
-    }
-}
-
 
 private val navTexts = mapOf(
     "en" to mapOf(
@@ -250,7 +216,8 @@ private val navTexts = mapOf(
         "guidelines" to "Community Guidelines",
         "policies" to "Policies",
         "about" to "About",
-        "contact" to "Contact"
+        "contact" to "Contact",
+        "settings" to "Settings"
     ),
     "es" to mapOf(
         "home" to "Inicio",
@@ -262,6 +229,7 @@ private val navTexts = mapOf(
         "guidelines" to "Directrices de la Comunidad",
         "policies" to "Políticas",
         "about" to "Acerca de",
-        "contact" to "Contacto"
+        "contact" to "Contacto",
+        "settings" to "Configuración"
     )
 )
