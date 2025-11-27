@@ -14,6 +14,7 @@ import com.varabyte.kobweb.core.data.add
 import com.varabyte.kobweb.core.init.InitRoute
 import com.varabyte.kobweb.core.init.InitRouteContext
 import com.varabyte.kobweb.core.layout.Layout
+import com.varabyte.kobweb.core.rememberPageContext
 import org.jetbrains.compose.web.css.cssRem
 
 @InitRoute
@@ -31,12 +32,16 @@ fun initWritingsEnPage(ctx: InitRouteContext) {
 @Layout("com.sorenkai.web.components.layouts.PageLayout")
 @Composable
 fun WritingsPage() {
+    val ctx = rememberPageContext()
     val breakpoint = LocalBreakpoint.current
+
+    // 1. Check for the 'slug' query parameter upon initial load
+    val slugFromQuery = ctx.route.params["slug"]
 
     Column(
         modifier = Modifier.fillMaxWidth().padding(bottom = 4.cssRem),
         horizontalAlignment = Alignment.Start
     ) {
-        WritingContent(breakpoint, "en")
+        WritingContent(breakpoint, "en", slugFromQuery)
     }
 }
