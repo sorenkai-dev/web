@@ -339,6 +339,7 @@ val ModalInternalCardStyle = CssStyle {
     base {
         Modifier
             .maxWidth(90.percent)
+            .minWidth(300.px)
             .maxHeight(85.percent)
             .backgroundColor(colorMode.toSitePalette().nearBackground)
             .borderRadius(24.px)
@@ -410,10 +411,7 @@ val SpinnerStyle = CssStyle.base {
 val ChipStyle = CssStyle {
     base {
         Modifier
-            .fontSize(0.75.cssRem)
-            .minWidth(5.cssRem)
             .textAlign(TextAlign.Center)
-            .padding(0.25.cssRem)
             .borderRadius(1.cssRem)
             .padding(leftRight = 0.75.cssRem, topBottom = 0.4.cssRem)
             .cursor(Cursor.Pointer)
@@ -431,5 +429,14 @@ val FeaturedStyle = CssStyle {
             .fontWeight(FontWeight.SemiBold)
             .backgroundColor(colorMode.toSitePalette().brand.accent)
             .color(colorMode.toSitePalette().brand.accentText)
+    }
+}
+
+val CategoryStyle = CssStyle {
+    base {
+        Modifier
+            .fillMaxWidth()
+            .flexWrap(FlexWrap.Wrap)
+            .margin(bottom = 2.cssRem)
     }
 }

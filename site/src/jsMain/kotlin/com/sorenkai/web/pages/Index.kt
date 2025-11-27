@@ -14,6 +14,7 @@ import com.varabyte.kobweb.core.PageContext
 import com.varabyte.kobweb.core.data.add
 import com.varabyte.kobweb.core.init.InitRoute
 import com.varabyte.kobweb.core.init.InitRouteContext
+import kotlinx.browser.localStorage
 import kotlinx.browser.window
 import org.jetbrains.compose.web.css.AlignItems
 import org.jetbrains.compose.web.css.JustifyContent
@@ -38,19 +39,27 @@ fun initLanguageRouter(ctx: InitRouteContext) {
 @Page(routeOverride = "/")
 @Composable
 fun LanguageRouterPage(ctx: PageContext) {
-    // Simple redirect logic
+
     LaunchedEffect(Unit) {
-        val preferredLang = window.navigator.language
-        when {
-            preferredLang.startsWith("es") -> ctx.router.navigateTo("/es")
-            else -> ctx.router.navigateTo("/en")
+        val storedPref = localStorage.getItem("lang")
+
+        if (storedPref != null) {
+            // Preferred language exists — always honor it
+            ctx.router.navigateTo("/$storedPref")
+            return@LaunchedEffect
         }
+
+        // No preference saved — use first-visit detection
+        val preferredLang = window.navigator.language.lowercase()
+        val lang = if (preferredLang.startsWith("es")) "es" else "en"
+
+        localStorage.setItem("lang", lang)
+        ctx.router.navigateTo("/$lang")
     }
 
-    // Fallback for non-JS users or bots
+    // Fallback for bots / no-JS
     Column(
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = Modifier.fillMaxSize()
             .alignItems(AlignItems.Center)
             .justifyContent(JustifyContent.Center)
             .padding(2.cssRem)
