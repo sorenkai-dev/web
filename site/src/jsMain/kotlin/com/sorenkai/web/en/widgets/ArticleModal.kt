@@ -8,6 +8,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.sorenkai.web.SpinnerStyle
+import com.sorenkai.web.api.ApiClient
+import com.sorenkai.web.api.ApiResponse
+import com.sorenkai.web.api.dto.WritingDetailResponse
 import com.sorenkai.web.components.util.Res
 import com.sorenkai.web.util.renderMarkdown
 import com.varabyte.kobweb.compose.foundation.layout.Arrangement
@@ -39,28 +42,28 @@ fun ArticleModal(
         try {
             isLoading = true
             val json = Json { ignoreUnknownKeys = true }
-//            val result = ApiClient.safeApiGet("/v1/writings/$slug") {
-//                json.decodeFromString<WritingDetailResponse>(it)
-//            }
-//
-//            article = when (result) { is ApiResponse.Success -> {
-//                // Success! Extract the content field from the deserialized DTO.
-//                result.data.content
-//            }
-//                is ApiResponse.HttpError ->
-//                    "${text["httpErrorPrefix"]} HTTP ${result.code}. ${result.message}"
-//                is ApiResponse.NetworkError -> {
-//                    text["networkError"]
-//                }
-//                is ApiResponse.UnknownError -> {
-//                    "${text["unknownError"]} ${result.message}"
-//                }
-//            }
+            val result = ApiClient.safeApiGet("/v1/writings/$slug") {
+                json.decodeFromString<WritingDetailResponse>(it)
+            }
+
+            article = when (result) { is ApiResponse.Success -> {
+                // Success! Extract the content field from the deserialized DTO.
+                result.data.content
+            }
+                is ApiResponse.HttpError ->
+                    "${text["httpErrorPrefix"]} HTTP ${result.code}. ${result.message}"
+                is ApiResponse.NetworkError -> {
+                    text["networkError"]
+                }
+                is ApiResponse.UnknownError -> {
+                    "${text["unknownError"]} ${result.message}"
+                }
+            }
         } catch (t: Throwable) {
             console.error("${text["httpError"]} $slug", t)
             article = text["fatalError"]
         } finally {
-//            isLoading = false
+            isLoading = false
         }
     }
 
