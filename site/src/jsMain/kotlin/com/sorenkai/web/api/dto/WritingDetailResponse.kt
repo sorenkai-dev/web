@@ -21,6 +21,6 @@ data class WritingDetailResponse (
     val authorId: String,
     val publishedAt: String? = null,
     val createdAt: String,
-    val updatedAt: String?,
+    val updatedAt: String? = null,
     val stats: Stats
 )
