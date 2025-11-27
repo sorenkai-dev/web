@@ -73,6 +73,7 @@ fun WritingContent(
         showModal = false
         modalTitle = ""
         modalSlug = ""
+        window.history.replaceState(null, "", "/$lang/writings")
     }
 
     Row(
@@ -186,23 +187,14 @@ fun WritingContent(
             }
 
             if (articleRes is ApiResponse.Success) {
-                val article = articleRes.data
+                val article = articleRes.data// 💡 SEO UPDATE: Insert the title change here!
+                window.document.title = "${article.title} | Writings"
                 modalTitle = article.title
                 modalSlug = article.slug
                 showModal = true
             }
         }
     }
-
-//    LaunchedEffect(Unit) {
-//        val json = Json { ignoreUnknownKeys = true }
-//        when (val tagRes = ApiClient.safeApiGet("/v1/tags") { responseText ->
-//            json.decodeFromString<List<String>>(responseText)
-//        }) {
-//            is ApiResponse.Success -> tags = tagRes.data
-//            else -> tags = emptyList()
-//        }
-//    }
 
     LaunchedEffect(selectedTag) {
         // Fetch writings whenever the selected tag changes
