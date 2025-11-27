@@ -2,7 +2,6 @@ package com.sorenkai.web.es.pages
 
 import androidx.compose.runtime.Composable
 import com.sorenkai.web.api.content.WritingContent
-import com.sorenkai.web.api.state.OpenArticleState
 import com.sorenkai.web.components.layouts.LocalBreakpoint
 import com.sorenkai.web.components.layouts.PageLayoutData
 import com.varabyte.kobweb.compose.foundation.layout.Column
@@ -15,6 +14,7 @@ import com.varabyte.kobweb.core.data.add
 import com.varabyte.kobweb.core.init.InitRoute
 import com.varabyte.kobweb.core.init.InitRouteContext
 import com.varabyte.kobweb.core.layout.Layout
+import com.varabyte.kobweb.core.rememberPageContext
 import org.jetbrains.compose.web.css.cssRem
 
 @InitRoute
@@ -33,13 +33,14 @@ fun initWritingsEsPage(ctx: InitRouteContext) {
 @Layout("com.sorenkai.web.components.layouts.PageLayout")
 @Composable
 fun WritingsPage() {
+    val ctx = rememberPageContext()
     val breakpoint = LocalBreakpoint.current
-    val pendingSlug = OpenArticleState.slug
+    val slugFromQuery = ctx.route.params["slug"]
 
     Column(
         modifier = Modifier.fillMaxWidth().padding(bottom = 4.cssRem),
         horizontalAlignment = Alignment.Start
     ) {
-        WritingContent(breakpoint, "es")
+        WritingContent(breakpoint, "es", slugFromQuery)
     }
 }
