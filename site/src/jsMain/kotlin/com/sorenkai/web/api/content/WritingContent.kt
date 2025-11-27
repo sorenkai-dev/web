@@ -247,6 +247,7 @@ fun WritingContent(
                     src = Res.Img.LOGO,
                     modifier = SpinnerStyle.toModifier()
                 )
+                console.log("Loading...")
             }
         }
         else -> when (val res = result) {
