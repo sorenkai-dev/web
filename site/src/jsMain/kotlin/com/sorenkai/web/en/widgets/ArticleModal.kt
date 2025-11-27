@@ -10,7 +10,6 @@ import androidx.compose.runtime.setValue
 import com.sorenkai.web.SpinnerStyle
 import com.sorenkai.web.api.ApiClient
 import com.sorenkai.web.api.ApiResponse
-import com.sorenkai.web.api.dto.WritingDetailResponse
 import com.sorenkai.web.components.util.Res
 import com.sorenkai.web.util.renderMarkdown
 import com.varabyte.kobweb.compose.foundation.layout.Arrangement
@@ -25,6 +24,8 @@ import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.silk.components.graphics.Image
 import com.varabyte.kobweb.silk.style.toModifier
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 import org.jetbrains.compose.web.css.cssRem
 import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.dom.Text
@@ -43,12 +44,14 @@ fun ArticleModal(
             isLoading = true
             val json = Json { ignoreUnknownKeys = true }
             val result = ApiClient.safeApiGet("/v1/writings/$slug") {
-                json.decodeFromString<WritingDetailResponse>(it)
+                val root = json.parseToJsonElement(it).jsonObject
+                // Extract only the "content" field to avoid strict DTO requirements on optional fields
+                root["content"]?.jsonPrimitive?.content ?: ""
             }
 
             article = when (result) { is ApiResponse.Success -> {
-                // Success! Extract the content field from the deserialized DTO.
-                result.data.content
+                // Success! We parsed content as a String directly from JSON.
+                result.data
             }
                 is ApiResponse.HttpError ->
                     "${text["httpErrorPrefix"]} HTTP ${result.code}. ${result.message}"
