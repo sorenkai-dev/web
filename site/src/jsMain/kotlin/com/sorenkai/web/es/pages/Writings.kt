@@ -40,11 +40,6 @@ fun WritingsPage() {
         modifier = Modifier.fillMaxWidth().padding(bottom = 4.cssRem),
         horizontalAlignment = Alignment.Start
     ) {
-        if (pendingSlug != null) {
-            WritingContent(breakpoint, "es", pendingSlug)
-            OpenArticleState.slug = null
-        } else {
-            WritingContent(breakpoint, "es")
-        }
+        WritingContent(breakpoint, "es")
     }
 }
