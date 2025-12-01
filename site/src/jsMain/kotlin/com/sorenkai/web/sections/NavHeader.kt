@@ -108,20 +108,27 @@ private fun NavLink(
             }
         }
     } else {
-        Link(path, text, modifier = LinkStyle.toModifier())
+        // For regular links, honor the provided modifier and allow an optional onClick
+        // so parent menus (e.g., side menu) can close themselves on navigation.
+        val linkModifier = modifier.onClick { onClick?.invoke() }
+        Link(path, text, modifier = linkModifier)
     }
 }
 
 @Composable
-private fun MenuItems(isMobile: Boolean = false, lang: String) {
+private fun MenuItems(
+    isMobile: Boolean = false,
+    lang: String,
+    onItemClicked: (() -> Unit)? = null,
+) {
     val text = navTexts[lang]!!
 
-    NavLink("/$lang", text["home"]!!)
-    NavLink("/$lang/writings", text["writings"]!!)
-    NavLink("/$lang/projects", text["projects"]!!)
-    NavLink("/$lang/community", text["community"]!!)
-    NavLink("/$lang/about", text["about"]!!)
-    NavLink("/$lang/contact", text["contact"]!!)
+    NavLink("/$lang", text["home"]!!, onClick = onItemClicked)
+    NavLink("/$lang/writings", text["writings"]!!, onClick = onItemClicked)
+    NavLink("/$lang/projects", text["projects"]!!, onClick = onItemClicked)
+    NavLink("/$lang/community", text["community"]!!, onClick = onItemClicked)
+    NavLink("/$lang/about", text["about"]!!, onClick = onItemClicked)
+    NavLink("/$lang/contact", text["contact"]!!, onClick = onItemClicked)
 }
 
 
@@ -171,7 +178,11 @@ fun NavHeader(
                     onAnimationEnd = { if (settingsMenuState == SideMenuState.CLOSING) settingsMenuState = SideMenuState.CLOSED },
                     lang = lang,
                     content = {
-                        MenuItems(isMobile = breakpoint < Breakpoint.MD, lang = lang)
+                        MenuItems(
+                            isMobile = breakpoint < Breakpoint.MD,
+                            lang = lang,
+                            onItemClicked = { settingsMenuState = SideMenuState.CLOSING }
+                        )
                     }
                 )
 
@@ -197,7 +208,11 @@ fun NavHeader(
                     onAnimationEnd = { if (menuState == SideMenuState.CLOSING) menuState = SideMenuState.CLOSED },
                     lang = lang,
                     content = {
-                        MenuItems(isMobile = breakpoint < Breakpoint.MD, lang = lang)
+                        MenuItems(
+                            isMobile = breakpoint < Breakpoint.MD,
+                            lang = lang,
+                            onItemClicked = { menuState = menuState.close() }
+                        )
                     }
                 )
             }
