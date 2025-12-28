@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "com.sorenkai.web"
-version = "1.1-SNAPSHOT"
+version = "2.0-SNAPSHOT"
 
 kobweb {
     app {
@@ -28,12 +28,12 @@ kobweb {
                 }
                 script {
                     """
-                        <!-- Privacy-friendly analytics by Plausible -->
-                        <script async src="https://plausible.io/js/pa-YfdNM71HTeSfoPy9iyEIN.js"></script>
-                        <script>
-                          window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
-                          plausible.init()
-                        </script>
+                    <!-- Privacy-friendly analytics by Plausible -->
+                    <script async src="https://plausible.io/js/pa-YfdNM71HTeSfoPy9iyEIN.js"></script>
+                    <script>
+                      window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+                      plausible.init()
+                    </script>
                     """.trimIndent()
                 }
                 link {
@@ -106,15 +106,11 @@ kotlin {
             // implementation(libs.silk.icons.fa)
             implementation(libs.kobwebx.markdown)
             implementation(libs.silk.icons.fa)
-            implementation(libs.firebase.app)
-            implementation(libs.firebase.analytics)
-            implementation(libs.firebase.auth)
-            implementation(libs.firebase.msg)
             implementation(libs.kotlin.js)
-            implementation(libs.firebase.installations)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.jetbrains.markdown)
             implementation(libs.kotlinx.datetime)
+            implementation(npm("oidc-client-ts", "3.4.1"))
         }
 
         // Uncomment the following if you pass `includeServer = true` into the `configAsKobwebApplication` call.

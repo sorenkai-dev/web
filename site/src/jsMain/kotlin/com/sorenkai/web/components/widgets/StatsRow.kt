@@ -36,10 +36,10 @@ fun StatsRow(
         ) {
             Column (
                 horizontalAlignment = Alignment.Start
-            ){ Text("$likesText: ${likes.value}") }
+            ) { Text("$likesText: ${likes.value}") }
             Column (
                 horizontalAlignment = Alignment.End
-            ){ Text("$shareText: ${shares.value}") }
+            ) { Text("$shareText: ${shares.value}") }
         }
         Row (
             modifier = Modifier
@@ -50,10 +50,10 @@ fun StatsRow(
         ) {
             Column (
                 horizontalAlignment = Alignment.Start
-            ){ Text("$viewsText: ${views.value}")}
+            ) { Text("$viewsText: ${views.value}") }
             Column (
                 horizontalAlignment = Alignment.End
-            ){ Text("$commentsText: $comments") }
+            ) { Text("$commentsText: $comments") }
         }
     } else {
         Row(

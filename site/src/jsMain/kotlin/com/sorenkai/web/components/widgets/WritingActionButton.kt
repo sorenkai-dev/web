@@ -3,9 +3,9 @@ package com.sorenkai.web.components.widgets
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import com.sorenkai.web.ButtonStyle
-import com.sorenkai.web.components.data.model.Status
-import com.sorenkai.web.components.data.model.Type
-import com.sorenkai.web.components.data.model.WritingEntry
+import com.sorenkai.web.components.data.model.writing.WritingsStatus
+import com.sorenkai.web.components.data.model.writing.WritingsType
+import com.sorenkai.web.components.data.model.writing.WritingEntry
 import com.varabyte.kobweb.compose.ui.graphics.Colors
 import com.varabyte.kobweb.compose.ui.modifiers.color
 import com.varabyte.kobweb.silk.components.forms.Button
@@ -22,9 +22,9 @@ fun WritingActionButton(
     views: MutableState<Int>,
     lang: String
 ) {
-    val enabled = when (writing.type) {
-        Type.BOOK -> writing.salesLink != null
-        Type.ARTICLE -> writing.status == Status.PUBLISHED
+    val enabled = when (writing.writingsType) {
+        WritingsType.BOOK -> writing.salesLink != null
+        WritingsType.ARTICLE -> writing.writingsStatus == WritingsStatus.PUBLISHED
     }
     val text = texts[lang] ?: error("Language not supported: $lang")
 
@@ -34,13 +34,13 @@ fun WritingActionButton(
                 .color(Colors.White),
         enabled = enabled,
         onClick = {
-            when (writing.type) {
-                Type.ARTICLE -> {
+            when (writing.writingsType) {
+                WritingsType.ARTICLE -> {
                     onReadArticle(writing.title, writing.slug)
                     onViewToggle(writing)
                     views.value += 1
                 }
-                Type.BOOK -> {
+                WritingsType.BOOK -> {
                     writing.salesLink?.let { url ->
                         window.open(url, "_blank")
                         onSalesClick(writing)
@@ -50,8 +50,8 @@ fun WritingActionButton(
         }
     ) {
         Text(
-            if (writing.type == Type.ARTICLE) {
-                if (writing.status == Status.PUBLISHED) {
+            if (writing.writingsType == WritingsType.ARTICLE) {
+                if (writing.writingsStatus == WritingsStatus.PUBLISHED) {
                     text["readArticle"]!!
                 } else {
                     text["comingSoon"]!!

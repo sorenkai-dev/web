@@ -57,7 +57,7 @@ fun LanguageMenu() {
                 Row(
                     modifier = Modifier.cursor(Cursor.Pointer).gap(1.cssRem),
                     verticalAlignment = Alignment.CenterVertically
-                ){
+                ) {
                     RadioInput(
                         value = "en",
                         id = "lang_en",
@@ -67,14 +67,14 @@ fun LanguageMenu() {
                                 selectedLang.value = "en"
                                 switchTo("en")
                             }
-                        .toAttrs()
+                            .toAttrs()
                     )
                     Text("English")
                 }
                 Row(
                     modifier = Modifier.cursor(Cursor.Pointer).gap(1.cssRem),
                     verticalAlignment = Alignment.CenterVertically
-                ){
+                ) {
                     RadioInput(
                         value = "es",
                         id = "lang_es",

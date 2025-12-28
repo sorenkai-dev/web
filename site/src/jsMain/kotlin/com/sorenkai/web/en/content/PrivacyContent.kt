@@ -53,7 +53,7 @@ fun PrivacyEnContent(breakpoint: Breakpoint) {
                         content = { Text("Authentication Data: ") }
                     )
                     Text("Email address or basic sign-in credentials from your chosen provider (Google, " +
-                        "Microsoft, etc.) used solely through Firebase Authentication to prevent spam and automated " +
+                        "Microsoft, etc.) used solely through Zitadel to prevent spam and automated " +
                         "abuse. These accounts do not create public profiles or social features.")
                 }
                 Li {
@@ -105,7 +105,7 @@ fun PrivacyEnContent(breakpoint: Breakpoint) {
                             .toAttrs(),
                         content = { Text("Cookies & Analytics: ") }
                     )
-                    Text("We may use basic analytics tools (e.g., Firebase Analytics, Google Analytics) to " +
+                    Text("We may use basic analytics tools (e.g., Plausible Analytics, Google Analytics) to " +
                         "understand traffic patterns and improve the Site. This data is aggregated or anonymized and " +
                         "not used for profiling or advertising. Where required by law, we will ask for your consent " +
                         "before setting non-essential cookies.")
@@ -199,7 +199,7 @@ fun PrivacyEnContent(breakpoint: Breakpoint) {
                     Text("Limited information may be processed on our behalf by trusted service providers " +
                         "that help us operate the Site, such as:")
                     Ul {
-                        Li { Text("Firebase (Google) for authentication and basic analytics") }
+                        Li { Text("Zitadel for authentication and basic analytics") }
                         Li { Text("MongoDB Atlas for database storage.") }
                         Li { Text("Hosting/CDN providers (for site delivery and caching).") }
                         Li { Text("Newsletter providers (if subscribed).") }
@@ -275,7 +275,7 @@ fun PrivacyEnContent(breakpoint: Breakpoint) {
             Text("We use industry-standard safeguards, including:")
             Ul {
                 Li { Text("HTTPS encryption for all data in transit.") }
-                Li { Text("Firebase authentication and access controls.") }
+                Li { Text("Zitadel authentication and access controls.") }
                 Li { Text("Role-based, least-privilege permissions on backend systems.") }
             }
             Text("While no system can guarantee complete security, we take all reasonable measures to protect " +

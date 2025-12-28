@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import com.sorenkai.web.WritingCardStyle
-import com.sorenkai.web.components.data.model.WritingEntry
+import com.sorenkai.web.components.data.model.writing.WritingEntry
 import com.varabyte.kobweb.compose.foundation.layout.Arrangement
 import com.varabyte.kobweb.compose.foundation.layout.Box
 import com.varabyte.kobweb.compose.foundation.layout.Column
@@ -75,7 +75,7 @@ fun WritingCard(
 
             P(
                 attrs = Modifier.fontSize( if (breakpoint <= Breakpoint.SM) 0.8.cssRem else 1.cssRem).toAttrs()
-            ){ Text(synopsis) }
+            ) { Text(synopsis) }
             if (writing.tags.isNotEmpty()) {
                 Row(
                     modifier = Modifier

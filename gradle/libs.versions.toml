@@ -2,7 +2,6 @@
 jetbrains-compose = "1.9.3"
 kobweb = "0.23.3"
 kotlin = "2.2.21"
-firebase = "2.4.0"
 kotlinx-datetime = "0.7.1-0.6.x-compat"
 kotlinx-serialization = "1.9.0"
 jetbrains-markdown = "0.7.3"
@@ -20,11 +19,6 @@ kobwebx-serialization-kotlinx = { module = "com.varabyte.kobwebx:kobwebx-seriali
 silk-foundation = { module = "com.varabyte.kobweb:silk-foundation", version.ref = "kobweb" }
 silk-icons-fa = { module = "com.varabyte.kobwebx:silk-icons-fa", version.ref = "kobweb" }
 silk-icons-mdi = { module = "com.varabyte.kobwebx:silk-icons-mdi", version.ref = "kobweb" }
-firebase-app = { module = "dev.gitlive:firebase-app", version.ref = "firebase" }
-firebase-analytics = { module = "dev.gitlive:firebase-analytics", version.ref = "firebase" }
-firebase-auth = { module = "dev.gitlive:firebase-auth", version.ref = "firebase" }
-firebase-installations = { module = "dev.gitlive:firebase-installations", version.ref = "firebase" }
-firebase-msg = { module = "dev.gitlive:firebase-messaging",  version.ref = "firebase" }
 kotlin-js = { module = "org.jetbrains.kotlin:kotlin-stdlib-js", version.ref = "kotlin" }
 kotlinx-serialization-json     = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 jetbrains-markdown = { module = "org.jetbrains:markdown", version.ref = "jetbrains-markdown"}

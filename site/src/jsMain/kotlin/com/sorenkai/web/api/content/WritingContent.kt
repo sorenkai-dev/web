@@ -12,7 +12,7 @@ import com.sorenkai.web.SpinnerStyle
 import com.sorenkai.web.api.ApiClient
 import com.sorenkai.web.api.ApiResponse
 import com.sorenkai.web.api.dto.WritingListResponse
-import com.sorenkai.web.components.data.model.WritingEntry
+import com.sorenkai.web.components.data.model.writing.WritingEntry
 import com.sorenkai.web.components.util.Res
 import com.sorenkai.web.components.widgets.BlockQuote
 import com.sorenkai.web.components.widgets.CategoryFilterBar
@@ -124,7 +124,7 @@ fun WritingContent(
     }
 
     fun handleSalesClick(writing: WritingEntry) {
-        scope.launch{ ApiClient.incrementSalesClick(writing.slug) }
+        scope.launch { ApiClient.incrementSalesClick(writing.slug) }
     }
 
     fun handleLikeToggle(writing: WritingEntry, liked: Boolean) {
@@ -182,7 +182,7 @@ fun WritingContent(
         if (!openSlugFromUrl.isNullOrBlank()) {
             val json = Json { ignoreUnknownKeys = true }
 
-            val articleRes = ApiClient.safeApiGet("/v1/writings/$openSlugFromUrl") { responseText ->
+            val articleRes = ApiClient.safeApiGet("/v2/writings/$openSlugFromUrl") { responseText ->
                 json.decodeFromString<WritingEntry>(responseText)
             }
 
@@ -204,7 +204,7 @@ fun WritingContent(
             if (!selectedTag.isNullOrBlank()) append("tag", selectedTag!!)
         }
         val qs = params.toString().let { if (it.isNotEmpty()) "?$it" else "" }
-        result = ApiClient.safeApiGet("/v1/writings$qs") { responseText ->
+        result = ApiClient.safeApiGet("/v2/writings$qs") { responseText ->
             json.decodeFromString<WritingListResponse>(responseText).items
         }
         isLoading = false

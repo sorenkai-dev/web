@@ -1,4 +1,4 @@
-package com.sorenkai.web.components.data.model
+package com.sorenkai.web.components.data.model.writing
 
 import kotlinx.serialization.Serializable
 
@@ -8,8 +8,8 @@ data class WritingEntry(
     val language: String,
     val slug: String,
     val synopsis: String,
-    val status: Status,
-    val type: Type,
+    val writingsStatus: WritingsStatus,
+    val writingsType: WritingsType,
     val salesLink: String? = null,
     val tags: List<String> = emptyList(),
     val featured: Boolean? = null,
@@ -21,8 +21,4 @@ data class WritingEntry(
     val publishedAt: String? = null
 )
 
-@Serializable
-enum class Status { DRAFT, PUBLISHED, ARCHIVED, SUBMITTED }
 
-@Serializable
-enum class Type { ARTICLE, BOOK }

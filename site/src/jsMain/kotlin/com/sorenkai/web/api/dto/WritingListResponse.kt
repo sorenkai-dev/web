@@ -1,6 +1,6 @@
 package com.sorenkai.web.api.dto
 
-import com.sorenkai.web.components.data.model.WritingEntry
+import com.sorenkai.web.components.data.model.writing.WritingEntry
 import kotlinx.serialization.Serializable
 
 @Serializable
