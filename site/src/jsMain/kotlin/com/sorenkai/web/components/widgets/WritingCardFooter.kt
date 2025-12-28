@@ -2,8 +2,8 @@ package com.sorenkai.web.components.widgets
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import com.sorenkai.web.components.data.model.Status
-import com.sorenkai.web.components.data.model.WritingEntry
+import com.sorenkai.web.components.data.model.writing.WritingsStatus
+import com.sorenkai.web.components.data.model.writing.WritingEntry
 import com.sorenkai.web.components.util.formatIsoDateToHumanReadable
 import com.varabyte.kobweb.compose.foundation.layout.Arrangement
 import com.varabyte.kobweb.compose.foundation.layout.Column
@@ -50,8 +50,7 @@ fun WritingCardFooter(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .margin(bottom = 0.5.cssRem)
-                ,
+                    .margin(bottom = 0.5.cssRem),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 LikeIcon(
@@ -142,7 +141,7 @@ private fun DateLines(
     Row {
         if (publishedAt != null) {
             Text("${text["published"]}: $publishedAt")
-        } else if (writing.status == Status.PUBLISHED) {
+        } else if (writing.writingsStatus == WritingsStatus.PUBLISHED) {
             Text("${text["published"]}: $createdAt")
         } else {
             Text(text["notPublished"] ?: "Not published yet")

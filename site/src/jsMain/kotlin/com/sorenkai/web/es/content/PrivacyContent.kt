@@ -49,7 +49,7 @@ fun PrivacyEsContent(breakpoint: Breakpoint) {
                             .toAttrs(),
                         content = { Text("Datos de Autenticación: ") }
                     )
-                    Text("Dirección de correo electrónico o credenciales básicas de inicio de sesión de su proveedor elegido (Google, Microsoft, etc.) utilizadas exclusivamente a través de Firebase Authentication para prevenir el spam y el abuso automatizado. Estas cuentas no crean perfiles públicos ni funciones sociales.")
+                    Text("Dirección de correo electrónico o credenciales básicas de inicio de sesión de su proveedor elegido (Google, Microsoft, etc.) utilizadas exclusivamente a través de Zitadel para prevenir el spam y el abuso automatizado. Estas cuentas no crean perfiles públicos ni funciones sociales.")
                 }
                 Li {
                     Span(
@@ -99,7 +99,7 @@ fun PrivacyEsContent(breakpoint: Breakpoint) {
                             .toAttrs(),
                         content = { Text("Cookies y Análisis: ") }
                     )
-                    Text("Podemos utilizar herramientas básicas de análisis (por ejemplo, Firebase Analytics, Google Analytics) para comprender los patrones de tráfico y mejorar el Sitio. Estos datos se agregan o anonimizan y no se utilizan para crear perfiles ni con fines publicitarios. Cuando la ley lo requiera, solicitaremos su consentimiento antes de establecer cookies no esenciales.")
+                    Text("Podemos utilizar herramientas básicas de análisis (por ejemplo, Plausible Analytics, Google Analytics) para comprender los patrones de tráfico y mejorar el Sitio. Estos datos se agregan o anonimizan y no se utilizan para crear perfiles ni con fines publicitarios. Cuando la ley lo requiera, solicitaremos su consentimiento antes de establecer cookies no esenciales.")
                 }
             }
         }
@@ -188,7 +188,7 @@ fun PrivacyEsContent(breakpoint: Breakpoint) {
                 Li {
                     Text("Cierta información limitada puede ser procesada en nuestro nombre por proveedores de servicios de confianza que nos ayudan a operar el Sitio, como:")
                     Ul {
-                        Li { Text("Firebase (Google) para autenticación y análisis básicos.") }
+                        Li { Text("Zitadel para autenticación y análisis básicos.") }
                         Li { Text("MongoDB Atlas para almacenamiento de base de datos.") }
                         Li { Text("Proveedores de alojamiento/CDN (para entrega y almacenamiento en caché del sitio).") }
                         Li { Text("Proveedores de boletines (si está suscrito).") }
@@ -259,7 +259,7 @@ fun PrivacyEsContent(breakpoint: Breakpoint) {
             Text("Utilizamos medidas de seguridad de nivel industrial, que incluyen:")
             Ul {
                 Li { Text("Cifrado HTTPS para todos los datos en tránsito.") }
-                Li { Text("Autenticación y controles de acceso mediante Firebase.") }
+                Li { Text("Autenticación y controles de acceso mediante Zitadel.") }
                 Li { Text("Permisos basados en roles y principio de menor privilegio en los sistemas backend.") }
             }
             Text("Aunque ningún sistema puede garantizar una seguridad total, tomamos todas las medidas razonables para proteger su información.")

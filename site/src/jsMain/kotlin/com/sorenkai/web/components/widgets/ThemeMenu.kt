@@ -53,7 +53,7 @@ fun ThemeMenu(
                     Row(
                         modifier = Modifier.cursor(Cursor.Pointer).gap(1.cssRem),
                         verticalAlignment = Alignment.CenterVertically
-                    ){
+                    ) {
                         RadioInput(
                             value = option,
                             id = option,
