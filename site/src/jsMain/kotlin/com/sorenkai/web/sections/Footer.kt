@@ -20,12 +20,10 @@ import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.silk.components.icons.fa.FaCopyright
 import com.varabyte.kobweb.silk.style.breakpoint.Breakpoint
 import com.varabyte.kobweb.silk.style.toModifier
-import kotlinx.browser.document
 import org.jetbrains.compose.web.css.cssRem
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.dom.P
 import org.jetbrains.compose.web.dom.Text
-import org.w3c.dom.HTMLScriptElement
 import kotlin.js.Date
 
 
@@ -58,17 +56,6 @@ fun Footer(modifier: Modifier = Modifier, breakpoint: Breakpoint, lang: String) 
             }
         }
     }
-    Box (
-        ref = ref {
-            val firebaseScriptId = "firebase-init-script"
-            if (document.getElementById(firebaseScriptId) == null) {
-                val script = document.createElement("script") as HTMLScriptElement
-                script.type = "module"
-                script.asDynamic().src = "/firebase-init.js"
-                it.appendChild(script)
-            }
-        }
-    )
 }
 
 @Composable

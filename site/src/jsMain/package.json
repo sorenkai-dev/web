@@ -10,8 +10,5 @@
     "type": "git",
     "url": "https://www.github.com/sorenkai-dev/website.git"
   },
-  "private": true,
-  "dependencies": {
-    "firebase": "^12.4.0"
-  }
+  "private": true
 }

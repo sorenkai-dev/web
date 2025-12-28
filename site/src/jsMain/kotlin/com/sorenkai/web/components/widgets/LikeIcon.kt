@@ -3,7 +3,7 @@ package com.sorenkai.web.components.widgets
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import com.sorenkai.web.api.ApiClient
-import com.sorenkai.web.components.data.model.WritingEntry
+import com.sorenkai.web.components.data.model.writing.WritingEntry
 import com.varabyte.kobweb.compose.css.Cursor
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.graphics.Colors

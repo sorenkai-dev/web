@@ -28,3 +28,4 @@ kotlin-js-store
 # Kotlin ignores
 .kotlin
 *.hprof
+.env

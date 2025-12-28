@@ -63,7 +63,7 @@ fun TermsEsContent(breakpoint: Breakpoint) {
 
         SectionParagraph(
             breakpoint,
-            content = { Text("SorenKai.com incluye funciones interactivas limitadas como comentarios y discusiones. Las cuentas son administradas mediante Firebase Authentication únicamente para prevenir el spam y el abuso automatizado. Estas cuentas no crean perfiles públicos, mensajería privada ni páginas de usuario.") }
+            content = { Text("SorenKai.com incluye funciones interactivas limitadas como comentarios y discusiones. Las cuentas son administradas mediante Zitadel únicamente para prevenir el spam y el abuso automatizado. Estas cuentas no crean perfiles públicos, mensajería privada ni páginas de usuario.") }
         )
 
         SectionParagraph(breakpoint) {

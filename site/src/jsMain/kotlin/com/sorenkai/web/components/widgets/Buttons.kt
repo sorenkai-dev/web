@@ -52,7 +52,7 @@ fun SettingsButton(
                 .color(color = ColorMode.current.toSitePalette().brand.accent)
                 .cursor(Cursor.Pointer)
                 .onClick { settingsMenuState = SideMenuState.OPEN }
-            )
+        )
     }
     if (settingsMenuState != SideMenuState.CLOSED) {
         SideMenu(

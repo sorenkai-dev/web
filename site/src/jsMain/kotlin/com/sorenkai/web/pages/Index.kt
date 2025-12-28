@@ -39,7 +39,6 @@ fun initLanguageRouter(ctx: InitRouteContext) {
 @Page(routeOverride = "/")
 @Composable
 fun LanguageRouterPage(ctx: PageContext) {
-
     LaunchedEffect(Unit) {
         val storedPref = localStorage.getItem("lang")
 

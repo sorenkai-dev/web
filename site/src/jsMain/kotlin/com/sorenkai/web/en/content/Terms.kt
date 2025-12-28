@@ -73,7 +73,7 @@ fun TermsEnContent(breakpoint: Breakpoint) {
         SectionParagraph(
             breakpoint,
             content = { Text("SorenKai.com includes limited interactive features such as comments and discussions. " +
-                "Accounts are managed through Firebase Authentication solely to prevent spam and automated abuse. " +
+                "Accounts are managed through Zitadel solely to prevent spam and automated abuse. " +
                 "These accounts do not create public profiles, private messaging, or user pages.")
             }
         )

@@ -43,7 +43,7 @@ fun ArticleModal(
         try {
             isLoading = true
             val json = Json { ignoreUnknownKeys = true }
-            val result = ApiClient.safeApiGet("/v1/writings/$slug") {
+            val result = ApiClient.safeApiGet("/v2/writings/$slug") {
                 val root = json.parseToJsonElement(it).jsonObject
                 // Extract only the "content" field to avoid strict DTO requirements on optional fields
                 root["content"]?.jsonPrimitive?.content ?: ""
@@ -72,7 +72,7 @@ fun ArticleModal(
 
     if (isLoading) {
         Column(
-            modifier = Modifier.fillMaxWidth().padding(top= 1.cssRem, bottom = 2.cssRem),
+            modifier = Modifier.fillMaxWidth().padding(top = 1.cssRem, bottom = 2.cssRem),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(

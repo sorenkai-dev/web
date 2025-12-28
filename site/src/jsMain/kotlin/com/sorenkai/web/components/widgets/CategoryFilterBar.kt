@@ -42,8 +42,8 @@ fun CategoryFilterBar(
             }
         }
         Row(
-        CategoryStyle.toModifier()
-            .padding(top = 0.5.cssRem, bottom = 2.cssRem),
+            CategoryStyle.toModifier()
+                .padding(top = 0.5.cssRem, bottom = 2.cssRem),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             otherLabels.forEach { category ->
@@ -59,7 +59,7 @@ fun CategoryFilterBar(
     } else {
         Row(
             CategoryStyle.toModifier()
-            .padding(top = 1.cssRem, bottom = 2.cssRem),
+                .padding(top = 1.cssRem, bottom = 2.cssRem),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             categories.forEach { category ->

@@ -204,8 +204,8 @@ fun PageLayout(ctx: PageContext, content: @Composable ColumnScope.() -> Unit) {
             val initScript = document.createElement("script")
             initScript.textContent =
                 """
-                window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
-  plausible.init()
+                              window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+                plausible.init()
                 """.trimIndent()
             element.appendChild(initScript)
         }
