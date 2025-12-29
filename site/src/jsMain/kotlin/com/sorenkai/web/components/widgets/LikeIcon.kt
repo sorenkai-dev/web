@@ -3,6 +3,7 @@ package com.sorenkai.web.components.widgets
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import com.sorenkai.web.api.ApiClient
+import com.sorenkai.web.api.WritingApi
 import com.sorenkai.web.components.data.model.writing.WritingEntry
 import com.varabyte.kobweb.compose.css.Cursor
 import com.varabyte.kobweb.compose.ui.Modifier
@@ -18,6 +19,7 @@ import kotlinx.browser.localStorage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.web.css.cssRem
+import org.koin.compose.koinInject
 
 @Composable
 fun LikeIcon(
@@ -27,6 +29,7 @@ fun LikeIcon(
     likeKey: String,
     writing: WritingEntry
 ) {
+    val writingApi = koinInject<WritingApi>()
     FaHeart(
         size = IconSize.LG,
         modifier = Modifier
@@ -41,10 +44,10 @@ fun LikeIcon(
                 // Optimistic UI update
                 if (newLiked) {
                     likes.value += 1
-                    scope.launch { ApiClient.like(writing.slug) }
+                    scope.launch { writingApi.like(writing.slug) }
                 } else {
                     likes.value = maxOf(0, likes.value - 1)
-                    scope.launch { ApiClient.unlike(writing.slug) }
+                    scope.launch { writingApi.unlike(writing.slug) }
                 }
             },
         style = if (liked.value) IconStyle.FILLED else IconStyle.OUTLINE
