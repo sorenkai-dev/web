@@ -24,87 +24,46 @@ object ApiClient {
         return headers
     }
 
-    private suspend fun apiRequest(path: String, method: String = "GET", body: dynamic = undefined): dynamic {
-        val url = buildUrl(path)
-        val headers = buildHeaders()
-
-        val init = RequestInit(
-            method = method,
-            headers = headers,
-            body = if (body != undefined) JSON.stringify(body) else undefined
-        )
-
-        val response: Response = window.fetch(url, init).await()
-        if (!response.ok) {
-            val status = response.status
-            val text = try {
-                response.text().await()
-            } catch (e: dynamic) {
-                ""
-            }
-            throw RuntimeException("HTTP $status for $url. Body: $text")
-        }
-
-        return try {
-            response.json().await()
-        } catch (e: dynamic) {
-            response.text().await()
-        }
-    }
-
-    suspend fun apiGet(path: String): dynamic = apiRequest(path, method = "GET")
-
-    suspend fun apiPost(path: String, body: dynamic = undefined): dynamic = apiRequest(path, method = "POST", body = body)
-
-    suspend fun <T> safeApiGet(path: String, parse: (String) -> T): ApiResponse<T> {
+    private suspend fun <T> request(
+        path: String,
+        method: String,
+        body: dynamic = undefined,
+        parse: (String) -> T
+    ): ApiResponse<T> {
         return try {
             val url = buildUrl(path)
-            val headers = buildHeaders() // include App Check when available
+            val headers = buildHeaders()
 
             val init = RequestInit(
-                method = "GET",
-                headers = headers
+                method = method,
+                headers = headers,
+                body = if (body != undefined) JSON.stringify(body) else undefined
             )
 
             val response: Response = window.fetch(url, init).await()
             val responseText = response.text().await()
 
             if (!response.ok) {
-                val status = response.status
-                return ApiResponse.HttpError(status.toInt(), if (responseText.isNotBlank()) responseText else "HTTP $status")
+                return ApiResponse.HttpError(response.status.toInt(), responseText.ifBlank { "HTTP ${response.status}" })
             }
 
-            val data = parse(responseText)
-            ApiResponse.Success(data)
+            ApiResponse.Success(parse(responseText))
         } catch (t: dynamic) {
             classifyError(t)
         }
     }
 
-    // --- Lightweight endpoint wrappers (anonymous) ---
-    // Reads
-    suspend fun fetchTags(): dynamic = apiGet("/v2/tags")
+    suspend fun <T> get(path: String, parse: (String) -> T): ApiResponse<T> =
+        request(path, "GET", parse = parse)
 
-    suspend fun fetchWritings(tag: String? = null, limit: Int? = null, offset: Int? = null): dynamic {
-        val params = org.w3c.dom.url.URLSearchParams()
-        if (!tag.isNullOrBlank()) params.append("tag", tag)
-        if (limit != null) params.append("limit", limit.toString())
-        if (offset != null) params.append("offset", offset.toString())
-        val query = params.toString()
-        val qs = if (query.isNotEmpty()) "?$query" else ""
-        return apiGet("/v2/writings$qs")
-    }
+    suspend fun <T> post(path: String, body: dynamic = undefined, parse: (String) -> T): ApiResponse<T> =
+        request(path, "POST", body = body, parse = parse)
 
-    // Counters
-    suspend fun incrementShare(slug: String) = apiPost("/v2/writings/$slug/share")
+    suspend fun <T> put(path: String, body: dynamic = undefined, parse: (String) -> T): ApiResponse<T> =
+        request(path, "PUT", body = body, parse = parse)
 
-    suspend fun like(slug: String) = apiPost("/v2/writings/$slug/like")
-
-    suspend fun unlike(slug: String) = apiPost("/v2/writings/$slug/unlike")
-
-    suspend fun incrementView(slug: String) = apiPost("/v2/writings/$slug/view")
-
-    suspend fun incrementSalesClick(slug: String) = apiPost("/v2/writings/$slug/click-sale")
+    suspend fun <T> delete(path: String, parse: (String) -> T): ApiResponse<T> =
+        request(path, "DELETE", parse = parse)
 
     private fun <T> classifyError(t: dynamic): ApiResponse<T> {
         console.error("Caught exception in API client:", t)

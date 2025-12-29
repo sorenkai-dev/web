@@ -4,7 +4,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class DiscussionsStatus {
-    VISIBLE, // normal
-    HIDDEN, // hidden from public, visible to admin
-    REMOVED, // removed content placeholder
+    VISIBLE,
+    HIDDEN_BY_REPORTS,
+    HIDDEN_BY_MODERATOR,
+    DELETED_BY_AUTHOR,
+    DELETED_BY_MODERATOR
 }
