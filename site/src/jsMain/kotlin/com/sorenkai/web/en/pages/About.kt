@@ -39,5 +39,3 @@ fun AboutPage() {
         AboutContent("en", breakpoint)
     }
 }
-
-

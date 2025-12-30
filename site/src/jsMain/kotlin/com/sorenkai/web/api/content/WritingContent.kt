@@ -9,11 +9,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import com.sorenkai.web.BlockquoteCardStyle
 import com.sorenkai.web.SpinnerStyle
-import com.sorenkai.web.api.ApiClient
 import com.sorenkai.web.api.ApiResponse
-import com.sorenkai.web.api.WritingApi
-import com.sorenkai.web.api.dto.WritingListResponse
+import com.sorenkai.web.api.dto.WritingDetailResponse
 import com.sorenkai.web.components.data.model.writing.WritingEntry
+import com.sorenkai.web.components.data.model.writing.repository.IWritingRepository
 import com.sorenkai.web.components.util.Res
 import com.sorenkai.web.components.widgets.BlockQuote
 import com.sorenkai.web.components.widgets.CategoryFilterBar
@@ -37,12 +36,10 @@ import com.varabyte.kobweb.silk.style.toModifier
 import kotlinx.browser.window
 import kotlinx.coroutines.await
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.Json
 import org.jetbrains.compose.web.css.cssRem
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.dom.P
 import org.jetbrains.compose.web.dom.Text
-import org.w3c.dom.url.URLSearchParams
 import org.koin.compose.koinInject
 
 private fun matchesCategory(writing: WritingEntry, category: String?): Boolean {
@@ -60,7 +57,7 @@ fun WritingContent(
     lang: String,
     openSlugFromUrl: String? = null
 ) {
-    val writingApi = koinInject<WritingApi>()
+    val repository = koinInject<IWritingRepository>()
     val data =
         when (lang) {
             "es" -> WritingDataEs
@@ -113,9 +110,9 @@ fun WritingContent(
 
     suspend fun toggleLike(writing: WritingEntry, liked: Boolean) {
         if (liked) {
-            writingApi.like(writing.slug)
+            repository.like(writing.slug)
         } else {
-            writingApi.unlike(writing.slug)
+            repository.unlike(writing.slug)
         }
     }
 
@@ -123,11 +120,11 @@ fun WritingContent(
     val scope = rememberCoroutineScope()
 
     fun handleViewsClick(writing: WritingEntry) {
-        scope.launch { writingApi.incrementView(writing.slug) }
+        scope.launch { repository.incrementView(writing.slug) }
     }
 
     fun handleSalesClick(writing: WritingEntry) {
-        scope.launch { writingApi.incrementSalesClick(writing.slug) }
+        scope.launch { repository.incrementSalesClick(writing.slug) }
     }
 
     fun handleLikeToggle(writing: WritingEntry, liked: Boolean) {
@@ -176,16 +173,16 @@ fun WritingContent(
             }
 
             if (didShare) {
-                writingApi.incrementShare(writing.slug)
+                repository.incrementShare(writing.slug)
             }
         }
     }
 
     LaunchedEffect(openSlugFromUrl) {
         if (!openSlugFromUrl.isNullOrBlank()) {
-            val articleRes = writingApi.getWriting(openSlugFromUrl)
+            val articleRes = repository.getWriting(openSlugFromUrl)
 
-            if (articleRes is ApiResponse.Success) {
+            if (articleRes is ApiResponse.Success<WritingDetailResponse>) {
                 val article = articleRes.data// 💡 SEO UPDATE: Insert the title change here!
                 window.document.title = "${article.title} | Writings"
                 modalTitle = article.title
@@ -198,7 +195,7 @@ fun WritingContent(
     LaunchedEffect(selectedTag) {
         // Fetch writings whenever the selected tag changes
         isLoading = true
-        result = writingApi.getWritings(tag = selectedTag)
+        result = repository.getWritings(tag = selectedTag)
         isLoading = false
 
         // AFTER writings load:

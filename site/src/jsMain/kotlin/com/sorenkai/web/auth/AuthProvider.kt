@@ -8,4 +8,6 @@ interface AuthProvider {
     fun isAuthenticated(): Boolean
 
     suspend fun getAccessToken(): String?
+
+    fun getUserId(): String?
 }

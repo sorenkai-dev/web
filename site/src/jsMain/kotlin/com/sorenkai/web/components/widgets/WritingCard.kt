@@ -129,4 +129,3 @@ private val writingText = mapOf(
         "shares" to "Compartidos"
     )
 )
-

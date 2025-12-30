@@ -7,15 +7,24 @@ import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalTime::class)
 interface IDiscussionRepository {
-    suspend fun getDiscussions(): List<DiscussionReadDto>
+    suspend fun getDiscussions(
+        writingSlug: String? = null,
+        parentId: String? = null,
+        pageSize: Int? = null,
+        cursor: String? = null
+    ): List<DiscussionReadDto>
 
     suspend fun createDiscussion(dto: DiscussionCreateDto): DiscussionReadDto
 
-    suspend fun deleteDiscussion(discussionId: String): DiscussionReadDto
+    suspend fun deleteDiscussion(discussionId: String): Boolean
 
     suspend fun reportDiscussion(discussionId: String): DiscussionReadDto
 
     suspend fun moderateDiscussion(discussionId: String, dto: DiscussionModerationDto): DiscussionReadDto
 
-    suspend fun editDiscussion(discussionId: String, body: String): DiscussionReadDto
+    suspend fun editDiscussion(discussionId: String, body: String): Boolean
+
+    suspend fun likeDiscussion(discussionId: String): DiscussionReadDto
+
+    suspend fun unlikeDiscussion(discussionId: String): DiscussionReadDto
 }

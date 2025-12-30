@@ -12,9 +12,9 @@ fun formatIsoDateToHumanReadable(isoDateString: String): String {
     // 1. Parse the ISO String to a Kotlinx-datetime Instant
     val options = js(
         """
-        { 
-            year: 'numeric', 
-            month: 'long', 
+        {
+            year: 'numeric',
+            month: 'long',
             day: 'numeric'
         }
         """
@@ -49,4 +49,3 @@ fun DateText(isoDateString: String) {
     val formattedDate = formatIsoDateToHumanReadable(isoDateString)
     Text("Last Published: $formattedDate") // Example usage in your Text Composable
 }
-

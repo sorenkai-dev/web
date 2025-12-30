@@ -1,3 +1,4 @@
+
 import com.varabyte.kobweb.gradle.application.util.configAsKobwebApplication
 import kotlinx.html.link
 import kotlinx.html.script
@@ -9,6 +10,7 @@ plugins {
     alias(libs.plugins.kobwebx.markdown)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ktlint)
+    alias(libs.plugins.spotless)
 }
 
 group = "com.sorenkai.web"
@@ -142,6 +144,20 @@ kotlin {
             exclude { entry ->
                 entry.file.path.contains("build/generated")
             }
+        }
+    }
+    spotless {
+        kotlin {
+            target("src/**/*.kt")
+            ktlint()
+            trimTrailingWhitespace()
+            endWithNewline()
+        }
+        kotlinGradle {
+            target("**/*.gradle.kts")
+            ktlint()
+            trimTrailingWhitespace()
+            endWithNewline()
         }
     }
 }

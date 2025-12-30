@@ -10,7 +10,9 @@ import androidx.compose.runtime.setValue
 import com.sorenkai.web.SpinnerStyle
 import com.sorenkai.web.api.ApiClient
 import com.sorenkai.web.api.ApiResponse
-import com.sorenkai.web.api.WritingApi
+import com.sorenkai.web.api.dto.WritingDetailResponse
+import com.sorenkai.web.components.data.model.writing.WritingEntry
+import com.sorenkai.web.components.data.model.writing.repository.IWritingRepository
 import com.sorenkai.web.components.util.Res
 import com.sorenkai.web.util.renderMarkdown
 import com.varabyte.kobweb.compose.foundation.layout.Arrangement
@@ -37,7 +39,7 @@ fun ArticleModal(
     slug: String,
     lang: String
 ) {
-    val writingApi = koinInject<WritingApi>()
+    val repository = koinInject<IWritingRepository>()
     val text = articleText[lang] ?: articleText["en"]!!
     var article by remember { mutableStateOf<String?>(null) }
     var isLoading by remember { mutableStateOf(true) }
@@ -45,17 +47,11 @@ fun ArticleModal(
     LaunchedEffect(slug) {
         try {
             isLoading = true
-            val json = Json { ignoreUnknownKeys = true }
-            val result = ApiClient.get("/v2/writings/$slug") {
-                val root = json.parseToJsonElement(it).jsonObject
-                // Extract only the "content" field to avoid strict DTO requirements on optional fields
-                root["content"]?.jsonPrimitive?.content ?: ""
-            }
+            val result = repository.getWriting(slug)
 
             article = when (result) {
-                is ApiResponse.Success<String> -> {
-                    // Success! We parsed content as a String directly from JSON.
-                    result.data
+                is ApiResponse.Success<WritingDetailResponse> -> {
+                    result.data.content
                 }
                 is ApiResponse.HttpError ->
                     "${text["httpErrorPrefix"]} HTTP ${result.code}. ${result.message}"
