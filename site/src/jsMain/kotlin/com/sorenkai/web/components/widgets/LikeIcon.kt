@@ -3,9 +3,8 @@ package com.sorenkai.web.components.widgets
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import com.sorenkai.web.api.ApiClient
-import com.sorenkai.web.api.WritingApi
 import com.sorenkai.web.components.data.model.writing.WritingEntry
-import com.varabyte.kobweb.compose.css.Cursor
+import com.sorenkai.web.components.data.model.writing.repository.IWritingRepository
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.graphics.Colors
 import com.varabyte.kobweb.compose.ui.modifiers.color
@@ -29,13 +28,13 @@ fun LikeIcon(
     likeKey: String,
     writing: WritingEntry
 ) {
-    val writingApi = koinInject<WritingApi>()
+    val repository = koinInject<IWritingRepository>()
     FaHeart(
         size = IconSize.LG,
         modifier = Modifier
             .margin(1.cssRem)
             .color(color = Colors.Red)
-            .cursor(Cursor.Pointer)
+            .cursor(com.varabyte.kobweb.compose.css.Cursor.Pointer)
             .onClick {
                 val newLiked = !liked.value
                 liked.value = newLiked
@@ -44,10 +43,10 @@ fun LikeIcon(
                 // Optimistic UI update
                 if (newLiked) {
                     likes.value += 1
-                    scope.launch { writingApi.like(writing.slug) }
+                    scope.launch { repository.like(writing.slug) }
                 } else {
                     likes.value = maxOf(0, likes.value - 1)
-                    scope.launch { writingApi.unlike(writing.slug) }
+                    scope.launch { repository.unlike(writing.slug) }
                 }
             },
         style = if (liked.value) IconStyle.FILLED else IconStyle.OUTLINE

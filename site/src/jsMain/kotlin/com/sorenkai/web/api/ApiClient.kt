@@ -1,6 +1,6 @@
 package com.sorenkai.web.api
 
-import com.sorenkai.web.auth.Auth
+import com.sorenkai.web.auth.AuthProvider
 import com.sorenkai.web.components.util.Constants.BASE_URL
 import kotlin.js.Promise
 import kotlinx.browser.window
@@ -9,7 +9,7 @@ import org.w3c.fetch.Headers
 import org.w3c.fetch.RequestInit
 import org.w3c.fetch.Response
 
-object ApiClient {
+class ApiClient(private val auth: AuthProvider) {
     private fun buildUrl(path: String): String = if (path.startsWith("http")) path else BASE_URL + path
 
     private suspend fun buildHeaders(): Headers {
@@ -17,14 +17,17 @@ object ApiClient {
         headers.append("Accept", "application/json")
         headers.append("Content-Type", "application/json")
 
-        Auth.instance.getAccessToken()?.let { token ->
+        auth.getAccessToken()?.let { token ->
             headers.append("Authorization", "Bearer $token")
         }
 
         return headers
     }
 
-    private suspend fun <T> request(
+    suspend fun <T> patch(path: String, body: dynamic = undefined, parse: (String) -> T): ApiResponse<T> =
+        request(path, "PATCH", body = body, parse = parse)
+
+    suspend fun <T> request(
         path: String,
         method: String,
         body: dynamic = undefined,

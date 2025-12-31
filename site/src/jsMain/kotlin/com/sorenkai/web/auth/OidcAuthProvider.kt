@@ -45,6 +45,13 @@ external object Oidc {
         val refreshToken: String?
         val idToken: String?
         val expiresAt: Double? // Unix timestamp in seconds
+        val profile: UserProfile
+    }
+
+    interface UserProfile {
+        val sub: String
+        val email: String?
+        val name: String?
     }
 
     interface SigninRedirectArgs {
@@ -132,6 +139,10 @@ class OidcAuthProvider(
         }
 
         return user?.accessToken
+    }
+
+    override fun getUserId(): String? {
+        return cachedUser?.profile?.sub
     }
 
     private fun isExpired(user: Oidc.User): Boolean {

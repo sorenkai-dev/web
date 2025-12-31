@@ -1,7 +1,7 @@
 package com.sorenkai.web.components.widgets
 
 import androidx.compose.runtime.Composable
-import com.sorenkai.web.auth.Auth
+import com.sorenkai.web.auth.AuthProvider
 import com.sorenkai.web.toSitePalette
 import com.varabyte.kobweb.compose.css.Cursor
 import com.varabyte.kobweb.compose.foundation.layout.Column
@@ -16,11 +16,13 @@ import com.varabyte.kobweb.silk.theme.colors.ColorMode
 import org.jetbrains.compose.web.css.cssRem
 import org.jetbrains.compose.web.dom.Span
 import org.jetbrains.compose.web.dom.Text
+import org.koin.compose.koinInject
 
 @Composable
 fun SettingsMenu(
     lang: String,
 ) {
+    val auth = koinInject<AuthProvider>()
     Column(Modifier
         .fillMaxWidth()
         .color(ColorMode.current.toSitePalette().brand.accent)
@@ -28,13 +30,12 @@ fun SettingsMenu(
     ) {
         ThemeMenu(lang)
         LanguageMenu()
-        AuthMenu(lang)
+        AuthMenu(lang, auth)
     }
 }
 
 @Composable
-private fun AuthMenu(lang: String) {
-    val auth = Auth.instance
+private fun AuthMenu(lang: String, auth: AuthProvider) {
     val isAuthenticated = auth.isAuthenticated()
 
     Column(Modifier.gap(0.5.cssRem)) {

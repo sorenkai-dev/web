@@ -130,4 +130,3 @@ private val labels = mapOf(
         "settings" to "Configuración"
     )
 )
-

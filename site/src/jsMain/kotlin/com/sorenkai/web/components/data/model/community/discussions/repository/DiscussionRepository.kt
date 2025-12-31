@@ -2,7 +2,7 @@ package com.sorenkai.web.components.data.model.community.discussions.repository
 
 import com.sorenkai.web.api.ApiResponse
 import com.sorenkai.web.api.DiscussionApi
-import com.sorenkai.web.auth.Auth
+import com.sorenkai.web.auth.AuthProvider
 import com.sorenkai.web.components.data.model.auth.UID
 import com.sorenkai.web.components.data.model.community.discussions.Discussion
 import com.sorenkai.web.components.data.model.community.discussions.Kind
@@ -18,10 +18,11 @@ import kotlin.time.ExperimentalTime
 @OptIn(ExperimentalTime::class)
 class DiscussionRepository(
     private val service: DiscussionService,
-    private val api: DiscussionApi
+    private val api: DiscussionApi,
+    private val auth: AuthProvider
 ) : IDiscussionRepository {
     private fun getCurrentUser(): UID? {
-        return if (Auth.instance.isAuthenticated()) "current-user-id" else null // placeholder
+        return auth.getUserId()
     }
 
     private fun isModerator(): Boolean {
@@ -36,11 +37,16 @@ class DiscussionRepository(
         return if (current.kind == Kind.POST) current else null
     }
 
-    override suspend fun getDiscussions(): List<DiscussionReadDto> {
+    override suspend fun getDiscussions(
+        writingSlug: String?,
+        parentId: String?,
+        pageSize: Int?,
+        cursor: String?
+    ): List<DiscussionReadDto> {
         val currentUserId = getCurrentUser()
         val isMod = isModerator()
 
-        val res = api.getDiscussions()
+        val res = api.getDiscussions(writingSlug, parentId, pageSize, cursor)
         if (res !is ApiResponse.Success) return emptyList()
 
         val discussions = res.data
@@ -68,29 +74,18 @@ class DiscussionRepository(
         return mapToReadDto(res.data)
     }
 
-    override suspend fun deleteDiscussion(discussionId: String): DiscussionReadDto {
-        val userId = getCurrentUser() ?: throw IllegalStateException("Must be authenticated")
-        val isMod = isModerator()
+    override suspend fun deleteDiscussion(discussionId: String): Boolean {
+        getCurrentUser() ?: throw IllegalStateException("Must be authenticated")
+        // The backend `deleteOwn` handles ownership check.
 
-        // We need to fetch it first to check ownership if not mod
-        val allRes = api.getDiscussions()
-        if (allRes !is ApiResponse.Success) throw RuntimeException("Failed to fetch discussions")
-        val discussion = allRes.data.find { it.id == discussionId } ?: throw IllegalArgumentException("Not found")
-
-        val isAuthor = discussion.userId == userId
-        if (!isAuthor && !isMod) {
-            throw IllegalStateException("Not authorized to delete")
-        }
-
-        val deleteDto = DiscussionDeleteDto(discussionId = discussionId)
-        val res = api.deleteDiscussion(discussionId, deleteDto)
+        val res = api.deleteDiscussion(discussionId)
         if (res !is ApiResponse.Success) throw RuntimeException("Failed to delete discussion")
 
-        return mapToReadDto(res.data, allRes.data)
+        return res.data
     }
 
     override suspend fun reportDiscussion(discussionId: String): DiscussionReadDto {
-        val userId = getCurrentUser() ?: throw IllegalStateException("Must be authenticated")
+        getCurrentUser() ?: throw IllegalStateException("Must be authenticated")
 
         val reportDto = DiscussionReportDto(discussionId = discussionId, reason = "Reported by user")
         val res = api.reportDiscussion(discussionId, reportDto)
@@ -109,11 +104,29 @@ class DiscussionRepository(
         return mapToReadDto(res.data)
     }
 
-    override suspend fun editDiscussion(discussionId: String, body: String): DiscussionReadDto {
+    override suspend fun editDiscussion(discussionId: String, body: String): Boolean {
         getCurrentUser() ?: throw IllegalStateException("Must be authenticated")
 
         val res = api.editDiscussion(discussionId, body)
         if (res !is ApiResponse.Success) throw RuntimeException("Failed to edit discussion")
+
+        return res.data
+    }
+
+    override suspend fun likeDiscussion(discussionId: String): DiscussionReadDto {
+        getCurrentUser() ?: throw IllegalStateException("Must be authenticated")
+
+        val res = api.like(discussionId)
+        if (res !is ApiResponse.Success) throw RuntimeException("Failed to like discussion")
+
+        return mapToReadDto(res.data)
+    }
+
+    override suspend fun unlikeDiscussion(discussionId: String): DiscussionReadDto {
+        getCurrentUser() ?: throw IllegalStateException("Must be authenticated")
+
+        val res = api.unlike(discussionId)
+        if (res !is ApiResponse.Success) throw RuntimeException("Failed to unlike discussion")
 
         return mapToReadDto(res.data)
     }
@@ -122,7 +135,10 @@ class DiscussionRepository(
         val currentUserId = getCurrentUser()
         val isMod = isModerator()
 
-        val discussions = allDiscussions ?: (api.getDiscussions() as? ApiResponse.Success)?.data ?: emptyList()
+        val discussions = allDiscussions ?: (api.getDiscussions(
+            writingSlug = discussion.writingSlug,
+            parentId = discussion.parentId
+        ) as? ApiResponse.Success)?.data ?: emptyList()
         val discussionMap = discussions.associateBy { it.id }
         val rootPost = getRootPost(discussion, discussionMap)
         val rootPostIsVisible = rootPost?.isVisible ?: true

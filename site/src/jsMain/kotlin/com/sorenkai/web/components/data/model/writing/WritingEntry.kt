@@ -20,5 +20,3 @@ data class WritingEntry(
     val updatedAt: String? = null,
     val publishedAt: String? = null
 )
-
-
