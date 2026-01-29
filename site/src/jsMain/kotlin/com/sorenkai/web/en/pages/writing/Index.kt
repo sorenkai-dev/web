@@ -24,7 +24,7 @@ fun initWritingEnIndexPage(ctx: InitRouteContext) {
     )
 }
 
-@Page(routeOverride = "/en/writing/index")
+@Page(routeOverride = "/en/writing/")
 @Composable
 fun WritingEnIndexPage(ctx: PageContext) {
 
