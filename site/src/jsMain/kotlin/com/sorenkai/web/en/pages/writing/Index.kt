@@ -10,6 +10,8 @@ import com.varabyte.kobweb.core.data.add
 import com.varabyte.kobweb.core.init.InitRoute
 import com.varabyte.kobweb.core.init.InitRouteContext
 import kotlinx.browser.window
+import org.jetbrains.compose.web.dom.H1
+import org.jetbrains.compose.web.dom.Text
 
 @InitRoute
 fun initWritingEnIndexPage(ctx: InitRouteContext) {
@@ -25,12 +27,16 @@ fun initWritingEnIndexPage(ctx: InitRouteContext) {
 @Page(routeOverride = "/en/writing/index")
 @Composable
 fun WritingEnIndexPage(ctx: PageContext) {
+
+    val path = window.location.pathname
+    val id = path.substringAfterLast("/")
     LaunchedEffect(Unit) {
-        val path = window.location.pathname
-        val id = path.substringAfterLast("/")
-        WritingState.pedingId = id
+        WritingState.pendingId = id
         console.log("id: $id")
         console.log("path: $path")
-        ctx.router.navigateTo("/en/writings")
+//        ctx.router.navigateTo("/en/writings")
+    }
+    H1() {
+        Text("You have arrived at the writing index page with id $id which is assigned to WritingState: ${WritingState.pendingId}")
     }
 }
