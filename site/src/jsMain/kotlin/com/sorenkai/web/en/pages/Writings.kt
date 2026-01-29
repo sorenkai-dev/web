@@ -54,8 +54,7 @@ fun WritingsPage() {
         WritingContent(
             breakpoint,
             "en",
-            slugFromQuery,
-            idFromPath
+            slugFromQuery
         )
     }
 }
