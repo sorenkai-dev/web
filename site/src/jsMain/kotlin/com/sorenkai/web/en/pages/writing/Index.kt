@@ -28,8 +28,9 @@ fun WritingEnIndexPage(ctx: PageContext) {
     LaunchedEffect(Unit) {
         val path = window.location.pathname
         val id = path.substringAfterLast("/")
-        console.log("id: $id")
         WritingState.pedingId = id
-//        ctx.router.navigateTo("/en/writings")
+        console.log("id: $id")
+        console.log("path: $path")
+        ctx.router.navigateTo("/en/writings")
     }
 }
