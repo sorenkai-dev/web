@@ -30,6 +30,6 @@ fun WritingEnIndexPage(ctx: PageContext) {
         val id = path.substringAfterLast("/")
         console.log("id: $id")
         WritingState.pedingId = id
-        ctx.router.navigateTo("/en/writings")
+//        ctx.router.navigateTo("/en/writings")
     }
 }
