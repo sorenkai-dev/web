@@ -1,3 +1,4 @@
+
 import com.varabyte.kobweb.gradle.application.util.configAsKobwebApplication
 import kotlinx.html.link
 import kotlinx.html.script
@@ -9,6 +10,7 @@ plugins {
     alias(libs.plugins.kobwebx.markdown)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ktlint)
+    alias(libs.plugins.spotless)
 }
 
 group = "com.sorenkai.web"
@@ -105,12 +107,20 @@ kotlin {
             // Uncomment the following if you want access to a large set of font-awesome icons:
             // implementation(libs.silk.icons.fa)
             implementation(libs.kobwebx.markdown)
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
             implementation(libs.silk.icons.fa)
             implementation(libs.kotlin.js)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.jetbrains.markdown)
-            implementation(libs.kotlinx.datetime)
             implementation(npm("oidc-client-ts", "3.4.1"))
+        }
+
+        val jsTest by getting {
+            dependencies {
+                implementation(kotlin("test-js"))
+                implementation(libs.kotlinx.coroutines.test)
+            }
         }
 
         // Uncomment the following if you pass `includeServer = true` into the `configAsKobwebApplication` call.
@@ -140,6 +150,20 @@ kotlin {
             exclude { entry ->
                 entry.file.path.contains("build/generated")
             }
+        }
+    }
+    spotless {
+        kotlin {
+            target("src/**/*.kt")
+            ktlint()
+            trimTrailingWhitespace()
+            endWithNewline()
+        }
+        kotlinGradle {
+            target("**/*.gradle.kts")
+            ktlint()
+            trimTrailingWhitespace()
+            endWithNewline()
         }
     }
 }
