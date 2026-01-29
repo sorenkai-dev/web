@@ -92,11 +92,11 @@ fun WritingContent(
     }
 
     LaunchedEffect(Unit) {
-        console.log("pedingId: ${WritingState.pedingId}")
-        WritingState.pedingId?.let{ id ->
+        console.log("pedingId: ${WritingState.pendingId}")
+        WritingState.pendingId?.let{ id ->
             modalId = id
             showModal = true
-            WritingState.pedingId = null
+            WritingState.pendingId = null
         }
     }
 
