@@ -1,7 +1,6 @@
 package com.sorenkai.web.components.widgets
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import com.varabyte.kobweb.compose.foundation.layout.Arrangement
 import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.compose.foundation.layout.Row
@@ -18,13 +17,13 @@ import org.jetbrains.compose.web.dom.Text
 fun StatsRow(
     breakpoint: Breakpoint,
     likesText: String,
-    likes: MutableState<Int>,
+    likes: Int,
     viewsText: String,
-    views: MutableState<Int>,
+    views: Int,
     commentsText: String,
     comments: Int,
     shareText: String,
-    shares: MutableState<Int>,
+    shares: Int,
 ) {
     if (breakpoint < Breakpoint.SM) {
         Row (
@@ -36,10 +35,10 @@ fun StatsRow(
         ) {
             Column (
                 horizontalAlignment = Alignment.Start
-            ) { Text("$likesText: ${likes.value}") }
+            ) { Text("$likesText: $likes") }
             Column (
                 horizontalAlignment = Alignment.End
-            ) { Text("$shareText: ${shares.value}") }
+            ) { Text("$shareText: $shares") }
         }
         Row (
             modifier = Modifier
@@ -50,7 +49,7 @@ fun StatsRow(
         ) {
             Column (
                 horizontalAlignment = Alignment.Start
-            ) { Text("$viewsText: ${views.value}") }
+            ) { Text("$viewsText: $views") }
             Column (
                 horizontalAlignment = Alignment.End
             ) { Text("$commentsText: $comments") }
@@ -62,11 +61,10 @@ fun StatsRow(
                 .padding(leftRight = 2.cssRem),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Column { Text("$likesText: ${likes.value}") }
-            Column { Text("$viewsText: ${views.value}") }
+            Column { Text("$likesText: $likes") }
+            Column { Text("$viewsText: $views") }
             Column { Text("$commentsText: $comments") }
-            Column { Text("$shareText: ${shares.value}") }
+            Column { Text("$shareText: $shares") }
         }
     }
-
 }

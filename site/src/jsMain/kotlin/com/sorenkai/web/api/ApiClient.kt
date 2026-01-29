@@ -1,24 +1,22 @@
 package com.sorenkai.web.api
 
-import com.sorenkai.web.auth.AuthProvider
+import com.sorenkai.web.auth.IAuthProvider
 import com.sorenkai.web.components.util.Constants.BASE_URL
-import kotlin.js.Promise
 import kotlinx.browser.window
 import kotlinx.coroutines.await
 import org.w3c.fetch.Headers
 import org.w3c.fetch.RequestInit
 import org.w3c.fetch.Response
 
-class ApiClient(private val auth: AuthProvider) {
+class ApiClient(private val auth: IAuthProvider) {
     private fun buildUrl(path: String): String = if (path.startsWith("http")) path else BASE_URL + path
 
     private suspend fun buildHeaders(): Headers {
         val headers = Headers()
         headers.append("Accept", "application/json")
         headers.append("Content-Type", "application/json")
-
         auth.getAccessToken()?.let { token ->
-            headers.append("Authorization", "Bearer $token")
+            headers.set("Authorization", "Bearer $token")
         }
 
         return headers
@@ -40,7 +38,10 @@ class ApiClient(private val auth: AuthProvider) {
             val init = RequestInit(
                 method = method,
                 headers = headers,
-                body = if (body != undefined) JSON.stringify(body) else undefined
+                body = if (body != undefined) {
+                    if (js("typeof body === 'string'") as Boolean) body
+                    else JSON.stringify(body)
+                } else undefined
             )
 
             val response: Response = window.fetch(url, init).await()

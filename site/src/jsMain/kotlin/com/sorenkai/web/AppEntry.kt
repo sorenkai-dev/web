@@ -2,6 +2,7 @@ package com.sorenkai.web
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import com.sorenkai.web.auth.Auth
 import com.varabyte.kobweb.compose.css.ScrollBehavior
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.fillMaxHeight
@@ -37,6 +38,9 @@ fun initStyles(ctx: InitSilkContext) {
 @App
 @Composable
 fun AppEntry(content: @Composable () -> Unit) {
+    LaunchedEffect(Unit) {
+        Auth.oidcInstance.ensureHydrated()
+    }
     SilkApp {
         val colorMode = ColorMode.current
         LaunchedEffect(colorMode) {

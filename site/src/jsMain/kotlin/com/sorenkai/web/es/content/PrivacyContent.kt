@@ -2,7 +2,7 @@ package com.sorenkai.web.es.content
 
 import androidx.compose.runtime.Composable
 import com.sorenkai.web.components.widgets.LeadParagraph
-import com.sorenkai.web.components.widgets.SectionHeader
+import com.sorenkai.web.components.widgets.header.SectionHeader
 import com.sorenkai.web.components.widgets.SectionParagraph
 import com.sorenkai.web.toSitePalette
 import com.varabyte.kobweb.compose.css.FontWeight

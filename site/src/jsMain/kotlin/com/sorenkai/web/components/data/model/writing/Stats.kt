@@ -6,7 +6,8 @@ import kotlinx.serialization.Serializable
 data class Stats(
     val commentCount: Int = 0,
     val viewCount: Int = 0,
-    val likeCount: Int = 0,
+    val likesCount: Int = 0,
+    val isLikedByMe: Boolean = false,
     val shareCount: Int = 0,
     val salesClicks: Int = 0
 )

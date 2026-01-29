@@ -1,8 +1,8 @@
 package com.sorenkai.web.di
 
 import com.sorenkai.web.api.ReportApi
-import com.sorenkai.web.components.data.model.report.repository.IReportRepository
-import com.sorenkai.web.components.data.model.report.repository.ReportRepository
+import com.sorenkai.web.repository.interfaces.IReportRepository
+import com.sorenkai.web.repository.ReportRepository
 import org.koin.dsl.module
 
 val reportsModule = module {

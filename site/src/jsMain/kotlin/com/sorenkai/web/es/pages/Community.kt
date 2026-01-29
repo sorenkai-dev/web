@@ -1,7 +1,7 @@
 package com.sorenkai.web.es.pages
 
 import androidx.compose.runtime.Composable
-import com.sorenkai.web.api.content.CommunityContent
+import com.sorenkai.web.content.CommunityContent
 import com.sorenkai.web.components.layouts.LocalBreakpoint
 import com.sorenkai.web.components.layouts.PageLayoutData
 import com.varabyte.kobweb.compose.foundation.layout.Column

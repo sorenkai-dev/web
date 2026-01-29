@@ -1,7 +1,7 @@
 package com.sorenkai.web.api
 
 import com.sorenkai.web.components.data.model.report.Report
-import com.sorenkai.web.components.data.model.report.dto.ReportCreateRequest
+import com.sorenkai.web.api.dto.reports.ReportCreateRequest
 import kotlinx.serialization.json.Json
 
 class ReportApi(private val apiClient: ApiClient) {

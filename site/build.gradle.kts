@@ -113,8 +113,14 @@ kotlin {
             implementation(libs.kotlin.js)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.jetbrains.markdown)
-            implementation(libs.kotlinx.datetime)
             implementation(npm("oidc-client-ts", "3.4.1"))
+        }
+
+        val jsTest by getting {
+            dependencies {
+                implementation(kotlin("test-js"))
+                implementation(libs.kotlinx.coroutines.test)
+            }
         }
 
         // Uncomment the following if you pass `includeServer = true` into the `configAsKobwebApplication` call.

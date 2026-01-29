@@ -1,10 +1,10 @@
 package com.sorenkai.web.api
 
-import com.sorenkai.web.components.data.model.community.discussions.Discussion
-import com.sorenkai.web.components.data.model.community.discussions.dto.DiscussionCreateDto
-import com.sorenkai.web.components.data.model.community.discussions.dto.DiscussionDeleteDto
-import com.sorenkai.web.components.data.model.community.discussions.dto.DiscussionModerationDto
-import com.sorenkai.web.components.data.model.community.discussions.dto.DiscussionReportDto
+import com.sorenkai.web.api.dto.discussions.DiscussionCreateDto
+import com.sorenkai.web.api.dto.discussions.DiscussionDto
+import com.sorenkai.web.api.dto.discussions.DiscussionModerationDto
+import com.sorenkai.web.api.dto.discussions.DiscussionReportDto
+import com.sorenkai.web.components.data.model.community.discussions.DiscussionOrder
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.decodeFromJsonElement
@@ -15,16 +15,20 @@ class DiscussionApi(private val apiClient: ApiClient) {
     private val json = Json { ignoreUnknownKeys = true }
 
     suspend fun getDiscussions(
-        writingSlug: String? = null,
+        lang: String,
+        writingId: String? = null,
         parentId: String? = null,
         pageSize: Int? = null,
-        cursor: String? = null
-    ): ApiResponse<List<Discussion>> {
+        cursor: String? = null,
+        order: DiscussionOrder? = null
+    ): ApiResponse<List<DiscussionDto>> {
         val params = mutableListOf<String>()
-        writingSlug?.let { params.add("writingSlug=$it") }
+        params.add("lang=$lang")
+        writingId?.let { params.add("writingId=$it") }
         parentId?.let { params.add("parentId=$it") }
         pageSize?.let { params.add("pageSize=$it") }
         cursor?.let { params.add("cursor=$it") }
+        params.add("order=${order ?: DiscussionOrder.NEWEST}")
 
         val query = if (params.isNotEmpty()) "?" + params.joinToString("&") else ""
         return apiClient.get("/v2/community/discussions$query") {
@@ -35,34 +39,31 @@ class DiscussionApi(private val apiClient: ApiClient) {
             // So it returns { "items": [...], "nextCursor": "..." }
             val jsonElement = json.parseToJsonElement(it).jsonObject
             val itemsElement = jsonElement["items"] ?: throw Exception("Missing items in response")
-            json.decodeFromJsonElement<List<Discussion>>(itemsElement)
+            json.decodeFromJsonElement<List<DiscussionDto>>(itemsElement)
         }
     }
 
-    suspend fun createDiscussion(dto: DiscussionCreateDto): ApiResponse<Discussion> =
-        apiClient.post("/v2/community/discussions", body = dto) { json.decodeFromString(it) }
+    suspend fun createDiscussion(dto: DiscussionCreateDto): ApiResponse<DiscussionDto> =
+        apiClient.post("/v2/community/discussions", body = json.encodeToString(DiscussionCreateDto.serializer(), dto)) { json.decodeFromString(it) }
 
-    suspend fun deleteDiscussion(id: String): ApiResponse<Boolean> =
-        apiClient.delete("/v2/community/discussions/$id") {
-            val jsonElement = json.parseToJsonElement(it).jsonObject
-            jsonElement["ok"]?.jsonPrimitive?.booleanOrNull ?: false
-        }
+    suspend fun deleteDiscussion(id: String): ApiResponse<DiscussionDto> =
+        apiClient.delete("/v2/community/discussions/$id") { json.decodeFromString(it) }
 
-    suspend fun reportDiscussion(id: String, dto: DiscussionReportDto): ApiResponse<Discussion> =
+    suspend fun restoreDiscussion(id: String): ApiResponse<DiscussionDto> =
+        apiClient.post("/v2/community/discussions/$id/restore") { json.decodeFromString(it) }
+
+    suspend fun reportDiscussion(id: String, dto: DiscussionReportDto): ApiResponse<DiscussionDto> =
         apiClient.post("/v2/community/discussions/$id/report", body = dto) { json.decodeFromString(it) }
 
-    suspend fun moderateDiscussion(id: String, dto: DiscussionModerationDto): ApiResponse<Discussion> =
+    suspend fun moderateDiscussion(id: String, dto: DiscussionModerationDto): ApiResponse<DiscussionDto> =
         apiClient.post("/v2/community/discussions/$id/moderate", body = dto) { json.decodeFromString(it) }
 
-    suspend fun editDiscussion(id: String, body: String): ApiResponse<Boolean> =
-        apiClient.patch("/v2/community/discussions/$id", body = js("({ body: body })")) {
-            val jsonElement = json.parseToJsonElement(it).jsonObject
-            jsonElement["ok"]?.jsonPrimitive?.booleanOrNull ?: false
-        }
+    suspend fun editDiscussion(id: String, body: String): ApiResponse<DiscussionDto> =
+        apiClient.patch("/v2/community/discussions/$id", body = js("({ body: body })")) { json.decodeFromString(it) }
 
-    suspend fun like(id: String): ApiResponse<Discussion> =
+    suspend fun like(id: String): ApiResponse<DiscussionDto> =
         apiClient.post("/v2/community/discussions/$id/like") { json.decodeFromString(it) }
 
-    suspend fun unlike(id: String): ApiResponse<Discussion> =
+    suspend fun unlike(id: String): ApiResponse<DiscussionDto> =
         apiClient.delete("/v2/community/discussions/$id/like") { json.decodeFromString(it) }
 }

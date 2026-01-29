@@ -15,6 +15,7 @@ import com.varabyte.kobweb.silk.theme.colors.palette.color
  *   but just a little.
  */
 class SitePalette(
+    val background: Color,
     val nearBackground: Color,
     val cobweb: Color,
     val brand: Brand,
@@ -43,6 +44,7 @@ class SitePalette(
 
 object SitePalettes {
     val light = SitePalette(
+        background = Color.rgb(0xFAF9F6),
         nearBackground = Color.rgb(0xF5F3EB), // cream off-white
         cobweb = Colors.LightGray,
         brand = SitePalette.Brand(
@@ -68,6 +70,7 @@ object SitePalettes {
         )
     )
     val dark = SitePalette(
+        background = Color.rgb(0x06080B),
         nearBackground = Color.rgb(0x1A1A1A), // deep near-black
         cobweb = Colors.LightGray.inverted(),
         brand = SitePalette.Brand(

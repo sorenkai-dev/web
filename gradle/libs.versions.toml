@@ -7,6 +7,7 @@ kotlinx-datetime = "0.7.1-0.6.x-compat"
 kotlinx-serialization = "1.9.0"
 jetbrains-markdown = "0.7.3"
 ktlint = "14.0.1"
+material3 = "1.4.0"
 spotless = "8.1.0"
 
 [libraries]
@@ -27,7 +28,7 @@ kotlin-js = { module = "org.jetbrains.kotlin:kotlin-stdlib-js", version.ref = "k
 kotlinx-serialization-json     = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 jetbrains-markdown = { module = "org.jetbrains:markdown", version.ref = "jetbrains-markdown"}
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
-
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version = "1.10.1" }
 
 [plugins]
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
