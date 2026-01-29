@@ -92,6 +92,7 @@ fun WritingContent(
     }
 
     LaunchedEffect(Unit) {
+        console.log("pedingId: ${WritingState.pedingId}")
         WritingState.pedingId?.let{ id ->
             modalId = id
             showModal = true
