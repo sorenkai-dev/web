@@ -1,7 +1,7 @@
 package com.sorenkai.web.api
 
-import com.sorenkai.web.api.dto.WritingDetailResponse
-import com.sorenkai.web.api.dto.WritingListResponse
+import com.sorenkai.web.api.dto.writings.WritingDetailResponse
+import com.sorenkai.web.api.dto.writings.WritingListResponse
 import com.sorenkai.web.components.data.model.writing.WritingEntry
 import kotlinx.serialization.json.Json
 
@@ -28,23 +28,28 @@ class WritingApi(private val apiClient: ApiClient) {
         }
     }
 
-    suspend fun getWriting(slug: String): ApiResponse<WritingDetailResponse> =
-        apiClient.get("/v2/writings/$slug") {
+    suspend fun getWriting(id: String): ApiResponse<WritingDetailResponse> =
+        apiClient.get("/v2/writings/$id") {
             json.decodeFromString<WritingDetailResponse>(it)
         }
 
-    suspend fun incrementShare(slug: String): ApiResponse<Unit> =
-        apiClient.post("/v2/writings/$slug/share") { Unit }
+    suspend fun resolveSlug(slug: String): ApiResponse<WritingDetailResponse> =
+        apiClient.get("/v2/writings?slug=$slug") {
+            json.decodeFromString<WritingDetailResponse>(it)
+        }
 
-    suspend fun like(slug: String): ApiResponse<Unit> =
-        apiClient.post("/v2/writings/$slug/like") { Unit }
+    suspend fun incrementShare(id: String): ApiResponse<Unit> =
+        apiClient.post("/v2/writings/$id/share") { Unit }
 
-    suspend fun unlike(slug: String): ApiResponse<Unit> =
-        apiClient.post("/v2/writings/$slug/unlike") { Unit }
+    suspend fun like(id: String): ApiResponse<Unit> =
+        apiClient.post("/v2/writings/$id/like") { Unit }
 
-    suspend fun incrementView(slug: String): ApiResponse<Unit> =
-        apiClient.post("/v2/writings/$slug/view") { Unit }
+    suspend fun unlike(id: String): ApiResponse<Unit> =
+        apiClient.post("/v2/writings/$id/unlike") { Unit }
 
-    suspend fun incrementSalesClick(slug: String): ApiResponse<Unit> =
-        apiClient.post("/v2/writings/$slug/click-sale") { Unit }
+    suspend fun incrementView(id: String): ApiResponse<Unit> =
+        apiClient.post("/v2/writings/$id/view") { Unit }
+
+    suspend fun incrementSalesClick(id: String): ApiResponse<Unit> =
+        apiClient.post("/v2/writings/$id/click-sale") { Unit }
 }

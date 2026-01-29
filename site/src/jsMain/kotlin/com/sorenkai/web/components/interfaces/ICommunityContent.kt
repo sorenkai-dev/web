@@ -8,7 +8,5 @@ interface ICommunityContent {
     val privacyLink: String
     val guidelinesLink: String
     val tosLink: String
-    val ctaHeading: String
-    val ctaParagraph: String
-    val ctaLink: String
+    val loginButton: String
 }
