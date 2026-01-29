@@ -20,6 +20,10 @@ kobweb {
     app {
         index {
             head.add {
+                script {
+                    // You can inject the raw string here if the DSL is being stubborn
+                    """<base href="/">""".trimIndent()
+                }
                 link {
                     href =
                         "https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css"
