@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import com.sorenkai.web.ModalExternalCardStyle
 import com.sorenkai.web.ModalInternalCardStyle
-import com.sorenkai.web.toSitePalette
 import com.varabyte.kobweb.compose.css.Cursor
 import com.varabyte.kobweb.compose.css.JustifyContent
 import com.varabyte.kobweb.compose.css.Overflow
@@ -14,7 +13,6 @@ import com.varabyte.kobweb.compose.foundation.layout.Row
 import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.alignItems
-import com.varabyte.kobweb.compose.ui.modifiers.backgroundColor
 import com.varabyte.kobweb.compose.ui.modifiers.cursor
 import com.varabyte.kobweb.compose.ui.modifiers.fillMaxSize
 import com.varabyte.kobweb.compose.ui.modifiers.fillMaxWidth
@@ -22,10 +20,8 @@ import com.varabyte.kobweb.compose.ui.modifiers.justifyContent
 import com.varabyte.kobweb.compose.ui.modifiers.margin
 import com.varabyte.kobweb.compose.ui.modifiers.onClick
 import com.varabyte.kobweb.compose.ui.modifiers.overflow
-import com.varabyte.kobweb.compose.ui.modifiers.zIndex
 import com.varabyte.kobweb.silk.components.icons.fa.FaXmark
 import com.varabyte.kobweb.silk.style.toModifier
-import com.varabyte.kobweb.silk.theme.colors.ColorMode
 import kotlinx.browser.document
 import org.jetbrains.compose.web.css.AlignItems
 import org.jetbrains.compose.web.css.px
@@ -34,9 +30,8 @@ import org.w3c.dom.HTMLBodyElement
 
 @Composable
 fun ModalOverlay(
-    title: String? = null,
+    title: String,
     onClose: () -> Unit,
-    bottomBar: @Composable () -> Unit = { },
     content: @Composable () -> Unit
 ) {
     LockBodyScroll()
@@ -58,7 +53,7 @@ fun ModalOverlay(
                         .alignItems(AlignItems.Center)
                         .margin(bottom = 16.px)
                 ) {
-                    title?.let { Text(it) }
+                    Text(title)
                     FaXmark(Modifier.cursor(Cursor.Pointer).onClick { onClose() })
                 }
                 Column(
@@ -70,14 +65,6 @@ fun ModalOverlay(
                         )
                 ) {
                     content()
-                }
-                Box(
-                    Modifier.fillMaxWidth()
-                        .backgroundColor(ColorMode.current.toSitePalette().nearBackground) // Ensure it hides text behind it
-                        .zIndex(20)
-                        .onClick { event -> event.stopPropagation() }
-                ) {
-                    bottomBar()
                 }
             }
         }

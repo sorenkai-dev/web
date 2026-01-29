@@ -10,9 +10,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.sorenkai.web.PageContentStyle
-import com.sorenkai.web.components.sections.Footer
-import com.sorenkai.web.components.sections.NavHeader
-import com.sorenkai.web.components.widgets.buttons.backToTopButton
+import com.sorenkai.web.components.widgets.backToTopButton
+import com.sorenkai.web.sections.Footer
+import com.sorenkai.web.sections.NavHeader
 import com.varabyte.kobweb.compose.css.dvh
 import com.varabyte.kobweb.compose.dom.ref
 import com.varabyte.kobweb.compose.foundation.layout.Box
@@ -108,19 +108,6 @@ fun PageLayout(ctx: PageContext, content: @Composable ColumnScope.() -> Unit) {
     val description = runCatching { ctx.data.getValue<PageLayoutData>().description }.getOrElse { "Soren Kai — writer and technologist exploring culture, AI, and belonging." }
     val robotsContent = runCatching { ctx.data.getValue<PageLayoutData>().robotsContent }.getOrNull()
     val lang = runCatching { ctx.data.getValue<PageLayoutData>().lang }.getOrElse { "en" }
-
-    LaunchedEffect(Unit) {
-        window.requestAnimationFrame {
-            val header = document.getElementById("nav-header")
-            if (header != null) {
-                val height = header.getBoundingClientRect().height.toInt()
-                document.documentElement.asDynamic().style.setProperty(
-                    "--nav-header-height",
-                    "${height}px"
-                )
-            }
-        }
-    }
 
     val breakpoint = rememberBreakpoint()
     LaunchedEffect(pageTitle, description) {

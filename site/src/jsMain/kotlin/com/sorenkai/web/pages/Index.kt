@@ -69,5 +69,4 @@ fun LanguageRouterPage(ctx: PageContext) {
             Li { A("/es") { Text("Español") } }
         }
     }
-
 }
