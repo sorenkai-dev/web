@@ -56,3 +56,4 @@ fun ProjectsTable(projects: List<Pair<String, String>>, modifier: Modifier = Mod
         }
     }
 }
+

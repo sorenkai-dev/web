@@ -1,65 +1,13 @@
 package com.sorenkai.web
 
-import com.varabyte.kobweb.compose.css.AnimationIterationCount
-import com.varabyte.kobweb.compose.css.Cursor
-import com.varabyte.kobweb.compose.css.FontSize
-import com.varabyte.kobweb.compose.css.FontStyle
-import com.varabyte.kobweb.compose.css.FontWeight
-import com.varabyte.kobweb.compose.css.ScrollBehavior
-import com.varabyte.kobweb.compose.css.TextAlign
-import com.varabyte.kobweb.compose.css.Transition
+import com.varabyte.kobweb.compose.css.*
 import com.varabyte.kobweb.compose.css.TransitionTimingFunction
-import com.varabyte.kobweb.compose.css.WhiteSpace
-import com.varabyte.kobweb.compose.css.Width
 import com.varabyte.kobweb.compose.css.functions.LinearGradient
 import com.varabyte.kobweb.compose.css.functions.clamp
 import com.varabyte.kobweb.compose.css.functions.linearGradient
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.graphics.Colors
-import com.varabyte.kobweb.compose.ui.modifiers.animation
-import com.varabyte.kobweb.compose.ui.modifiers.backgroundColor
-import com.varabyte.kobweb.compose.ui.modifiers.backgroundImage
-import com.varabyte.kobweb.compose.ui.modifiers.borderLeft
-import com.varabyte.kobweb.compose.ui.modifiers.borderRadius
-import com.varabyte.kobweb.compose.ui.modifiers.bottom
-import com.varabyte.kobweb.compose.ui.modifiers.boxShadow
-import com.varabyte.kobweb.compose.ui.modifiers.color
-import com.varabyte.kobweb.compose.ui.modifiers.cursor
-import com.varabyte.kobweb.compose.ui.modifiers.display
-import com.varabyte.kobweb.compose.ui.modifiers.fillMaxHeight
-import com.varabyte.kobweb.compose.ui.modifiers.fillMaxSize
-import com.varabyte.kobweb.compose.ui.modifiers.fillMaxWidth
-import com.varabyte.kobweb.compose.ui.modifiers.flexWrap
-import com.varabyte.kobweb.compose.ui.modifiers.fontFamily
-import com.varabyte.kobweb.compose.ui.modifiers.fontSize
-import com.varabyte.kobweb.compose.ui.modifiers.fontStyle
-import com.varabyte.kobweb.compose.ui.modifiers.fontWeight
-import com.varabyte.kobweb.compose.ui.modifiers.gap
-import com.varabyte.kobweb.compose.ui.modifiers.height
-import com.varabyte.kobweb.compose.ui.modifiers.left
-import com.varabyte.kobweb.compose.ui.modifiers.lineHeight
-import com.varabyte.kobweb.compose.ui.modifiers.margin
-import com.varabyte.kobweb.compose.ui.modifiers.maxHeight
-import com.varabyte.kobweb.compose.ui.modifiers.maxWidth
-import com.varabyte.kobweb.compose.ui.modifiers.minWidth
-import com.varabyte.kobweb.compose.ui.modifiers.opacity
-import com.varabyte.kobweb.compose.ui.modifiers.padding
-import com.varabyte.kobweb.compose.ui.modifiers.position
-import com.varabyte.kobweb.compose.ui.modifiers.right
-import com.varabyte.kobweb.compose.ui.modifiers.rotate
-import com.varabyte.kobweb.compose.ui.modifiers.scale
-import com.varabyte.kobweb.compose.ui.modifiers.scrollBehavior
-import com.varabyte.kobweb.compose.ui.modifiers.setVariable
-import com.varabyte.kobweb.compose.ui.modifiers.size
-import com.varabyte.kobweb.compose.ui.modifiers.textAlign
-import com.varabyte.kobweb.compose.ui.modifiers.top
-import com.varabyte.kobweb.compose.ui.modifiers.transform
-import com.varabyte.kobweb.compose.ui.modifiers.transition
-import com.varabyte.kobweb.compose.ui.modifiers.translateX
-import com.varabyte.kobweb.compose.ui.modifiers.translateY
-import com.varabyte.kobweb.compose.ui.modifiers.whiteSpace
-import com.varabyte.kobweb.compose.ui.modifiers.width
-import com.varabyte.kobweb.compose.ui.modifiers.zIndex
+import com.varabyte.kobweb.compose.ui.modifiers.*
 import com.varabyte.kobweb.compose.ui.styleModifier
 import com.varabyte.kobweb.silk.components.forms.ButtonStyle
 import com.varabyte.kobweb.silk.components.forms.ButtonVars
@@ -78,20 +26,7 @@ import com.varabyte.kobweb.silk.style.selectors.visited
 import com.varabyte.kobweb.silk.theme.colors.palette.color
 import com.varabyte.kobweb.silk.theme.colors.palette.toPalette
 import com.varabyte.kobweb.silk.theme.modifyStyleBase
-import org.jetbrains.compose.web.css.AnimationDirection
-import org.jetbrains.compose.web.css.AnimationTimingFunction
-import org.jetbrains.compose.web.css.CSSMediaQuery
-import org.jetbrains.compose.web.css.DisplayStyle
-import org.jetbrains.compose.web.css.FlexWrap
-import org.jetbrains.compose.web.css.LineStyle
-import org.jetbrains.compose.web.css.Position
-import org.jetbrains.compose.web.css.StylePropertyValue
-import org.jetbrains.compose.web.css.cssRem
-import org.jetbrains.compose.web.css.deg
-import org.jetbrains.compose.web.css.ms
-import org.jetbrains.compose.web.css.percent
-import org.jetbrains.compose.web.css.px
-import org.jetbrains.compose.web.css.s
+import org.jetbrains.compose.web.css.*
 
 @InitSilk
 fun initSiteStyles(ctx: InitSilkContext) {
@@ -251,7 +186,6 @@ val ButtonStyle = CssStyle {
             .fontFamily("Nunito", "sans-serif")
             .fontSize(FontSize.Medium)
             .fontWeight(FontWeight.SemiBold)
-            .color(colorMode.toSitePalette().brand.accentText)
             .padding(leftRight = 14.px, topBottom = 10.px)
             .borderRadius(6.px)
             .boxShadow(2.px, 3.px, 6.px, 0.px, Colors.Black.copyf(alpha = 0.25f))
@@ -461,27 +395,6 @@ val SpinKeyframes = Keyframes {
     }
 }
 
-val CommentKeyframes = Keyframes {
-    from {
-        Modifier.opacity(0.0)
-            .translateY((-8).px)
-    }
-    to {
-        Modifier.opacity(1.0)
-            .translateY(0.px)
-    }
-}
-
-val SideMenuSlideInAnim = Keyframes {
-    from {
-        Modifier.translateX(100.percent)
-    }
-    to {
-        Modifier
-    }
-}
-
-
 // Define a style that applies the animation to any component
 val SpinnerStyle = CssStyle.base {
     Modifier
@@ -525,36 +438,5 @@ val CategoryStyle = CssStyle {
             .fillMaxWidth()
             .flexWrap(FlexWrap.Wrap)
             .margin(bottom = 2.cssRem)
-    }
-}
-
-val AuthNoticeStyle = CssStyle {
-    base {
-        Modifier
-            .position(Position.Fixed)
-            .fontSize(1.25.cssRem)
-            .bottom(2.cssRem)
-            .left(50.percent)
-            .transform { translateX((-50).percent) }
-            .backgroundColor(colorMode.toSitePalette().background)
-            .boxShadow(0.px, 8.px, 24.px, 0.px, colorMode.toSitePalette().brand.visited)
-            .padding(2.cssRem)
-            .borderRadius(6.px)
-            .zIndex(5000)
-    }
-}
-
-val CommentBoxStyle = CssStyle {
-    base {
-        Modifier
-            .fillMaxWidth(90.percent)
-            .zIndex(1)
-            .animation(
-                CommentKeyframes.toAnimation(
-                    duration = 200.ms,
-                    timingFunction = AnimationTimingFunction.EaseOut,
-                    direction = AnimationDirection.Normal
-                )
-            )
     }
 }
