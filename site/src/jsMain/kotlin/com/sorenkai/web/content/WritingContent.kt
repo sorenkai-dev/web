@@ -24,6 +24,7 @@ import com.sorenkai.web.components.widgets.cards.WritingCard
 import com.sorenkai.web.components.widgets.modals.ArticleModal
 import com.sorenkai.web.en.data.WritingDataEn
 import com.sorenkai.web.es.data.WritingDataEs
+import com.sorenkai.web.state.writings.WritingState
 import com.sorenkai.web.ui.text.NoticeText
 import com.sorenkai.web.ui.viewmodels.WritingsViewModel
 import com.varabyte.kobweb.compose.foundation.layout.Arrangement
@@ -53,8 +54,7 @@ import org.koin.compose.koinInject
 fun WritingContent(
     breakpoint: Breakpoint,
     lang: String,
-    openSlugFromUrl: String? = null,
-    idFromUrl: String? = null
+    openSlugFromUrl: String? = null
 ) {
     val viewModel = koinInject<WritingsViewModel>()
     var showCommentComposer by remember { mutableStateOf(false) }
@@ -91,10 +91,11 @@ fun WritingContent(
         viewModel.loadWritings(lang)
     }
 
-    LaunchedEffect(idFromUrl) {
-        idFromUrl?.let{ id ->
+    LaunchedEffect(Unit) {
+        WritingState.pedingId?.let{ id ->
             modalId = id
             showModal = true
+            WritingState.pedingId = null
         }
     }
 
