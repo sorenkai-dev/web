@@ -10,14 +10,20 @@ import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.fillMaxWidth
 import com.varabyte.kobweb.compose.ui.modifiers.padding
 import com.varabyte.kobweb.core.Page
+import com.varabyte.kobweb.core.PageContext
 import com.varabyte.kobweb.core.data.add
+import com.varabyte.kobweb.core.init.InitKobweb
+import com.varabyte.kobweb.core.init.InitKobwebContext
 import com.varabyte.kobweb.core.init.InitRoute
 import com.varabyte.kobweb.core.init.InitRouteContext
 import com.varabyte.kobweb.core.layout.Layout
 import com.varabyte.kobweb.core.rememberPageContext
-import kotlinx.browser.window
 import org.jetbrains.compose.web.css.cssRem
 
+@InitKobweb
+fun initWtitingsEnPage(ctx: InitKobwebContext) {
+    ctx.router.register("/en/writings/{id}") { WritingsPage(it) }
+}
 @InitRoute
 fun initWritingsEnPage(ctx: InitRouteContext) {
     ctx.data.add(
@@ -32,29 +38,25 @@ fun initWritingsEnPage(ctx: InitRouteContext) {
 @Page(routeOverride = "/en/writings")
 @Layout("com.sorenkai.web.components.layouts.PageLayout")
 @Composable
-fun WritingsPage() {
+fun WritingsPage(ctx: PageContext) {
+    val id = ctx.route.dynamicParams["id"] ?: ""
     val ctx = rememberPageContext()
     val breakpoint = LocalBreakpoint.current
 
     // 1. Check for the 'slug' query parameter upon initial load
     val slugFromQuery = ctx.route.params["slug"]
 
-    val path = window.location.pathname
-    val idFromPath =
-        Regex("^/(en|es)/writings/([^/]+)$")
-            .find(path)
-            ?.groupValues
-            ?.get(2)
-
     Column(
         modifier = Modifier.fillMaxWidth().padding(bottom = 4.cssRem),
         horizontalAlignment = Alignment.Start
     ) {
-        console.log("WritingsPage: slugFromQuery=$slugFromQuery, idFromPath=$idFromPath")
+        console.log("WritingsPage: slugFromQuery=$slugFromQuery, idFromPath=$id")
         WritingContent(
             breakpoint,
             "en",
-            slugFromQuery
+            slugFromQuery,
+            idFromUrl = id
+
         )
     }
 }
