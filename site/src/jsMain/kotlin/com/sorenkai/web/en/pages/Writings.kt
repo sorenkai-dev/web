@@ -28,11 +28,11 @@ fun initWritingsEnPage(ctx: InitRouteContext) {
     )
 }
 
-@Page(routeOverride = "/en/writings/{id?}")
+@Page("/en/writings/{id?}")
 @Layout("com.sorenkai.web.components.layouts.PageLayout")
 @Composable
 fun WritingsPage(ctx: PageContext) {
-    val id = ctx.route.params["id"]
+    val id = ctx.route.params.getValue("id")
     val breakpoint = LocalBreakpoint.current
 
     // 1. Check for the 'slug' query parameter upon initial load
