@@ -24,6 +24,7 @@ data class DiscussionReadDto(
     val isLocked: Boolean,
     val likes: Int,
     val isLikedByMe: Boolean = false,
+    val isReportedByMe: Boolean = false,
     val childCount: Int,
     val canDelete: Boolean = false,
     val canRestore: Boolean = false,

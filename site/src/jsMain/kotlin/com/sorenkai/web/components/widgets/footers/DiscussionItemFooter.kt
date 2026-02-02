@@ -115,13 +115,22 @@ fun DiscussionItemFooter(
                                 )
                             }
                         } else {
-                            FaFlag(
-                                size = IconSize.SM,
-                                modifier = Modifier
-                                    .cursor(Cursor.Pointer)
-                                    .color(ColorMode.current.toSitePalette().brand.visited)
-                                    .onClick { onReportClicked() }
-                            )
+                            if (discussion.isReportedByMe){
+                                FaFlag(
+                                    size = IconSize.SM,
+                                    style = IconStyle.FILLED,
+                                    modifier = Modifier.color(ColorMode.current.toSitePalette().brand.visited)
+                                )
+                            } else {
+                                FaFlag(
+                                    size = IconSize.SM,
+                                    style = if (discussion.isReportedByMe) IconStyle.FILLED else IconStyle.OUTLINE,
+                                    modifier = Modifier
+                                        .cursor(if (discussion.isReportedByMe) Cursor.Default else Cursor.Pointer)
+                                        .color(ColorMode.current.toSitePalette().brand.visited)
+                                        .onClick { if (!discussion.isReportedByMe) onReportClicked() }
+                                )
+                            }
                         }
                     }
                     FaCommentDots(

@@ -4,6 +4,7 @@ import com.sorenkai.web.api.dto.discussions.DiscussionCreateDto
 import com.sorenkai.web.api.dto.discussions.DiscussionModerationDto
 import com.sorenkai.web.components.data.model.community.discussions.Discussion
 import com.sorenkai.web.components.data.model.community.discussions.DiscussionOrder
+import com.sorenkai.web.components.data.model.report.Report
 import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.flow.StateFlow
 
@@ -27,7 +28,7 @@ interface IDiscussionRepository {
 
     suspend fun restoreDiscussion(discussionId: String): Discussion
 
-    suspend fun reportDiscussion(discussionId: String): Discussion
+    suspend fun reportDiscussion(targetType: String, discussionId: String): Report
 
     suspend fun moderateDiscussion(discussionId: String, dto: DiscussionModerationDto): Discussion
 

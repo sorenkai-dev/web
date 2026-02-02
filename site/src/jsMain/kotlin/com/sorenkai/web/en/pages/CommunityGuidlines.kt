@@ -3,18 +3,12 @@ package com.sorenkai.web.en.pages
 import androidx.compose.runtime.Composable
 import com.sorenkai.web.components.layouts.LocalBreakpoint
 import com.sorenkai.web.components.layouts.PageLayoutData
-import com.varabyte.kobweb.compose.foundation.layout.Column
-import com.varabyte.kobweb.compose.ui.Alignment
-import com.varabyte.kobweb.compose.ui.Modifier
-import com.varabyte.kobweb.compose.ui.modifiers.fillMaxSize
-import com.varabyte.kobweb.compose.ui.toAttrs
+import com.sorenkai.web.content.GuidelinesContent
 import com.varabyte.kobweb.core.Page
 import com.varabyte.kobweb.core.data.add
 import com.varabyte.kobweb.core.init.InitRoute
 import com.varabyte.kobweb.core.init.InitRouteContext
 import com.varabyte.kobweb.core.layout.Layout
-import org.jetbrains.compose.web.dom.H1
-import org.jetbrains.compose.web.dom.Text
 
 @InitRoute
 fun initCommGuideEnPage(ctx: InitRouteContext) {
@@ -33,11 +27,5 @@ fun initCommGuideEnPage(ctx: InitRouteContext) {
 fun CommunityGuidelinesPage() {
     val breakpoint = LocalBreakpoint.current
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        H1 (attrs = Modifier.align(Alignment.CenterHorizontally).toAttrs(),
-            content = { Text("Coming Soon") })
-    }
+    GuidelinesContent("en", breakpoint)
 }

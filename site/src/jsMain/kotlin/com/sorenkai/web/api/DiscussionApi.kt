@@ -5,11 +5,10 @@ import com.sorenkai.web.api.dto.discussions.DiscussionDto
 import com.sorenkai.web.api.dto.discussions.DiscussionModerationDto
 import com.sorenkai.web.api.dto.discussions.DiscussionReportDto
 import com.sorenkai.web.components.data.model.community.discussions.DiscussionOrder
+import com.sorenkai.web.components.data.model.report.Report
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.jsonObject
-import kotlinx.serialization.json.jsonPrimitive
 
 class DiscussionApi(private val apiClient: ApiClient) {
     private val json = Json { ignoreUnknownKeys = true }
@@ -52,11 +51,11 @@ class DiscussionApi(private val apiClient: ApiClient) {
     suspend fun restoreDiscussion(id: String): ApiResponse<DiscussionDto> =
         apiClient.post("/v2/community/discussions/$id/restore") { json.decodeFromString(it) }
 
-    suspend fun reportDiscussion(id: String, dto: DiscussionReportDto): ApiResponse<DiscussionDto> =
-        apiClient.post("/v2/community/discussions/$id/report", body = dto) { json.decodeFromString(it) }
+    suspend fun reportDiscussion(dto: DiscussionReportDto): ApiResponse<Report> =
+        apiClient.post("/v2/reports", body = json.encodeToString(DiscussionReportDto.serializer(), dto)) { json.decodeFromString(it) }
 
     suspend fun moderateDiscussion(id: String, dto: DiscussionModerationDto): ApiResponse<DiscussionDto> =
-        apiClient.post("/v2/community/discussions/$id/moderate", body = dto) { json.decodeFromString(it) }
+        apiClient.post("/v2/admin/discussions/$id/status", body = dto) { json.decodeFromString(it) }
 
     suspend fun editDiscussion(id: String, body: String): ApiResponse<DiscussionDto> =
         apiClient.patch("/v2/community/discussions/$id", body = js("({ body: body })")) { json.decodeFromString(it) }

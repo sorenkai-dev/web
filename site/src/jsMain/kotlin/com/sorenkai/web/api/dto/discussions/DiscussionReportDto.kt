@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class DiscussionReportDto(
-    val discussionId: String,
+    val targetType: String,
+    val targetId: String,
     val reason: String
 )

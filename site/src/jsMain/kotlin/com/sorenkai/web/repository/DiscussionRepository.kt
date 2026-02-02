@@ -10,6 +10,7 @@ import com.sorenkai.web.auth.IAuthProvider
 import com.sorenkai.web.components.data.model.auth.UID
 import com.sorenkai.web.components.data.model.community.discussions.Discussion
 import com.sorenkai.web.components.data.model.community.discussions.DiscussionOrder
+import com.sorenkai.web.components.data.model.report.Report
 import com.sorenkai.web.repository.interfaces.IDiscussionRepository
 import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -84,16 +85,18 @@ class DiscussionRepository(
         return updated
     }
 
-    override suspend fun reportDiscussion(discussionId: String): Discussion {
+    override suspend fun reportDiscussion(targetType: String, discussionId: String): Report {
         getCurrentUser() ?: throw IllegalStateException("Must be authenticated")
 
-        val reportDto = DiscussionReportDto(discussionId = discussionId, reason = "Reported by user")
-        val res = api.reportDiscussion(discussionId, reportDto)
+        val reportDto = DiscussionReportDto(targetType = targetType, targetId = discussionId, reason = "Reported by user")
+        val res = api.reportDiscussion(reportDto)
         if (res !is ApiResponse.Success) throw RuntimeException("Failed to report discussion")
 
-        val updated = DiscussionDomainMapper.mapToDomain(res.data)
-        _discussions.value = _discussions.value.map { if (it.id == discussionId) updated else it }
-        return updated
+        _discussions.value = _discussions.value.map {
+            if (it.id == discussionId) it.copy(isReportedByMe = true) else it
+        }
+
+        return res.data
     }
 
     override suspend fun moderateDiscussion(discussionId: String, dto: DiscussionModerationDto): Discussion {
