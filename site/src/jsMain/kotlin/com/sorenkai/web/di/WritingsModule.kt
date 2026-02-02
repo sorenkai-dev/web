@@ -9,5 +9,5 @@ import org.koin.dsl.module
 val writingsModule = module {
     single { WritingApi(get()) }
     single<IWritingRepository> { WritingRepository(get(), get()) }
-    factory { WritingsViewModel(get(),get(), get()) }
+    single { WritingsViewModel(get(),get(), get()) }
 }

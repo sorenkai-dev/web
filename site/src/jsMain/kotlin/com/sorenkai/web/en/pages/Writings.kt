@@ -28,26 +28,26 @@ fun initWritingsEnPage(ctx: InitRouteContext) {
     )
 }
 
-@Page("/en/writings/{id?}")
+@Page(routeOverride = "/en/writings")
 @Layout("com.sorenkai.web.components.layouts.PageLayout")
 @Composable
 fun WritingsPage(ctx: PageContext) {
-    val id = ctx.route.params.getValue("id")
+    val id = null
     val breakpoint = LocalBreakpoint.current
 
     // 1. Check for the 'slug' query parameter upon initial load
     val slugFromQuery = ctx.route.params["slug"]
+    val idFromUrl = ctx.route.params["id"]
 
     Column(
         modifier = Modifier.fillMaxWidth().padding(bottom = 4.cssRem),
         horizontalAlignment = Alignment.Start
     ) {
-        console.log("WritingsPage: slugFromQuery=$slugFromQuery, idFromPath=$id")
         WritingContent(
             breakpoint,
             "en",
             slugFromQuery,
-            idFromUrl = id
+            idFromUrl = idFromUrl
         )
     }
 }

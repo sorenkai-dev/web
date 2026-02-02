@@ -233,7 +233,7 @@ fun DiscussionItems(
             onEditClicked = { isEditing = true },
             onDeleteClicked = { viewModel.deleteDiscussion(discussion.id) },
             onRestoreClicked = { viewModel.restoreDiscussion(discussion.id) },
-            onReportClicked = { viewModel.reportDiscussion(discussion.id) }
+            onReportClicked = { viewModel.reportDiscussion(discussion.kind, discussion.id) }
         )
         if (expandedIds.contains(discussion.id)) {
             val children = allDiscussions.filter { it.parentId == discussion.id }

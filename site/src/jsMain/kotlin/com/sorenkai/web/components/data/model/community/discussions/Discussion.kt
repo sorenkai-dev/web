@@ -27,6 +27,7 @@ data class Discussion(
     val isLocked: Boolean = false,
     val likes: Int = 0,
     val isLikedByMe: Boolean = false,
+    val isReportedByMe: Boolean = false,
     val childCount: Int = 0,
     val deletedAt: Instant? = null,
     val purgeAt: Instant? = null,

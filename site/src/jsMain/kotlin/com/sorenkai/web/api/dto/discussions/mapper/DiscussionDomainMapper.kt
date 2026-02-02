@@ -25,6 +25,7 @@ object DiscussionDomainMapper {
             isLocked = dto.isLocked,
             likes = dto.likesCount,
             isLikedByMe = dto.isLikedByMe,
+            isReportedByMe = dto.isReportedByMe,
             childCount = dto.childCount,
             deletedAt = dto.deletedAt,
             purgeAt = dto.purgeAt,
