@@ -54,6 +54,7 @@ object DiscussionMapper {
             isLocked = discussion.isLocked,
             likes = discussion.likes,
             isLikedByMe = discussion.isLikedByMe,
+            isReportedByMe = discussion.isReportedByMe,
             childCount = discussion.childCount,
             canDelete = currentUserId != null && (isAuthor || isModerator) && !discussion.isDeleted,
             canRestore = discussion.canRestore(currentUserId),

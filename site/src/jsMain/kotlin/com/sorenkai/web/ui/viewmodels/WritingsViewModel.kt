@@ -206,7 +206,8 @@ class WritingsViewModel(
         viewModelScope.launch {
             val origin = window.location.origin
             val langPath = if (lang == "en" || lang == "es") lang else "en"
-            val url = "$origin/$langPath/writings/${writing.id}"
+//            val url = "$origin/$langPath/writings/${writing.id}"
+            val url = "$origin/$langPath/writings?id=${writing.id}"
 
             var didShare = false
 

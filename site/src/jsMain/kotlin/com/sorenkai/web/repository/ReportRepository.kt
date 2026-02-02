@@ -13,7 +13,6 @@ class ReportRepository(
 ) : IReportRepository {
     override suspend fun createReport(request: ReportCreateRequest): Report {
         val userId = auth.getUserId() ?: throw IllegalStateException("Must be authenticated")
-
         // Basic validation as requested: "Repository must enforce authentication and validation before calling the API."
         if (request.targetId.isBlank()) {
             throw IllegalArgumentException("Target ID cannot be blank")

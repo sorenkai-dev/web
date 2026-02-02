@@ -11,6 +11,7 @@ import com.varabyte.kobweb.compose.ui.modifiers.cursor
 import com.varabyte.kobweb.compose.ui.modifiers.gap
 import com.varabyte.kobweb.compose.ui.modifiers.onClick
 import com.varabyte.kobweb.compose.ui.toAttrs
+import kotlinx.browser.window
 import org.jetbrains.compose.web.css.cssRem
 import org.jetbrains.compose.web.dom.Span
 import org.jetbrains.compose.web.dom.Text
@@ -24,7 +25,13 @@ fun AuthMenu(lang: String, auth: IAuthProvider, currentPath: String) {
             Span(
                 Modifier
                     .cursor(Cursor.Pointer)
-                    .onClick { auth.logout(currentPath) }
+                    .onClick {
+                        window.sessionStorage.setItem(
+                            "postLogoutRedirectUri",
+                            currentPath
+                        )
+                        auth.logout(currentPath)
+                    }
                     .toAttrs()
             ) {
                 Text(if (lang == "es") "Cerrar sesión" else "Logout")

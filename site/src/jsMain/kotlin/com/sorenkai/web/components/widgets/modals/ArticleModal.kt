@@ -78,6 +78,9 @@ fun ArticleModal(
                 .toAttrs()
         ) {
             Column {
+                console.log("Selected writing detail title inside the ArticleModal: ${writingDetail?.title}")
+                console.log("Selected writing id inside the ArticleModal: $id")
+                console.log("Content inside the ArticleModal: ${writingDetail}")
                 renderMarkdown(content)
                 WritingModalFooter(
                     lang = lang,

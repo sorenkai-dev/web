@@ -3,11 +3,9 @@ jetbrains-compose = "1.9.3"
 kobweb = "0.23.3"
 koin = "4.2.0-beta2"
 kotlin = "2.3.0"
-kotlinx-datetime = "0.7.1-0.6.x-compat"
 kotlinx-serialization = "1.9.0"
 jetbrains-markdown = "0.7.3"
 ktlint = "14.0.1"
-material3 = "1.4.0"
 spotless = "8.1.0"
 
 [libraries]
@@ -27,7 +25,6 @@ silk-icons-mdi = { module = "com.varabyte.kobwebx:silk-icons-mdi", version.ref =
 kotlin-js = { module = "org.jetbrains.kotlin:kotlin-stdlib-js", version.ref = "kotlin" }
 kotlinx-serialization-json     = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 jetbrains-markdown = { module = "org.jetbrains:markdown", version.ref = "jetbrains-markdown"}
-kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version = "1.10.1" }
 
 [plugins]

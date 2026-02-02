@@ -76,6 +76,7 @@ fun WritingContent(
     var modalTitle by remember { mutableStateOf("") }
     var modalId by remember { mutableStateOf("") }
     var selectedWriting by remember { mutableStateOf<WritingEntry?>(null) }
+    val selectedWritingDetail by viewModel.selectedWritingDetail.collectAsState()
     val submitContent: (String) -> Unit = { body ->
         selectedWriting?.let { writing ->
             viewModel.createComment(
@@ -218,7 +219,7 @@ fun WritingContent(
 
     if (showModal && modalId.isNotEmpty()) {
         ModalOverlay(
-            title = modalTitle,
+            title = selectedWritingDetail?.title,
             onClose = closeModal,
             bottomBar = {
                 if (showCommentComposer) {
@@ -256,6 +257,10 @@ fun WritingContent(
                 }
             }
         ) {
+            console.log("Selected writing title in Modal Overlay: ${selectedWritingDetail?.title}")
+            console.log("Selected writing id in Modal Overlay: $modalId")
+            console.log("Modal title in Modal Overlay: ${modalTitle}")
+            console.log("Selected writing detail in Modal Overlay: $selectedWritingDetail")
             ArticleModal(
                 id = modalId,
                 lang = lang,

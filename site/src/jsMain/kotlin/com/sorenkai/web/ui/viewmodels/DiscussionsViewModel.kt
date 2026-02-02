@@ -401,10 +401,10 @@ class DiscussionsViewModel(
         }
     }
 
-    fun reportDiscussion(id: String) {
+    fun reportDiscussion(type: Kind, id: String) {
         viewModelScope.launch {
             runCatching {
-                repository.reportDiscussion(id)
+                repository.reportDiscussion(type.toString(), id)
             }.onSuccess {
                 _actionResults.emit(ActionResult.Success)
             }.onFailure { e ->

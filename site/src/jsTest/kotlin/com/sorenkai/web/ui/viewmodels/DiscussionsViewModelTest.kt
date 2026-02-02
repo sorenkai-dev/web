@@ -6,6 +6,9 @@ import com.sorenkai.web.auth.IAuthProvider
 import com.sorenkai.web.components.data.model.community.discussions.Discussion
 import com.sorenkai.web.components.data.model.community.discussions.DiscussionOrder
 import com.sorenkai.web.components.data.model.community.discussions.Kind
+import com.sorenkai.web.components.data.model.report.Report
+import com.sorenkai.web.components.data.model.report.ReportStatus
+import com.sorenkai.web.components.data.model.report.TargetType
 import com.sorenkai.web.repository.interfaces.IDiscussionRepository
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
@@ -227,6 +230,15 @@ class DiscussionsViewModelTest {
         assert(viewModel.childCount.value["root3"] == 7) { "Child count for root3 should increase to 7. Current: ${viewModel.childCount.value["root3"]}" }
         
         println("[DEBUG_LOG] Test 7 Passed")
+        
+        // Test 8: Reporting sets isReportedByMe locally
+        println("[DEBUG_LOG] Test 8: Reporting sets isReportedByMe locally")
+        val reportId = "root1"
+        assert(repo.discussions.value.find { it.id == reportId }?.isReportedByMe == false) { "Initially not reported" }
+        viewModel.reportDiscussion(Kind.POST, reportId)
+        advanceUntilIdle()
+        assert(repo.discussions.value.find { it.id == reportId }?.isReportedByMe == true) { "Should be marked as reported locally" }
+        println("[DEBUG_LOG] Test 8 Passed")
 
         println("[DEBUG_LOG] All tests finished successfully")
         println("[DEBUG_LOG] testAll finished")
@@ -277,7 +289,20 @@ class DiscussionsViewModelTest {
 
         override suspend fun deleteDiscussion(discussionId: String): Discussion = throw NotImplementedError()
         override suspend fun restoreDiscussion(discussionId: String): Discussion = throw NotImplementedError()
-        override suspend fun reportDiscussion(discussionId: String): Discussion = throw NotImplementedError()
+        override suspend fun reportDiscussion(targetType: String, discussionId: String): Report {
+            _discussions.value = _discussions.value.map {
+                if (it.id == discussionId) it.copy(isReportedByMe = true) else it
+            }
+            return Report(
+                id = "report-1",
+                targetType = TargetType.valueOf(targetType),
+                targetId = discussionId,
+                reason = "Reported by user",
+                createdAt = Instant.DISTANT_PAST,
+                createdBy = "user-1",
+                status = ReportStatus.OPEN
+            )
+        }
         override suspend fun moderateDiscussion(discussionId: String, dto: com.sorenkai.web.api.dto.discussions.DiscussionModerationDto): Discussion = throw NotImplementedError()
         override suspend fun editDiscussion(discussionId: String, body: String): Discussion = throw NotImplementedError()
         override suspend fun likeDiscussion(discussionId: String): Discussion = throw NotImplementedError()
