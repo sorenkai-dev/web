@@ -171,11 +171,10 @@ fun CommunityContent(
                 PostComposer(
                     modifier = Modifier.id("new-post-composer"),
                     lang = lang,
-                    placeholder = "What's on your mind?",
+                    placeholder = if (lang == "es") "¿Qué idea te gustaría compartir?"
+                        else "What's on your mind?",
                     enabled = auth.authState.value == AuthState.Authenticated,
                     onSubmit = { body ->
-                        console.log("New post submitted: $body")
-
                         viewModel.createDiscussion(
                             body = body,
                             lang = lang,
