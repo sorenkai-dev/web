@@ -131,7 +131,7 @@ fun DiscussionItems(
         DiscussionItemHeader(
             discussion.id,
             highlightedId,
-            discussion.author?.username ?: if (lang == "es") "Anónimo" else "Anonymous",
+            discussion.author?.displayName ?: discussion.author?.username ?: if (lang == "es") "Anónimo" else "Anonymous",
             discussion.createdAt
         )
         if (depth > 4 && parent != null) {
@@ -147,7 +147,7 @@ fun DiscussionItems(
                     },
                 horizontalArrangement = Arrangement.Center
             ) {
-                Text("In reply to: ${parent.author?.username ?: if (lang == "es") "Anónimo" else "Anonymous"}")
+                Text("In reply to: ${parent.author?.displayName ?: parent.author?.username ?: if (lang == "es") "Anónimo" else "Anonymous"}")
             }
         }
         Row(

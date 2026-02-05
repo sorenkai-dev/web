@@ -227,7 +227,7 @@ class OidcAuthProvider(
 
     override fun getUsername(): String? {
         val profile = cachedUser?.profile ?: return null
-        return profile.username ?: profile.preferred_username ?: cachedUser?.username
+        return profile.name ?: profile.username ?: profile.preferred_username ?: cachedUser?.username
     }
 
     override fun getRoles(): List<String> {
