@@ -221,6 +221,55 @@ fun PageLayout(ctx: PageContext, content: @Composable ColumnScope.() -> Unit) {
                 plausible.init()
                 """.trimIndent()
             element.appendChild(initScript)
+
+            // --- Person schema ---
+            val personSchema = document.createElement("script")
+            personSchema.setAttribute("type", "application/ld+json")
+            personSchema.textContent =
+                """
+                {
+                  "@context": "https://schema.org",
+                  "@type": "Person",
+                  "@id": "https://www.sorenkai.com/#person",
+                  "name": "Soren Kai",
+                  "url": "https://www.sorenkai.com",
+                  "image": "https://www.sorenkai.com/assets/soren-kai.jpg",
+                  "sameAs": [
+                    "https://www.linkedin.com/in/sorenkai",
+                    "https://bsky.app/profile/sorenkai.bsky.social",
+                    "https://sorenkai.substack.com"
+                  ],
+                  "jobTitle": "Writer, Technologist",
+                  "description": "Writer and technologist exploring technology, power, agency, belonging, and what it means to remain human in automated systems.",
+                  "knowsAbout": [
+                    "AI ethics",
+                    "human agency",
+                    "technology and society",
+                    "LGBTQ+ politics",
+                    "belonging"
+                  ]
+                }
+                """.trimIndent()
+            element.appendChild(personSchema)
+
+            // --- Website schema ---
+            val websiteSchema = document.createElement("script")
+            websiteSchema.setAttribute("type", "application/ld+json")
+            websiteSchema.textContent =
+                """
+                {
+                  "@context": "https://schema.org",
+                  "@type": "WebSite",
+                  "@id": "https://www.sorenkai.com/#website",
+                  "url": "https://www.sorenkai.com",
+                  "name": "Soren Kai",
+                  "description": "Essays, projects, and long-form work on technology, agency, and belonging.",
+                  "publisher": {
+                    "@id": "https://www.sorenkai.com/#person"
+                  }
+                }
+                """.trimIndent()
+            element.appendChild(websiteSchema)
         }
     )
 }
