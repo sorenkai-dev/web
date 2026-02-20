@@ -14,7 +14,9 @@ interface IAuthProvider {
     suspend fun getAccessToken(): String?
 
     fun getUserId(): String?
+
     fun getUsername(): String?
+
     fun getRoles(): List<String>
 
 

@@ -103,7 +103,7 @@ fun CommunityContent(
             { Text(data.communityQuote) },
             modifier = Modifier
                 .fontFamily("Playfair Display", "serif")
-                .fontSize(size*0.9),
+                .fontSize(size * 0.9),
             citation = data.communityQuoteAuthor,
         )
     }
@@ -143,15 +143,15 @@ fun CommunityContent(
     Column (
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
+    ) {
         if (isAuthenticated != AuthState.Authenticated) {
             Button(
                 attrs = ButtonStyle.toModifier()
-                    .toAttrs{
-                    onClick{
-                        auth.login(window.location.pathname)
+                    .toAttrs {
+                        onClick {
+                            auth.login(window.location.pathname)
+                        }
                     }
-                }
             ) {
                 Text(data.loginButton)
             }
@@ -167,12 +167,15 @@ fun CommunityContent(
                     .zIndex(4)
                     .margin(bottom = 1.cssRem)
                     .padding(topBottom = 1.cssRem)
-            ){
+            ) {
                 PostComposer(
                     modifier = Modifier.id("new-post-composer"),
                     lang = lang,
-                    placeholder = if (lang == "es") "¿Qué idea te gustaría compartir?"
-                        else "What's on your mind?",
+                    placeholder = if (lang == "es") {
+                        "¿Qué idea te gustaría compartir?"
+                    } else {
+                        "What's on your mind?"
+                    },
                     enabled = auth.authState.value == AuthState.Authenticated,
                     onSubmit = { body ->
                         viewModel.createDiscussion(
@@ -197,10 +200,10 @@ fun CommunityContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .cursor(Cursor.Pointer)
-                    .visibility( if(rootPending.isNotEmpty()) Visibility.Visible else Visibility.Hidden),
+                    .visibility( if (rootPending.isNotEmpty()) Visibility.Visible else Visibility.Hidden),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
-            ){
+            ) {
                 SpanText(
                     "Load New Posts",
                     modifier = Modifier

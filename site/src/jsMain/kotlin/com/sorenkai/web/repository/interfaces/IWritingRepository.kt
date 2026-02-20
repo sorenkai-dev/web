@@ -8,6 +8,7 @@ interface IWritingRepository {
     suspend fun getWritings(tag: String? = null, limit: Int? = null, offset: Int? = null): ApiResponse<List<WritingEntry>>
 
     suspend fun getWriting(id: String): ApiResponse<WritingDetailResponse>
+
     suspend fun resolveSlug(slug: String): ApiResponse<WritingDetailResponse>
 
     suspend fun getTags(): ApiResponse<List<String>>

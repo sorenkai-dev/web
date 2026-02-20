@@ -45,10 +45,17 @@ fun WritingCardFooter(
         }
     val label =
         when (writing.writingsType) {
-            WritingsType.ARTICLE -> if (enabled) buttonText.getValue("readArticle")
-                else buttonText.getValue("comingSoon")
-            WritingsType.BOOK -> if (enabled) buttonText.getValue("buyBook")
-                else buttonText.getValue("comingSoon")
+            WritingsType.ARTICLE -> if (enabled) {
+                buttonText.getValue("readArticle")
+            } else {
+                buttonText.getValue("comingSoon")
+            }
+
+            WritingsType.BOOK -> if (enabled) {
+                buttonText.getValue("buyBook")
+            } else {
+                buttonText.getValue("comingSoon")
+            }
         }
 
     if (breakpoint < Breakpoint.SM) {
@@ -158,7 +165,10 @@ private fun DateLines(
         }
     }
     Row {
-        if (publishedAt != null && publishedAt == createdAt) return@Row
-        else Text("${text.getValue("createdAt")}: $createdAt")
+        if (publishedAt != null && publishedAt == createdAt) {
+            return@Row
+        } else {
+            Text("${text.getValue("createdAt")}: $createdAt")
+        }
     }
 }

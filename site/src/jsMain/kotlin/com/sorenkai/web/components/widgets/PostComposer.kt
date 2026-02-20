@@ -58,8 +58,6 @@ fun PostComposer(
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
-
         TextArea(
             value = text,
             attrs = Modifier
@@ -108,10 +106,10 @@ fun PostComposer(
             Button(
                 attrs = ButtonStyle.toModifier()
                     .id("clear-button")
-                    .toAttrs{
-                    if (text.isBlank()) disabled()
-                    onClick{ text = "" }
-                }
+                    .toAttrs {
+                        if (text.isBlank()) disabled()
+                        onClick { text = "" }
+                    }
             ) {
                 Text(clear)
             }
@@ -120,8 +118,8 @@ fun PostComposer(
                 Button(
                     attrs = ButtonStyle.toModifier()
                         .id("cancel-button")
-                        .toAttrs{
-                            onClick{ onCancel() }
+                        .toAttrs {
+                            onClick { onCancel() }
                         }
                 ) {
                     Text(cancel)
@@ -131,10 +129,10 @@ fun PostComposer(
             Button(
                 attrs = ButtonStyle.toModifier()
                     .id("submit-button")
-                    .toAttrs{
+                    .toAttrs {
                         if (!enabled || text.isBlank()) disabled()
-                        onClick{
-                            onSubmit(text);
+                        onClick {
+                            onSubmit(text)
                             if (mode == ComposerMode.CREATE) {
                                 text = ""
                             }

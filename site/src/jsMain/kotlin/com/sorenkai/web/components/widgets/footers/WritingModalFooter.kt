@@ -91,7 +91,7 @@ fun WritingModalFooter(
             )
             Row(
                 modifier = Modifier.fillMaxWidth(80.percent)
-            ){
+            ) {
                 if (showFooter) {
                     Box(
                         modifier = Modifier
@@ -134,7 +134,7 @@ fun WritingModalFooter(
         Column(
             Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
-        ){
+        ) {
             Row(
                 modifier = Modifier.fillMaxWidth(80.percent)
                     .margin(top = 1.cssRem)

@@ -9,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.sorenkai.web.BlockquoteCardStyle
 import com.sorenkai.web.SpinnerStyle
+import com.sorenkai.web.auth.Auth
 import com.sorenkai.web.auth.AuthState
 import com.sorenkai.web.components.data.model.auth.AuthNoticeType
 import com.sorenkai.web.components.data.model.community.discussions.ComposerMode
@@ -68,7 +69,7 @@ fun WritingContent(
     val writings by viewModel.writings.collectAsState()
     val isLoading by viewModel.loading.collectAsState()
     val error by viewModel.error.collectAsState()
-    val authState by viewModel.authState.collectAsState()
+    val authState by Auth.authState.collectAsState()
     val enabled = authState == AuthState.Authenticated
     val selectedCategory by viewModel.selectedCategory.collectAsState()
     val resolvedWritingId by viewModel.resolvedWritingId.collectAsState()
@@ -86,14 +87,14 @@ fun WritingContent(
             )
         }
     }
-    /* ---------- Initial Load ---------- */
+    // ---------- Initial Load ----------
 
     LaunchedEffect(lang) {
         viewModel.loadWritings(lang)
     }
 
     LaunchedEffect(idFromUrl) {
-        idFromUrl?.let{ id ->
+        idFromUrl?.let { id ->
             modalId = id
             showModal = true
         }
@@ -142,7 +143,7 @@ fun WritingContent(
         )
     }
 
-    /* ---------- Header ---------- */
+    // ---------- Header ----------
 
     Row(
         modifier = BlockquoteCardStyle.toModifier().fillMaxWidth()
@@ -156,7 +157,7 @@ fun WritingContent(
 
     LeadParagraph(breakpoint) { Text(data.leadParagraph) }
 
-    /* ---------- Filters ---------- */
+    // ---------- Filters ----------
 
     CategoryFilterBar(
         breakpoint = breakpoint,
@@ -165,7 +166,7 @@ fun WritingContent(
         lang = lang
     )
 
-    /* ---------- Content ---------- */
+    // ---------- Content ----------
 
     when {
         isLoading -> {
@@ -209,8 +210,7 @@ fun WritingContent(
                         onLikeToggle = { writingToLike ->
                             if (enabled) {
                                 viewModel.toggleLike(writingToLike.id)
-                            }
-                            else {
+                            } else {
                                 authNotice = AuthNoticeType.LIKE
                             }
                         },
@@ -221,7 +221,7 @@ fun WritingContent(
         }
     }
 
-    /* ---------- Modal ---------- */
+    // ---------- Modal ----------
 
     if (showModal && modalId.isNotEmpty()) {
         ModalOverlay(
@@ -271,8 +271,11 @@ fun WritingContent(
                 error = error,
                 liked = false,
                 onLikeToggle = {
-                    if (!enabled) authNotice = AuthNoticeType.LIKE
-                    else viewModel.toggleLike(modalId)
+                    if (!enabled) {
+                        authNotice = AuthNoticeType.LIKE
+                    } else {
+                        viewModel.toggleLike(modalId)
+                    }
                 },
                 onShareClick = {
                     selectedWriting?.let { writing ->
@@ -280,10 +283,13 @@ fun WritingContent(
                     }
                 },
                 onCommentToggle = {
-                    if (!enabled) authNotice = AuthNoticeType.COMMENT
-                    else showCommentComposer = !showCommentComposer
+                    if (!enabled) {
+                        authNotice = AuthNoticeType.COMMENT
+                    } else {
+                        showCommentComposer = !showCommentComposer
+                    }
                 },
-                onSubmit = { },
+                onSubmit = {  },
                 breakpoint = breakpoint
             )
         }

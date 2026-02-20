@@ -115,7 +115,7 @@ fun DiscussionItemFooter(
                                 )
                             }
                         } else {
-                            if (discussion.isReportedByMe){
+                            if (discussion.isReportedByMe) {
                                 FaFlag(
                                     size = IconSize.SM,
                                     style = IconStyle.FILLED,

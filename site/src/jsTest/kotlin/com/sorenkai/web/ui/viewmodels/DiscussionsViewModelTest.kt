@@ -25,11 +25,11 @@ class DiscussionsViewModelTest {
     @Test
     fun testAll() = runTest {
         println("[DEBUG_LOG] Starting testAll")
-        
+
         val repo = MockDiscussionRepository()
         val auth = MockAuthProvider()
         val mapper = DiscussionPresentationMapper()
-        
+
         // Populate repo BEFORE ViewModel creation so StateFlow has initial value
         val rootPost = Discussion(
             id = "root1",
@@ -42,7 +42,7 @@ class DiscussionsViewModelTest {
         repo.emit(listOf(rootPost))
 
         val viewModel = DiscussionsViewModel(repo, auth, mapper)
-        
+
         // Trigger manual refresh to ensure data is picked up if init's onEach is too slow
         viewModel.fetchDiscussions("en", order = DiscussionOrder.NEWEST)
         advanceUntilIdle()
@@ -51,7 +51,7 @@ class DiscussionsViewModelTest {
 
         // Test 1: Root posts load and poll correctly
         println("[DEBUG_LOG] Test 1: Root posts load")
-        
+
         assert(viewModel.discussions.value.any { it.id == "root1" }) { "Root post should be visible. Current: ${viewModel.discussions.value}" }
         println("[DEBUG_LOG] Test 1 Passed")
 
@@ -67,7 +67,7 @@ class DiscussionsViewModelTest {
             childCount = 1, // Let's make it have children to allow auto-expansion if it was single child
             createdAt = Instant.fromEpochMilliseconds(1)
         )
-        
+
         // Expand root1
         viewModel.toggleExpanded("root1")
         advanceUntilIdle()
@@ -154,9 +154,9 @@ class DiscussionsViewModelTest {
         )
         repo.emit(repo.discussions.value + root2)
         advanceUntilIdle()
-        
+
         assert(!viewModel.isExpanded("root2")) { "Root 2 should NOT be expanded yet" }
-        
+
         viewModel.createDiscussion(
             body = "My Comment on Root 2",
             lang = "en",
@@ -164,7 +164,7 @@ class DiscussionsViewModelTest {
             kind = Kind.COMMENT
         )
         advanceUntilIdle()
-        
+
         assert(viewModel.isExpanded("root2")) { "Root 2 should be expanded after creating a comment on it" }
         assert(viewModel.discussions.value.any { it.body == "My Comment on Root 2" }) { "New comment should be visible immediately" }
         println("[DEBUG_LOG] Test 5 Passed")
@@ -182,9 +182,9 @@ class DiscussionsViewModelTest {
         )
         repo.emit(repo.discussions.value + root3)
         advanceUntilIdle()
-        
+
         assert(viewModel.childCount.value["root3"] == 5) { "Child count for root3 should be 5. Current: ${viewModel.childCount.value["root3"]}" }
-        
+
         println("[DEBUG_LOG] Test 6: Child count optimistic increment")
         viewModel.createDiscussion(
             body = "Comment on root3",
@@ -193,7 +193,7 @@ class DiscussionsViewModelTest {
             kind = Kind.COMMENT
         )
         advanceUntilIdle()
-        
+
         assert(viewModel.childCount.value["root3"] == 6) { "Child count for root3 should be 6 after creation. Current: ${viewModel.childCount.value["root3"]}" }
         println("[DEBUG_LOG] Test 6 Passed")
 
@@ -213,10 +213,10 @@ class DiscussionsViewModelTest {
         repo.emit(repo.discussions.value.map { if (it.id == "root3") staleRoot3 else it })
         advanceUntilIdle()
 
-        assert(viewModel.childCount.value["root3"] == 6) { 
-            "Child count for root3 should remain 6 even if repo returns stale 5. Current: ${viewModel.childCount.value["root3"]}" 
+        assert(viewModel.childCount.value["root3"] == 6) {
+            "Child count for root3 should remain 6 even if repo returns stale 5. Current: ${viewModel.childCount.value["root3"]}"
         }
-        
+
         // Simulate repository catching up
         val freshRoot3 = staleRoot3.copy(childCount = 6)
         repo.emit(repo.discussions.value.map { if (it.id == "root3") freshRoot3 else it })
@@ -228,9 +228,9 @@ class DiscussionsViewModelTest {
         repo.emit(repo.discussions.value.map { if (it.id == "root3") newerRoot3 else it })
         advanceUntilIdle()
         assert(viewModel.childCount.value["root3"] == 7) { "Child count for root3 should increase to 7. Current: ${viewModel.childCount.value["root3"]}" }
-        
+
         println("[DEBUG_LOG] Test 7 Passed")
-        
+
         // Test 8: Reporting sets isReportedByMe locally
         println("[DEBUG_LOG] Test 8: Reporting sets isReportedByMe locally")
         val reportId = "root1"
@@ -288,7 +288,9 @@ class DiscussionsViewModelTest {
         }
 
         override suspend fun deleteDiscussion(discussionId: String): Discussion = throw NotImplementedError()
+
         override suspend fun restoreDiscussion(discussionId: String): Discussion = throw NotImplementedError()
+
         override suspend fun reportDiscussion(targetType: String, discussionId: String): Report {
             _discussions.value = _discussions.value.map {
                 if (it.id == discussionId) it.copy(isReportedByMe = true) else it
@@ -303,9 +305,13 @@ class DiscussionsViewModelTest {
                 status = ReportStatus.OPEN
             )
         }
+
         override suspend fun moderateDiscussion(discussionId: String, dto: com.sorenkai.web.api.dto.discussions.DiscussionModerationDto): Discussion = throw NotImplementedError()
+
         override suspend fun editDiscussion(discussionId: String, body: String): Discussion = throw NotImplementedError()
+
         override suspend fun likeDiscussion(discussionId: String): Discussion = throw NotImplementedError()
+
         override suspend fun unlikeDiscussion(discussionId: String): Discussion = throw NotImplementedError()
     }
 
@@ -322,12 +328,17 @@ class DiscussionsViewModelTest {
         }
 
         override fun getUserId(): String? = _userId.value
+
         override fun getUsername(): String? = _userId.value
+
         override suspend fun getAccessToken(): String? = null
+
         override fun getRoles(): List<String> = emptyList()
 
         override fun login(returnUrl: String?) {}
+
         override fun logout(returnUrl: String?) {}
+
         override suspend fun ensureHydrated() {}
     }
 }

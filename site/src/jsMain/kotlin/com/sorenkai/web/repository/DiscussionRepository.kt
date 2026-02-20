@@ -131,7 +131,9 @@ class DiscussionRepository(
         _discussions.value = currentDiscussions.map {
             if (it.id == discussionId && !it.isLikedByMe) {
                 it.copy(likes = it.likes + 1, isLikedByMe = true)
-            } else it
+            } else {
+                it
+            }
         }
 
         return try {
@@ -159,7 +161,9 @@ class DiscussionRepository(
         _discussions.value = currentDiscussions.map {
             if (it.id == discussionId && it.isLikedByMe) {
                 it.copy(likes = (it.likes - 1).coerceAtLeast(0), isLikedByMe = false)
-            } else it
+            } else {
+                it
+            }
         }
 
         return try {

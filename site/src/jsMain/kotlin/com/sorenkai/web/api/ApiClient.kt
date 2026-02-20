@@ -39,9 +39,14 @@ class ApiClient(private val auth: IAuthProvider) {
                 method = method,
                 headers = headers,
                 body = if (body != undefined) {
-                    if (js("typeof body === 'string'") as Boolean) body
-                    else JSON.stringify(body)
-                } else undefined
+                    if (js("typeof body === 'string'") as Boolean) {
+                        body
+                    } else {
+                        JSON.stringify(body)
+                    }
+                } else {
+                    undefined
+                }
             )
 
             val response: Response = window.fetch(url, init).await()

@@ -14,16 +14,24 @@ fun RichText(content: String, modifier: Modifier = Modifier) {
     var emphasis = false
     parts.forEach { part ->
         when {
-            part == "*" -> emphasis = !emphasis
-            emphasis ->
+            part == "*" -> {
+                emphasis = !emphasis
+            }
+
+            emphasis -> {
                 SpanText(
                     part,
                     modifier = Modifier
                         .fontWeight(600)
                         .then(modifier)
                 )
-            part == "_" -> italic = !italic
-            italic ->
+            }
+
+            part == "_" -> {
+                italic = !italic
+            }
+
+            italic -> {
                 SpanText(
                     part,
                     modifier = Modifier
@@ -31,7 +39,11 @@ fun RichText(content: String, modifier: Modifier = Modifier) {
                         .fontWeight(600)
                         .then(modifier)
                 )
-            else -> SpanText(part)
+            }
+
+            else -> {
+                SpanText(part)
+            }
         }
     }
 }

@@ -26,4 +26,3 @@ fun SettingsMenu(
         AuthMenu(lang, auth, window.location.pathname)
     }
 }
-
