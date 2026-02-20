@@ -48,7 +48,9 @@ fun ModalOverlay(
     ) {
         Box(
             ModalInternalCardStyle.toModifier()
-                .onClick { /* stop click propagation */ }
+                .onClick { event ->
+                    event.stopPropagation()
+                }
         ) {
             Column(Modifier.fillMaxSize()) {
                 Row(
