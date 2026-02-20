@@ -2,14 +2,11 @@ package com.sorenkai.web.components.widgets.modals
 
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import com.sorenkai.web.SpinnerStyle
+import com.sorenkai.web.api.dto.writings.WritingDetailResponse
 import com.sorenkai.web.components.util.Res
 import com.sorenkai.web.components.widgets.footers.WritingModalFooter
 import com.sorenkai.web.ui.text.ArticleModalText
-import com.sorenkai.web.ui.viewmodels.WritingsViewModel
 import com.sorenkai.web.util.renderMarkdown
 import com.varabyte.kobweb.compose.foundation.layout.Arrangement
 import com.varabyte.kobweb.compose.foundation.layout.Column
@@ -26,11 +23,13 @@ import com.varabyte.kobweb.silk.style.toModifier
 import org.jetbrains.compose.web.css.cssRem
 import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.dom.Text
-import org.koin.compose.koinInject
 
 @Composable
 fun ArticleModal(
     id: String,
+    writingDetail: WritingDetailResponse?,
+    isLoading: Boolean,
+    error: String?,
     lang: String,
     liked: Boolean,
     onLikeToggle: () -> Unit,
@@ -39,16 +38,7 @@ fun ArticleModal(
     onSubmit: () -> Unit,
     breakpoint: Breakpoint,
 ) {
-    val writingsViewModel = koinInject<WritingsViewModel>()
     val text = ArticleModalText[lang] ?: error("Language not supported: $lang")
-
-    val writingDetail by writingsViewModel.selectedWritingDetail.collectAsState()
-    val isLoading by writingsViewModel.loading.collectAsState()
-    val error by writingsViewModel.error.collectAsState()
-
-    LaunchedEffect(id) {
-        writingsViewModel.loadWritingDetail(id)
-    }
 
     if (isLoading) {
         Column(
@@ -66,8 +56,8 @@ fun ArticleModal(
         }
     } else {
         val content = when {
-            error != null -> error ?: ""
-            writingDetail != null -> writingDetail?.content ?: ""
+            error != null -> error
+            writingDetail != null -> writingDetail.content
             else -> ""
         }
         Div(
@@ -78,9 +68,6 @@ fun ArticleModal(
                 .toAttrs()
         ) {
             Column {
-                console.log("Selected writing detail title inside the ArticleModal: ${writingDetail?.title}")
-                console.log("Selected writing id inside the ArticleModal: $id")
-                console.log("Content inside the ArticleModal: ${writingDetail}")
                 renderMarkdown(content)
                 WritingModalFooter(
                     lang = lang,

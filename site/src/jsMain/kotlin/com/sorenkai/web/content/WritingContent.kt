@@ -116,6 +116,12 @@ fun WritingContent(
         }
     }
 
+    LaunchedEffect(modalId) {
+        if (modalId.isNotBlank()) {
+            viewModel.loadWritingDetail(modalId)
+        }
+    }
+
     val closeModal = {
         showModal = false
         selectedWriting = null
@@ -130,7 +136,7 @@ fun WritingContent(
             message = noticeText.getValue(
                 if (type == AuthNoticeType.LIKE) "like" else "comment"
             ),
-            actionLabel = noticeText.getValue("action"),
+            actionLabel = noticeText.getValue("login"),
             onAction = { viewModel.login() },
             onDismiss = { authNotice = null }
         )
@@ -241,7 +247,7 @@ fun WritingContent(
                             ) {
                                 PostComposer(
                                     lang = lang,
-                                    placeholder = noticeText.getValue("writeComment"),
+                                    placeholder = noticeText.getValue("writingPlaceholder"),
                                     mode = ComposerMode.COMMENT,
                                     onSubmit = { body ->
                                         submitContent(body)
@@ -257,13 +263,12 @@ fun WritingContent(
                 }
             }
         ) {
-            console.log("Selected writing title in Modal Overlay: ${selectedWritingDetail?.title}")
-            console.log("Selected writing id in Modal Overlay: $modalId")
-            console.log("Modal title in Modal Overlay: ${modalTitle}")
-            console.log("Selected writing detail in Modal Overlay: $selectedWritingDetail")
             ArticleModal(
                 id = modalId,
                 lang = lang,
+                writingDetail = selectedWritingDetail,
+                isLoading = isLoading,
+                error = error,
                 liked = false,
                 onLikeToggle = {
                     if (!enabled) authNotice = AuthNoticeType.LIKE
