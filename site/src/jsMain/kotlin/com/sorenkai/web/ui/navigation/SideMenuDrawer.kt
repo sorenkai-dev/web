@@ -57,15 +57,17 @@ fun SideMenuDrawer(
                         SideMenuSlideInAnim.toAnimation(
                             duration = 200.ms,
                             timingFunction =
-                                if (revealState == RevealState.VISIBLE)
+                                if (revealState == RevealState.VISIBLE) {
                                     AnimationTimingFunction.EaseOut
-                                else
-                                    AnimationTimingFunction.EaseIn,
+                                } else {
+                                    AnimationTimingFunction.EaseIn
+                                },
                             direction =
-                                if (revealState == RevealState.VISIBLE)
+                                if (revealState == RevealState.VISIBLE) {
                                     AnimationDirection.Normal
-                                else
-                                    AnimationDirection.Reverse,
+                                } else {
+                                    AnimationDirection.Reverse
+                                },
                             fillMode = AnimationFillMode.Forwards
                         )
                     )

@@ -46,7 +46,7 @@ fun NavHeader(
     var pendingMenu by remember { mutableStateOf<SideNavMode?>(null) }
     var revealState by remember { mutableStateOf(RevealState.HIDDEN) }
 
-    /* ---------- Menu control ---------- */
+    // ---------- Menu control ----------
 
     fun openMenu(mode: SideNavMode) {
         if (activeMenu == null) {
@@ -81,7 +81,7 @@ fun NavHeader(
         }
     }
 
-    /* ---------- Header ---------- */
+    // ---------- Header ----------
 
     Row(
         NavHeaderStyle.toModifier()
@@ -101,7 +101,7 @@ fun NavHeader(
 
         Spacer()
 
-        /* ---------- Desktop ---------- */
+        // ---------- Desktop ----------
 
         Row(
             Modifier
@@ -118,7 +118,7 @@ fun NavHeader(
             )
         }
 
-        /* ---------- Mobile ---------- */
+        // ---------- Mobile ----------
 
         Row(
             Modifier
@@ -134,14 +134,13 @@ fun NavHeader(
         }
     }
 
-    /* ---------- Side Menu Drawer ---------- */
+    // ---------- Side Menu Drawer ----------
 
     SideMenuDrawer(
         revealState = revealState,
         onAnimationEnd = { onDrawerAnimationEnd() }
     ) {
         when (val menu = activeMenu) {
-
             SideNavMode.Navigation -> {
                 SideNavMenu(
                     breakpoint = breakpoint,

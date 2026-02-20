@@ -44,13 +44,13 @@ fun SettingsButton(
     lang: String,
     onClick: () -> Unit
 ) {
-        FaGear(
-            size = IconSize.LG,
-            modifier = Modifier
-                .color(color = ColorMode.current.toSitePalette().brand.accent)
-                .cursor(Cursor.Pointer)
-                .onClick { onClick() }
-        )
+    FaGear(
+        size = IconSize.LG,
+        modifier = Modifier
+            .color(color = ColorMode.current.toSitePalette().brand.accent)
+            .cursor(Cursor.Pointer)
+            .onClick { onClick() }
+    )
 }
 
 @Composable

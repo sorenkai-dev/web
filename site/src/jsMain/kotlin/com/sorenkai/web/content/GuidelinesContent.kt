@@ -42,7 +42,7 @@ fun GuidelinesContent(
         }
     val prohibited = data.prohibitedContent
     val version =
-        when (lang){
+        when (lang) {
             "es" -> "Versión 1.0.0"
             else -> "Version: 1.0.0" }
     val date =

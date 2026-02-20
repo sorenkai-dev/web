@@ -34,8 +34,8 @@ object GuidelinesDataEn : IGuidelines {
         override val uList1 =
             listOf(
                 "Personal attacks, insults, or intimidation",
-	            "Targeted harassment or repeated bad-faith engagement",
-	            "Threats of violence or harm"
+                "Targeted harassment or repeated bad-faith engagement",
+                "Threats of violence or harm"
             )
         override val section2heading = "Hate, Dehumanization, and Contempt"
         override val section2paragraph1 =

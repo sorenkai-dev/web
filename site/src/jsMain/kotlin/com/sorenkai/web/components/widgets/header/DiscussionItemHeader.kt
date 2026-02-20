@@ -34,12 +34,13 @@ fun DiscussionItemHeader(
     Row(
         modifier = Modifier
             .width(100.percent)
-            .padding(leftRight=1.5.cssRem, )
+            .padding(leftRight = 1.5.cssRem, )
             .backgroundColor(
-                if (isHighlighted)
+                if (isHighlighted) {
                     ColorMode.current.toSitePalette().brand.accent
-                else
+                } else {
                     ColorMode.current.toSitePalette().nearBackground
+                }
             )
             .transition(
                 Transition.of(
@@ -48,8 +49,7 @@ fun DiscussionItemHeader(
                     TransitionTimingFunction.EaseInOut
                 )
             )
-            .borderRadius(0.5.cssRem)
-        ,
+            .borderRadius(0.5.cssRem),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(username)
