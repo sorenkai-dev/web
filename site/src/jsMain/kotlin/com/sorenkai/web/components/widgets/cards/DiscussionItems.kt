@@ -35,6 +35,7 @@ import com.varabyte.kobweb.compose.ui.modifiers.fillMaxWidth
 import com.varabyte.kobweb.compose.ui.modifiers.fontSize
 import com.varabyte.kobweb.compose.ui.modifiers.height
 import com.varabyte.kobweb.compose.ui.modifiers.id
+import com.varabyte.kobweb.compose.ui.modifiers.margin
 import com.varabyte.kobweb.compose.ui.modifiers.maxWidth
 import com.varabyte.kobweb.compose.ui.modifiers.onClick
 import com.varabyte.kobweb.compose.ui.modifiers.padding
@@ -45,6 +46,7 @@ import com.varabyte.kobweb.silk.components.icons.fa.IconSize
 import com.varabyte.kobweb.silk.theme.colors.ColorMode
 import kotlin.math.min
 import kotlinx.browser.document
+import kotlinx.browser.window
 import org.jetbrains.compose.web.ExperimentalComposeWebApi
 import org.jetbrains.compose.web.css.AlignItems
 import org.jetbrains.compose.web.css.LineStyle
@@ -134,6 +136,22 @@ fun DiscussionItems(
             discussion.author?.displayName ?: discussion.author?.username ?: if (lang == "es") "Anónimo" else "Anonymous",
             discussion.createdAt
         )
+        if (discussion.kind == Kind.POST && discussion.parentId == null && discussion.writingId != null) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fontSize(0.85.cssRem)
+                    .color(ColorMode.current.toSitePalette().brand.accent)
+                    .cursor(Cursor.Pointer)
+                    .margin(left = 1.5.cssRem, top = 0.25.cssRem, bottom = 0.5.cssRem)
+                    .onClick {
+                        window.location.href = "/en/writings?id=${discussion.writingId}"
+                    }
+            ) {
+                Text(noticeText.getValue("relatedWriting"))
+            }
+        }
+
         if (depth > 4 && parent != null) {
             Row(
                 modifier = Modifier
@@ -167,8 +185,8 @@ fun DiscussionItems(
                     modifier = Modifier
                         .visibility(
                             if (discussion.childCount > 1 ||
-                                discussion.childCount == 1 && hasSiblings ||
-                                hasChildren && discussion.kind==Kind.POST
+                                (discussion.childCount == 1 && hasSiblings) ||
+                                (hasChildren && discussion.kind==Kind.POST)
                                 ) Visibility.Visible
                             else Visibility.Hidden
                         )
