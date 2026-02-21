@@ -33,13 +33,15 @@ val NoticeText = mapOf(
         "like" to "Please login to like:",
         "comment" to "Please login to comment:",
         "login" to "Login",
-        "writingPlaceholder" to "Write a comment..."
+        "writingPlaceholder" to "Write a comment...",
+        "relatedWriting" to "View related writing"
     ),
     "es" to mapOf(
         "like" to "Por favor inicia sesión para dar like:",
         "comment" to "Por favor inicia sesión para comentar:",
         "login" to "Iniciar sesión",
-        "writingPlaceholder" to "Escribe un comentario..."
+        "writingPlaceholder" to "Escribe un comentario...",
+        "relatedWriting" to "Ver escrito relacionado"
     )
 )
 
